@@ -9,12 +9,13 @@
 <link rel="icon" href="icon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Amiri+Quran&family=Noto+Nastaliq+Urdu:wght@400;600&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Amiri+Quran&family=Scheherazade+New&family=Noto+Nastaliq+Urdu:wght@400;600&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
 <style>
 :root{
   --bg:#EEF2F1; --surface:#FFFFFF; --ink:#16262B; --muted:#5E716C; --line:#D5DEDB;
   --lapis:#1E5486; --saffron:#B97810; --sage:#3E7A62; --hit:#F6E3BD; --live:#D7E6F4; --bar:#16353F; --onbar:#EEF2F1;
   --ar:'Amiri Quran','Amiri','Traditional Arabic','Scheherazade New',serif;
+  --arstudy:'Scheherazade New','Noto Naskh Arabic','Amiri','Traditional Arabic',serif;
   --ur:'Noto Nastaliq Urdu','Jameel Noori Nastaleeq','Urdu Typesetting',serif;
   --en:'Crimson Pro',Georgia,'Times New Roman',serif;
   --arsize:30px;
@@ -40,9 +41,9 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 /* top bar */
 .bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;display:flex;align-items:center;gap:8px;
   padding:6px 12px;background:var(--surface);border-bottom:1px solid var(--line)}
-.bar .title{flex:1;text-align:right;padding:2px 4px}
+.bar .title{flex:1;text-align:start;padding:2px 4px}
 .bar .title b{font-family:var(--ar);font-size:24px;font-weight:400;line-height:1.5}
-.bar .title small{display:block;font-family:var(--en);color:var(--muted);font-size:13px;line-height:1.2;direction:ltr;text-align:right}
+.bar .title small{display:block;font-family:var(--en);color:var(--muted);font-size:13px;line-height:1.2;direction:ltr;text-align:start}
 .iconbtn{width:42px;height:42px;display:grid;place-items:center;border-radius:10px}
 .iconbtn:hover{background:var(--bg)}
 .iconbtn svg{width:22px;height:22px;stroke:var(--ink);fill:none;stroke-width:1.8;stroke-linecap:round}
@@ -110,21 +111,22 @@ h3{font-size:15px;font-weight:600;margin:20px 0 4px;color:var(--lapis);line-heig
 .seg-row{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;padding:10px 0;border-top:1px solid var(--line)}
 .seg-row .sar{font-family:var(--ar);font-size:34px;line-height:1.6;min-width:1.6em;text-align:center}
 .seg-row b{font-weight:600;font-size:15px}
-.seg-row ul{margin:0;padding:0 18px 0 0;font-size:14px;color:var(--muted);line-height:2.05}
+.seg-row ul{margin:0;padding:0;padding-inline-start:18px;font-size:14px;color:var(--muted);line-height:2.05}
 .seg-row .lem{font-size:13.5px;margin-top:2px}
 .seg-row .lem span{font-family:var(--ar);font-size:20px}
 .root{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
-.root .letters{font-family:var(--ar);font-size:40px;letter-spacing:.35em;color:var(--lapis);line-height:1.6}
+.root{margin-bottom:10px}
+.root .letters{font-family:var(--ar);font-size:40px;letter-spacing:.35em;color:var(--lapis);line-height:2}
 .root .cnt{color:var(--muted);font-size:14px}
 .lemlist{list-style:none;margin:0;padding:0}
-.lemlist li button{width:100%;display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;text-align:right;
+.lemlist li button{width:100%;display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;text-align:start;
   padding:4px 6px;border-radius:8px}
 .lemlist li button:hover,.lemlist li button[aria-pressed="true"]{background:var(--bg)}
 .lemlist .la{font-family:var(--ar);font-size:24px;line-height:1.7}
 .lemlist .lg{font-family:var(--en);font-size:14.5px;color:var(--muted);direction:ltr;text-align:left;line-height:1.3}
 .lemlist .lc{font-size:13px;color:var(--muted)}
 .occ{list-style:none;margin:0;padding:0}
-.occ li button{display:block;width:100%;text-align:right;padding:8px 4px;border-bottom:1px solid var(--line)}
+.occ li button{display:block;width:100%;text-align:start;padding:8px 4px;border-bottom:1px solid var(--line)}
 .occ .oa{font-family:var(--ar);font-size:22px;line-height:2}
 .occ .oa mark{background:var(--hit);color:inherit;border-radius:4px;box-shadow:inset 0 -2px 0 var(--saffron)}
 .occ .or{font-size:12px;color:var(--muted)}
@@ -139,7 +141,7 @@ h3{font-size:15px;font-weight:600;margin:20px 0 4px;color:var(--lapis);line-heig
 .search{width:100%;font:inherit;font-size:15px;padding:4px 12px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--ink)}
 .dr-body{overflow-y:auto;flex:1;padding:4px 8px 20px;overscroll-behavior:contain}
 .sl{list-style:none;margin:0;padding:0}
-.sl button{width:100%;display:grid;grid-template-columns:2.2em 1fr auto;gap:10px;align-items:center;text-align:right;padding:6px;border-radius:9px}
+.sl button{width:100%;display:grid;grid-template-columns:2.2em 1fr auto;gap:10px;align-items:center;text-align:start;padding:6px;border-radius:9px}
 .sl button:hover,.sl button[aria-current="true"]{background:var(--bg)}
 .sl .num{font-size:13px;color:var(--muted);text-align:center}
 .sl .nm{font-family:var(--en);font-size:15.5px;direction:ltr;text-align:right;line-height:1.3}
@@ -157,6 +159,31 @@ h3{font-size:15px;font-weight:600;margin:20px 0 4px;color:var(--lapis);line-heig
 .about{font-size:12.5px;color:var(--muted);line-height:2;margin-top:22px}
 .about .en{font-family:var(--en);direction:ltr;text-align:left;line-height:1.5;font-size:13px}
 .loading{padding:60px 0;text-align:center;color:var(--muted)}
+
+/* language */
+.words,.wd-word,.seg-row .sar,.occ .oa,.lemlist .la,.root .letters,.bism,.sl .na,.toast .tar{direction:rtl}
+.occ .oa{text-align:right}
+.tr.ur{direction:rtl;text-align:right;font-family:var(--ur)}
+html[lang="en"] body{font-family:var(--en);font-size:17px;line-height:1.55}
+html[lang="en"] .tr.ur{font-size:15px;line-height:2.15}
+html[lang="en"] h3{font-size:17px;line-height:1.6}
+html[lang="en"] .seg-row ul{line-height:1.5;font-size:15px}
+html[lang="en"] .player .info{line-height:1.35}
+html[lang="en"] .about,html[lang="en"] .draft,html[lang="en"] .surah-foot{line-height:1.5}
+html[dir="ltr"] .sl .nm{text-align:left}
+html[dir="ltr"] .drawer{right:auto;left:0;transform:translateX(-105%)}
+html[dir="ltr"] .drawer.on{transform:none}
+.langpick{position:fixed;inset:0;z-index:50;background:var(--bg);display:grid;place-items:center;padding:24px}
+.langpick .box{text-align:center;max-width:360px;width:100%}
+.langpick .mark{font-family:var(--ar);font-size:56px;line-height:2;color:var(--lapis);margin-bottom:8px}
+.langpick p{color:var(--muted);margin:0 0 22px;font-family:var(--en);font-size:16px;line-height:1.5}
+.langpick button{display:block;width:100%;margin:10px 0;padding:10px 0;border-radius:14px;border:1.5px solid var(--line);background:var(--surface);font-size:22px}
+.langpick button:hover{border-color:var(--lapis)}
+.langpick .ur{font-family:var(--ur);line-height:2}
+.langpick .en{font-family:var(--en)}
+/* word study panel: clear letter-by-letter Arabic (Amiri Quran stacks letters calligraphically) */
+.wd-word,.seg-row .sar,.lemlist .la,.root .letters,.seg-row .lem span,#occH span{font-family:var(--arstudy)}
+.wd-word{font-size:58px;line-height:1.8}
 
 /* player */
 .player{position:fixed;left:0;right:0;bottom:0;z-index:25;display:none;align-items:center;gap:4px;
@@ -185,7 +212,7 @@ body.playing .toast{bottom:calc(env(safe-area-inset-bottom,0px) + 76px)}
   <button class="iconbtn" id="btnSettings" aria-label="ترتیبات"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1 7 17M17 7l2.1-2.1"/></svg></button>
 </header>
 
-<main id="main"><div class="loading">لوڈ ہو رہا ہے…</div></main>
+<main id="main"><div class="loading">…</div></main>
 
 <div class="scrim" id="scrim"></div>
 <section class="sheet" id="sheet" role="dialog" aria-modal="true" aria-label="لفظ کی تفصیل"><div class="grab"></div><div id="sheetBody"></div></section>
@@ -216,6 +243,59 @@ body.playing .toast{bottom:calc(env(safe-area-inset-bottom,0px) + 76px)}
 const $ = s => document.querySelector(s);
 const UD = "۰۱۲۳۴۵۶۷۸۹";
 const ud = n => String(n).replace(/\d/g, d => UD[d]);
+const L = {
+  ur: {
+    title:"قرآن — لفظ بہ لفظ", menu:"سورتوں کی فہرست", change:"سورت بدلیں", play:"تلاوت سنیں", settings:"ترتیبات",
+    loading:"لوڈ ہو رہا ہے…", loadFail:"ڈیٹا لوڈ نہیں ہوا۔ انٹرنیٹ چیک کر کے دوبارہ کھولیں۔",
+    wordDetail:"لفظ کی تفصیل", panel:"فہرست اور ترتیبات", tabS:"سورتیں", tabJ:"پارے", tabSet:"ترتیبات",
+    search:"سورت تلاش کریں: نام یا نمبر", recitation:"تلاوت", prev:"پچھلی آیت", playPause:"چلائیں / روکیں", next:"اگلی آیت",
+    repeat:"آیت دہرائیں", closeP:"تلاوت بند کریں", surahPre:"سورۃ ", trLabel:"ترجمہ:", prevS:"پچھلی سورت", nextS:"اگلی سورت",
+    hold:"مکمل تفصیل کے لیے لفظ کو دبائے رکھیں", hearWord:"لفظ سنیں", hearAyah:"یہ آیت سنیں",
+    pre:"سابقہ", stem:"اصل لفظ", suf:"لاحقہ", gramH:"گرامر — یہ لفظ کیسے بنا ہے", base:"بنیادی شکل:",
+    rootH:"مادہ (جڑ) اور اس کے الفاظ", rootCnt:(w,c)=>`اس مادے سے ${ud(w)} الفاظ، قرآن میں کل ${ud(c)} بار`,
+    times:n=>`${ud(n)} بار`, moreW:n=>`+ ${ud(n)} مزید الفاظ`, inQuran:n=>`قرآن میں ${ud(n)} بار`,
+    draft:"گرامر نوٹس ابھی مسودہ ہیں — عالم کی نظرِ ثانی باقی ہے۔ مورفالوجی: Quranic Arabic Corpus.",
+    thisAyah:" (یہی آیت)", more:n=>`مزید دکھائیں (${ud(n)} باقی)`,
+    lang:"زبان", trSel:"آیت کا ترجمہ", trNone:"ترجمہ نہ دکھائیں", wbw:"ہر لفظ کے نیچے معنی", show:"دکھائیں", hide:"چھپائیں",
+    glLang:"لفظی معنی کی زبان", urMissing:"اردو لفظی معنی ابھی شامل نہیں — فی الحال انگریزی دکھائی جا رہی ہے۔",
+    reciter:"قاری", speed:"تلاوت کی رفتار", slow:"آہستہ", normal:"عام", fast:"تیز", size:"عربی متن کا سائز",
+    theme:"رنگ", auto:"خودکار", light:"روشن", dark:"گہرا", sources:"ذرائع:",
+    draftAbout:"گرامر نوٹس مسودہ ہیں — عالم کی نظرِ ثانی کے بعد حتمی ہوں گے۔",
+    bism:"بسم اللہ", ayah:n=>`آیت ${ud(n)}`, done:"سورت مکمل ہوئی", audioFail:"تلاوت لوڈ نہیں ہوئی — انٹرنیٹ چیک کریں",
+    rep1:"ہر آیت ایک بار", repN:n=>`ہر آیت ${ud(n)} بار`, repInf:"یہ آیت مسلسل دہرائی جائے گی",
+    wordNA:"اس لفظ کی آواز دستیاب نہیں", resume:(n,a)=>`آپ نے یہاں چھوڑا تھا: سورۃ ${n}، آیت ${ud(a)}`,
+    listen:a=>`آیت ${ud(a)} سنیں`, ayahs:n=>`${ud(n)} آیات`, num:ud
+  },
+  en: {
+    title:"Quran — Word by Word", menu:"Surah list", change:"Change surah", play:"Play recitation", settings:"Settings",
+    loading:"Loading…", loadFail:"Couldn't load the data. Check your internet connection and reopen.",
+    wordDetail:"Word details", panel:"List and settings", tabS:"Surahs", tabJ:"Juz", tabSet:"Settings",
+    search:"Find a surah: name or number", recitation:"Recitation", prev:"Previous ayah", playPause:"Play / pause", next:"Next ayah",
+    repeat:"Repeat ayah", closeP:"Close player", surahPre:"", trLabel:"Translation:", prevS:"Previous surah", nextS:"Next surah",
+    hold:"Press and hold a word for full details", hearWord:"Hear word", hearAyah:"Hear this ayah",
+    pre:"prefix", stem:"stem", suf:"suffix", gramH:"Grammar — how this word is built", base:"Base form:",
+    rootH:"Root and its words", rootCnt:(w,c)=>`${w} words from this root, ${c} times in the Quran`,
+    times:n=>`${n}×`, moreW:n=>`+ ${n} more words`, inQuran:n=>`appears ${n} times in the Quran`,
+    draft:"Grammar notes are a draft pending scholar review. Morphology: Quranic Arabic Corpus.",
+    thisAyah:" (this ayah)", more:n=>`Show more (${n} left)`,
+    lang:"Language", trSel:"Ayah translation", trNone:"No translation", wbw:"Meaning under each word", show:"Show", hide:"Hide",
+    glLang:"Word meaning language", urMissing:"Urdu word meanings aren't added yet — showing English for now.",
+    reciter:"Reciter", speed:"Recitation speed", slow:"Slow", normal:"Normal", fast:"Fast", size:"Arabic text size",
+    theme:"Theme", auto:"Auto", light:"Light", dark:"Dark", sources:"Sources:",
+    draftAbout:"Grammar notes are a draft and will be final after scholar review.",
+    bism:"Bismillah", ayah:n=>`Ayah ${n}`, done:"Surah complete", audioFail:"Recitation didn't load — check your internet",
+    rep1:"Each ayah once", repN:n=>`Each ayah ${n} times`, repInf:"This ayah will repeat continuously",
+    wordNA:"Audio for this word isn't available", resume:(n,a)=>`You stopped here: ${n}, ayah ${a}`,
+    listen:a=>`Play ayah ${a}`, ayahs:n=>`${n} ayahs`, num:n=>String(n)
+  }
+};
+const T = (k, ...a) => { const v = (L[settings.lang] || L.ur)[k]; return typeof v === "function" ? v(...a) : v; };
+const TRS = [
+  ["ur",  "مولانا فتح محمد جالندھری", "Fateh Muhammad Jalandhry (Urdu)"],
+  ["ur2", "شیخ الہند محمود الحسن", "Shaykh-ul-Hind Mahmood ul Hassan (Urdu)"],
+  ["en2", "Abdullah Yusuf Ali (English)", "Abdullah Yusuf Ali"],
+  ["en",  "Marmaduke Pickthall (English)", "Marmaduke Pickthall"]
+];
 const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const store = {
   get(k, d){ try{ const v = localStorage.getItem("q_"+k); return v ? JSON.parse(v) : d; }catch(e){ return d; } },
@@ -238,17 +318,35 @@ function load(key, path){
   }
   return cache[key];
 }
+const DV = "3";  // bump whenever data/ changes, so phones fetch fresh files instead of old cached ones
 const DATA = {
-  meta: () => load("meta", "data/meta.json"),
-  occ:  () => load("occ", "data/occ.json"),
-  surah: n => load("s"+n, `data/s/${String(n).padStart(3,"0")}.json`),
-  timing: rec => load("t_"+rec, `data/timing/${rec}.json`)
+  meta: () => load("meta", `data/meta.json?v=${DV}`),
+  occ:  () => load("occ", `data/occ.json?v=${DV}`),
+  surah: n => load("s"+n, `data/s/${String(n).padStart(3,"0")}.json?v=${DV}`),
+  timing: rec => load("t_"+rec, `data/timing/${rec}.json?v=${DV}`)
 };
 
 /* ---------- state ---------- */
 let META, CUR = null;
-const settings = Object.assign({ tr:"ur", wbw:true, gl:"auto", size:30, theme:"auto", rec:"Alafasy_128kbps", speed:1 }, store.get("settings", {}));
+const settings = Object.assign({ lang:null, tr:null, wbw:true, gl:null, size:30, theme:"auto", rec:"Alafasy_128kbps", speed:1 }, store.get("settings", {}));
+if (settings.gl === "auto") settings.gl = "ur";
 function saveSettings(){ store.set("settings", settings); applySettings(); }
+function applyLang(){
+  const ur = settings.lang !== "en";
+  document.documentElement.lang = ur ? "ur" : "en";
+  document.documentElement.dir = ur ? "rtl" : "ltr";
+  document.title = T("title");
+  const lab = { btnMenu:"menu", btnTitle:"change", btnPlay:"play", btnSettings:"settings", sheet:"wordDetail", drawer:"panel",
+                player:"recitation", pPrev:"prev", pPlay:"playPause", pNext:"next", pRep:"repeat", pClose:"closeP" };
+  for (const id in lab) document.getElementById(id).setAttribute("aria-label", T(lab[id]));
+  document.querySelector('[data-tab="surahs"]').textContent = T("tabS");
+  document.querySelector('[data-tab="juz"]').textContent = T("tabJ");
+  document.querySelector('[data-tab="settings"]').textContent = T("tabSet");
+  $("#search").placeholder = T("search"); $("#search").setAttribute("aria-label", T("search"));
+  const A = "M6 6v12l8.5-6zM16 6h2v12h-2z", B = "M18 6v12l-8.5-6zM6 6h2v12H6z";
+  $("#pPrev").innerHTML = `<svg viewBox="0 0 24 24"><path d="${ur ? A : B}"/></svg>`;
+  $("#pNext").innerHTML = `<svg viewBox="0 0 24 24"><path d="${ur ? B : A}"/></svg>`;
+}
 function applySettings(){
   document.documentElement.style.setProperty("--arsize", settings.size + "px");
   document.body.classList.toggle("nowbw", !settings.wbw);
@@ -256,19 +354,19 @@ function applySettings(){
   else document.documentElement.setAttribute("data-theme", settings.theme);
 }
 const hasUrWbw = () => !!(META && META.sources.wbw_ur);
-const glossOf = w => (settings.gl !== "en" && w[3]) ? {t:w[3], ur:true} : {t:w[1], ur:false};
+const glossOf = w => (settings.gl === "ur" && w[3]) ? {t:w[3], ur:true} : {t:w[1], ur:false};
 
 /* ---------- reader ---------- */
 async function openSurah(n, ayah = 1, word = null){
   closeAll();
   if (P.s && P.s !== n) stopPlayer();
   const S = META.surahs[n-1];
-  $("#tAr").textContent = "سورۃ " + S.ar;
+  $("#tAr").textContent = T("surahPre") + S.ar;
   $("#tEn").textContent = `${S.n}. ${S.tr} · ${S.en}`;
-  if (!CUR || CUR.n !== n) $("#main").innerHTML = '<div class="loading">لوڈ ہو رہا ہے…</div>';
+  if (!CUR || CUR.n !== n) $("#main").innerHTML = `<div class="loading">${T("loading")}</div>`;
   let d;
   try { d = await DATA.surah(n); }
-  catch(e){ $("#main").innerHTML = '<div class="loading">ڈیٹا لوڈ نہیں ہوا۔ انٹرنیٹ چیک کر کے دوبارہ کھولیں۔</div>'; return; }
+  catch(e){ $("#main").innerHTML = `<div class="loading">${T("loadFail")}</div>`; return; }
   if (!CUR || CUR.n !== n) { CUR = d; render(); }
   const el = document.getElementById("a" + ayah);
   document.querySelectorAll(".w.hit").forEach(x => x.classList.remove("hit"));
@@ -294,15 +392,17 @@ function render(){
     A.w.forEach((w, i) => {
       const g = glossOf(w), last = i === A.w.length - 1;
       const wh = `<span class="w" data-a="${a}" data-i="${i}" tabindex="0"><span class="ar">${esc(w[0])}</span><span class="g${g.ur?" ur":""}" dir="${g.ur?"rtl":"ltr"}">${esc(g.t)}</span></span>`;
-      h += last ? `<span class="last">${wh}<span class="end" data-play="${a}" role="button" tabindex="0" aria-label="آیت ${a} سنیں">${ud(a)}</span></span>` : wh;
+      h += last ? `<span class="last">${wh}<span class="end" data-play="${a}" role="button" tabindex="0" aria-label="${T("listen", a)}">${ud(a)}</span></span>` : wh;
     });
     h += `</div>`;
-    if (trKey !== "none" && A[trKey]) h += `<p class="tr${trKey==="en"?" en":""}">${esc(A[trKey])}</p>`;
+    const tx = A[trKey] || (trKey === "en2" ? A.en : "");
+    if (trKey !== "none" && tx) h += `<p class="tr ${trKey.startsWith("en")?"en":"ur"}">${esc(tx)}</p>`;
     h += `</article>`;
   });
   const src = META.sources;
-  h += `<div class="surah-foot">ترجمہ: ${trKey==="ur"?esc(src.ur1):trKey==="ur2"?esc(src.ur2):trKey==="en"?esc(src.en):"—"}
-        <div class="nav">${n>1?`<button data-go="${n-1}">پچھلی سورت</button>`:"<span></span>"}${n<114?`<button data-go="${n+1}">اگلی سورت</button>`:""}</div></div>`;
+  const trName = {ur:src.ur1, ur2:src.ur2, en:src.en, en2:src.en2}[trKey] || "—";
+  h += `<div class="surah-foot">${T("trLabel")} ${esc(trName)}
+        <div class="nav">${n>1?`<button data-go="${n-1}">${T("prevS")}</button>`:"<span></span>"}${n<114?`<button data-go="${n+1}">${T("nextS")}</button>`:""}</div></div>`;
   $("#main").innerHTML = h;
   P.liveKey = null;
   if (P.s === n) markAyah();
@@ -350,7 +450,7 @@ let toastT;
 function toast(html, ms = 2600){ const t = $("#toast"); t.innerHTML = html; t.classList.add("on"); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove("on"), ms); }
 function quickMeaning(a, i){
   const w = CUR.ayahs[a-1].w[i], g = glossOf(w);
-  toast(`<span class="tar">${esc(w[0])}</span><span dir="${g.ur?"rtl":"ltr"}">${esc(g.t)}</span><br><small>مکمل تفصیل کے لیے لفظ کو دبائے رکھیں</small>`);
+  toast(`<span class="tar">${esc(w[0])}</span><span dir="${g.ur?"rtl":"ltr"}">${esc(g.t)}</span><br><small>${T("hold")}</small>`);
 }
 
 /* ---------- word sheet ---------- */
@@ -365,31 +465,32 @@ function openWord(a, i){
   if (ur) h += `<div class="wd-mean">${esc(ur)}</div><div class="wd-sub">${esc(en)}</div>`;
   else h += `<div class="wd-mean en">${esc(en)}</div>`;
   h += `<div class="wd-sub">${esc(tl)} · ${n}:${a}:${i+1}</div>`;
-  h += `<div class="wd-actions"><button data-wordaudio="${n}:${a}:${i+1}">لفظ سنیں</button><button data-ayahaudio="${n}:${a}">یہ آیت سنیں</button></div>`;
-  if (segs.length > 1) h += `<div class="legend">${hasP?'<span><i style="background:var(--sage)"></i>سابقہ</span>':""}<span><i style="background:var(--ink)"></i>اصل لفظ</span>${hasS?'<span><i style="background:var(--saffron)"></i>لاحقہ</span>':""}</div>`;
+  h += `<div class="wd-actions"><button data-wordaudio="${n}:${a}:${i+1}">${T("hearWord")}</button><button data-ayahaudio="${n}:${a}">${T("hearAyah")}</button></div>`;
+  if (segs.length > 1) h += `<div class="legend">${hasP?`<span><i style="background:var(--sage)"></i>${T("pre")}</span>`:""}<span><i style="background:var(--ink)"></i>${T("stem")}</span>${hasS?`<span><i style="background:var(--saffron)"></i>${T("suf")}</span>`:""}</div>`;
   h += `</div>`;
 
-  h += `<h3>گرامر — یہ لفظ کیسے بنا ہے</h3>`;
+  h += `<h3>${T("gramH")}</h3>`;
+  const G = (settings.lang === "en" && META.grammar_en) || META.grammar;
   segs.forEach(s => {
-    const [title, lines] = META.grammar[s[1]];
+    const [title, lines] = G[s[1]];
     const L = s[2] >= 0 ? META.lemmas[s[2]] : null;
     h += `<div class="seg-row"><div class="sar seg-${s[3]}">${esc(s[0])}</div><div><b>${esc(title)}</b>`;
     if (lines.length) h += `<ul>${lines.map(x => `<li>${esc(x)}</li>`).join("")}</ul>`;
-    if (L && s[3] === "" && L[2] >= 0) h += `<div class="lem">بنیادی شکل: <span>${esc(L[0])}</span></div>`;
+    if (L && s[3] === "" && L[2] >= 0) h += `<div class="lem">${T("base")} <span>${esc(L[0])}</span></div>`;
     h += `</div></div>`;
   });
 
   const L = stem >= 0 ? META.lemmas[stem] : null;
   if (L && L[2] >= 0) {
     const R = META.roots[L[2]];
-    h += `<h3>مادہ (جڑ) اور اس کے الفاظ</h3>
-      <div class="root"><span class="letters">${esc(spaced(R[0]))}</span><span class="cnt">اس مادے سے ${ud(R[2].length)} الفاظ، قرآن میں کل ${ud(R[1])} بار</span></div>
+    h += `<h3>${T("rootH")}</h3>
+      <div class="root"><span class="letters">${esc(spaced(R[0]))}</span><span class="cnt">${T("rootCnt", R[2].length, R[1])}</span></div>
       <ul class="lemlist">${R[2].slice(0, 14).map(li => { const X = META.lemmas[li];
-        return `<li><button data-lem="${li}" aria-pressed="${li===stem}"><span class="la">${esc(X[0])}</span><span class="lg">${esc(X[4])}</span><span class="lc">${ud(X[3])} بار</span></button></li>`; }).join("")}</ul>`;
-    if (R[2].length > 14) h += `<div class="cnt" style="color:var(--muted);font-size:13px">+ ${ud(R[2].length-14)} مزید الفاظ</div>`;
+        return `<li><button data-lem="${li}" aria-pressed="${li===stem}"><span class="la">${esc(X[0])}</span><span class="lg">${esc(X[4])}</span><span class="lc">${T("times", X[3])}</span></button></li>`; }).join("")}</ul>`;
+    if (R[2].length > 14) h += `<div class="cnt" style="color:var(--muted);font-size:13px">${T("moreW", R[2].length-14)}</div>`;
   }
-  if (L) h += `<h3 id="occH">«<span style="font-family:var(--ar);font-size:22px">${esc(L[0])}</span>» قرآن میں ${ud(L[3])} بار</h3><ul class="occ" id="occList"></ul><div id="occMore"></div>`;
-  h += `<div class="draft">گرامر نوٹس ابھی مسودہ ہیں — عالم کی نظرِ ثانی باقی ہے۔ مورفالوجی: Quranic Arabic Corpus.</div>`;
+  if (L) h += `<h3 id="occH">«<span style="font-family:var(--ar);font-size:22px">${esc(L[0])}</span>» ${T("inQuran", L[3])}</h3><ul class="occ" id="occList"></ul><div id="occMore"></div>`;
+  h += `<div class="draft">${T("draft")}</div>`;
 
   $("#sheetBody").innerHTML = h;
   openSheet();
@@ -401,7 +502,7 @@ async function showOcc(li, current){
   const occ = await DATA.occ();
   occState = { list: occ[li] || [], shown: 0, current, li };
   const L = META.lemmas[li];
-  const hh = $("#occH"); if (hh) hh.innerHTML = `«<span style="font-family:var(--ar);font-size:22px">${esc(L[0])}</span>» قرآن میں ${ud(L[3])} بار`;
+  const hh = $("#occH"); if (hh) hh.innerHTML = `«<span style="font-family:var(--ar);font-size:22px">${esc(L[0])}</span>» ${T("inQuran", L[3])}`;
   $("#occList").innerHTML = "";
   await moreOcc();
 }
@@ -412,10 +513,10 @@ async function moreOcc(){
     const [s, a, w] = loc.split(":").map(Number);
     const d = await DATA.surah(s), A = d.ayahs[a-1];
     const text = A.w.map((x, k) => k === w-1 ? `<mark>${esc(x[0])}</mark>` : esc(x[0])).join(" ");
-    return `<li><button data-loc="${loc}"><div class="oa">${text}</div><div class="or">سورۃ ${esc(META.surahs[s-1].ar)} — ${ud(s)}:${ud(a)}${loc===st.current?" (یہی آیت)":""}</div></button></li>`;
+    return `<li><button data-loc="${loc}"><div class="oa">${text}</div><div class="or">${T("surahPre")}${esc(META.surahs[s-1].ar)} — ${T("num", s)}:${T("num", a)}${loc===st.current?T("thisAyah"):""}</div></button></li>`;
   }));
   $("#occList").insertAdjacentHTML("beforeend", items.join(""));
-  $("#occMore").innerHTML = st.shown < st.list.length ? `<button class="more" id="btnMore">مزید دکھائیں (${ud(st.list.length - st.shown)} باقی)</button>` : "";
+  $("#occMore").innerHTML = st.shown < st.list.length ? `<button class="more" id="btnMore">${T("more", st.list.length - st.shown)}</button>` : "";
 }
 $("#sheetBody").addEventListener("click", e => {
   const wa = e.target.closest("[data-wordaudio]");
@@ -453,31 +554,34 @@ function drawDrawer(){
   if (tab === "surahs") {
     const q = $("#search").value.trim().toLowerCase();
     const list = META.surahs.filter(S => !q || String(S.n) === q || S.tr.toLowerCase().replace(/[-']/g,"").includes(q.replace(/[-' ]/g,"")) || S.en.toLowerCase().includes(q) || S.ar.includes(q));
-    body.innerHTML = `<ul class="sl">${list.map(S => `<li><button data-s="${S.n}" aria-current="${CUR && CUR.n===S.n}"><span class="num">${ud(S.n)}</span><span class="nm">${esc(S.tr)}<small>${esc(S.en)} · ${S.ayahs} ayahs</small></span><span class="na">${esc(S.ar)}</span></button></li>`).join("")}</ul>`;
+    body.innerHTML = `<ul class="sl">${list.map(S => `<li><button data-s="${S.n}" aria-current="${CUR && CUR.n===S.n}"><span class="num">${T("num", S.n)}</span><span class="nm">${esc(S.tr)}<small>${esc(S.en)} · ${S.ayahs} ayahs</small></span><span class="na">${esc(S.ar)}</span></button></li>`).join("")}</ul>`;
   } else if (tab === "juz") {
-    body.innerHTML = `<div class="juz">${META.juz.map((j, k) => `<button data-s="${j[0]}" data-a="${j[1]}">${ud(k+1)}</button>`).join("")}</div>`;
+    body.innerHTML = `<div class="juz">${META.juz.map((j, k) => `<button data-s="${j[0]}" data-a="${j[1]}">${T("num", k+1)}</button>`).join("")}</div>`;
   } else {
-    const opt = (v, l) => `<option value="${v}"${settings.tr===v?" selected":""}>${l}</option>`;
+    const opt = (v, l) => `<option value="${v}"${settings.tr===v?" selected":""}>${esc(l)}</option>`;
+    const li = settings.lang === "en" ? 2 : 1;
     const pr = (k, v, l) => `<button data-set="${k}" data-v="${v}" aria-pressed="${settings[k]===v}">${l}</button>`;
     body.innerHTML = `<div class="set">
-      <label for="selTr">آیت کا ترجمہ</label>
-      <select id="selTr">${opt("ur","مولانا فتح محمد جالندھری")}${opt("ur2","شیخ الہند محمود الحسن")}${opt("en","Pickthall (English)")}${opt("none","ترجمہ نہ دکھائیں")}</select>
-      <span class="lbl">ہر لفظ کے نیچے معنی</span>
-      <div class="seg3">${pr("wbw", true, "دکھائیں")}${pr("wbw", false, "چھپائیں")}</div>
-      <span class="lbl">لفظی معنی کی زبان</span>
-      <div class="seg3">${pr("gl","auto","اردو")}${pr("gl","en","English")}</div>
-      ${hasUrWbw() ? "" : '<div style="font-size:12px;color:var(--muted)">اردو لفظی معنی ابھی شامل نہیں — فی الحال انگریزی دکھائی جا رہی ہے۔</div>'}
-      <label for="selRec">قاری</label>
-      <select id="selRec">${META.reciters.map(r => `<option value="${r[0]}"${settings.rec===r[0]?" selected":""}>${esc(r[1])}</option>`).join("")}</select>
-      <span class="lbl">تلاوت کی رفتار</span>
-      <div class="seg3">${pr("speed",0.75,"آہستہ")}${pr("speed",1,"عام")}${pr("speed",1.25,"تیز")}</div>
-      <label for="rngSize">عربی متن کا سائز</label>
+      <span class="lbl">${T("lang")}</span>
+      <div class="seg3">${pr("lang","ur","اردو")}${pr("lang","en","English")}</div>
+      <label for="selTr">${T("trSel")}</label>
+      <select id="selTr">${TRS.map(x => opt(x[0], x[li])).join("")}${opt("none", T("trNone"))}</select>
+      <span class="lbl">${T("wbw")}</span>
+      <div class="seg3">${pr("wbw", true, T("show"))}${pr("wbw", false, T("hide"))}</div>
+      <span class="lbl">${T("glLang")}</span>
+      <div class="seg3">${pr("gl","ur","اردو")}${pr("gl","en","English")}</div>
+      ${hasUrWbw() || settings.gl !== "ur" ? "" : `<div style="font-size:12px;color:var(--muted)">${T("urMissing")}</div>`}
+      <label for="selRec">${T("reciter")}</label>
+      <select id="selRec">${META.reciters.map(r => `<option value="${r[0]}"${settings.rec===r[0]?" selected":""}>${esc(settings.lang === "en" ? r[2] : r[1])}</option>`).join("")}</select>
+      <span class="lbl">${T("speed")}</span>
+      <div class="seg3">${pr("speed",0.75,T("slow"))}${pr("speed",1,T("normal"))}${pr("speed",1.25,T("fast"))}</div>
+      <label for="rngSize">${T("size")}</label>
       <input id="rngSize" type="range" min="22" max="44" step="1" value="${settings.size}">
-      <span class="lbl">رنگ</span>
-      <div class="seg3">${pr("theme","auto","خودکار")}${pr("theme","light","روشن")}${pr("theme","dark","گہرا")}</div>
-      <div class="about">ذرائع:
-        <div class="en">Grammar data: ${esc(META.sources.morphology)}. ${esc(META.sources.audio)}. Word-by-word: ${esc(META.sources.wbw_en)}${META.sources.wbw_ur?"; "+esc(META.sources.wbw_ur):""}. Translations: ${esc(META.sources.ur1)}, ${esc(META.sources.ur2)}, ${esc(META.sources.en)}.</div>
-        گرامر نوٹس مسودہ ہیں — عالم کی نظرِ ثانی کے بعد حتمی ہوں گے۔</div>
+      <span class="lbl">${T("theme")}</span>
+      <div class="seg3">${pr("theme","auto",T("auto"))}${pr("theme","light",T("light"))}${pr("theme","dark",T("dark"))}</div>
+      <div class="about">${T("sources")}
+        <div class="en">Grammar data: ${esc(META.sources.morphology)}. ${esc(META.sources.audio)}. Word-by-word: ${esc(META.sources.wbw_en)}${META.sources.wbw_ur?"; "+esc(META.sources.wbw_ur):""}. Translations: ${esc(META.sources.ur1)}, ${esc(META.sources.ur2)}, ${esc(META.sources.en2)}, ${esc(META.sources.en)}.</div>
+        ${T("draftAbout")}</div>
     </div>`;
     $("#selTr").onchange = e => { settings.tr = e.target.value; saveSettings(); rerender(); };
     $("#rngSize").oninput = e => { settings.size = +e.target.value; saveSettings(); };
@@ -488,7 +592,9 @@ $("#drBody").addEventListener("click", e => {
   const s = e.target.closest("[data-s]");
   if (s) { openSurah(+s.dataset.s, +(s.dataset.a || 1)); return; }
   const b = e.target.closest("[data-set]");
-  if (b) { let v = b.dataset.v; if (v === "true") v = true; else if (v === "false") v = false; else if (v !== "" && !isNaN(+v)) v = +v; settings[b.dataset.set] = v; P.audio.playbackRate = settings.speed; saveSettings(); drawDrawer(); if (b.dataset.set === "gl") rerender(); }
+  if (b) { let v = b.dataset.v; if (v === "true") v = true; else if (v === "false") v = false; else if (v !== "" && !isNaN(+v)) v = +v; settings[b.dataset.set] = v; P.audio.playbackRate = settings.speed;
+    if (b.dataset.set === "lang") { applyLang(); if (P.s) updateBar(); if (CUR) $("#tAr").textContent = T("surahPre") + META.surahs[CUR.n-1].ar; }
+    saveSettings(); drawDrawer(); if (b.dataset.set === "gl" || b.dataset.set === "lang") rerender(); }
 });
 function rerender(){ if (!CUR) return; const last = store.get("last", {s:CUR.n, a:1}); render(); const el = document.getElementById("a"+last.a); if (el) el.scrollIntoView({block:"start"}); }
 
@@ -526,9 +632,9 @@ function startAudio(){
 }
 function updateBar(){
   const S = META.surahs[P.s-1], r = recName();
-  $("#pTitle").textContent = P.bism ? `${S.ar} · بسم اللہ` : `${S.ar} · آیت ${ud(P.a)}`;
-  $("#pRec").textContent = r[1];
-  $("#pRep").textContent = P.rep ? "×" + ud(P.rep) : "∞";
+  $("#pTitle").textContent = `${settings.lang === "en" ? S.tr : S.ar} · ${P.bism ? T("bism") : T("ayah", P.a)}`;
+  $("#pRec").textContent = settings.lang === "en" ? r[2] : r[1];
+  $("#pRep").textContent = P.rep ? "×" + T("num", P.rep) : "∞";
   $("#pRep").setAttribute("aria-pressed", P.rep !== 1);
   if ("mediaSession" in navigator && window.MediaMetadata) {
     navigator.mediaSession.metadata = new MediaMetadata({ title: `${S.tr} ${P.s}:${P.a}`, artist: r[2], album: "Quran" });
@@ -577,9 +683,9 @@ P.audio.addEventListener("ended", () => {
   if (P.rep === 0 || P.count < P.rep) { startAudio(); return; }
   P.count = 0;
   if (P.a < CUR.ayahs.length) { P.a++; startAudio(); }
-  else { setLive(-1, -1); $("#pIcon").innerHTML = ICON_PLAY; toast("سورت مکمل ہوئی"); }
+  else { setLive(-1, -1); $("#pIcon").innerHTML = ICON_PLAY; toast(T("done")); }
 });
-P.audio.addEventListener("error", () => { if (P.s && P.audio.getAttribute("src")) toast("تلاوت لوڈ نہیں ہوئی — انٹرنیٹ چیک کریں"); });
+P.audio.addEventListener("error", () => { if (P.s && P.audio.getAttribute("src")) toast(T("audioFail")); });
 function stopPlayer(){
   P.audio.pause(); P.audio.removeAttribute("src"); P.s = 0;
   document.body.classList.remove("playing"); $("#player").classList.remove("on");
@@ -597,7 +703,7 @@ $("#pPrev").onclick = () => step(-1);
 $("#pClose").onclick = stopPlayer;
 $("#pRep").onclick = () => {
   P.rep = REPS[(REPS.indexOf(P.rep) + 1) % REPS.length]; P.count = 0; updateBar();
-  toast(P.rep === 1 ? "ہر آیت ایک بار" : P.rep ? `ہر آیت ${ud(P.rep)} بار` : "یہ آیت مسلسل دہرائی جائے گی");
+  toast(P.rep === 1 ? T("rep1") : P.rep ? T("repN", P.rep) : T("repInf"));
 };
 $("#btnPlay").onclick = () => {
   if (P.s) { $("#pPlay").click(); return; }
@@ -615,17 +721,40 @@ if ("mediaSession" in navigator) {
   } catch(e) {}
 }
 function playWord(s, a, w){
-  new Audio(`${WBW_AUDIO}${p3(s)}_${p3(a)}_${p3(w)}.mp3`).play().catch(() => toast("اس لفظ کی آواز دستیاب نہیں"));
+  new Audio(`${WBW_AUDIO}${p3(s)}_${p3(a)}_${p3(w)}.mp3`).play().catch(() => toast(T("wordNA")));
+}
+
+function pickLanguage(){
+  return new Promise(res => {
+    const d = document.createElement("div");
+    d.className = "langpick";
+    d.setAttribute("role", "dialog"); d.setAttribute("aria-label", "Choose language / زبان منتخب کریں");
+    d.innerHTML = `<div class="box"><div class="mark">ٱقْرَأْ</div><p>Choose your language<br><span lang="ur" style="font-family:var(--ur);line-height:2.2">اپنی زبان منتخب کریں</span></p>
+      <button class="ur" data-l="ur" lang="ur">اردو</button><button class="en" data-l="en" lang="en">English</button></div>`;
+    d.addEventListener("click", e => { const b = e.target.closest("[data-l]"); if (b) { d.remove(); res(b.dataset.l); } });
+    document.body.appendChild(d);
+    d.querySelector("button").focus();
+  });
 }
 
 /* ---------- start ---------- */
 (async function(){
   applySettings();
-  try { META = await DATA.meta(); }
-  catch(e){ $("#main").innerHTML = '<div class="loading">ڈیٹا لوڈ نہیں ہوا۔ انٹرنیٹ چیک کریں۔</div>'; return; }
+  const metaP = DATA.meta();
+  if (!settings.lang) {
+    settings.lang = await pickLanguage();
+    settings.tr = settings.lang === "en" ? "en2" : "ur";
+    settings.gl = settings.lang === "en" ? "en" : "ur";
+    saveSettings();
+  }
+  if (!settings.tr) settings.tr = settings.lang === "en" ? "en2" : "ur";
+  if (!settings.gl) settings.gl = settings.lang === "en" ? "en" : "ur";
+  applyLang();
+  try { META = await metaP; }
+  catch(e){ $("#main").innerHTML = `<div class="loading">${T("loadFail")}</div>`; return; }
   const last = store.get("last", null);
   await openSurah(last ? last.s : 1, last ? last.a : 1);
-  if (last && (last.s !== 1 || last.a !== 1)) toast(`آپ نے یہاں چھوڑا تھا: سورۃ ${esc(META.surahs[last.s-1].ar)}، آیت ${ud(last.a)}`);
+  if (last && (last.s !== 1 || last.a !== 1)) toast(esc(T("resume", settings.lang === "en" ? META.surahs[last.s-1].tr : META.surahs[last.s-1].ar, last.a)));
   if (!window.EMBED && "serviceWorker" in navigator && location.protocol === "https:") navigator.serviceWorker.register("sw.js").catch(() => {});
 })();
 </script>

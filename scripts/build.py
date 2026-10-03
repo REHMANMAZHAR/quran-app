@@ -25,6 +25,7 @@ import re
 from collections import Counter, defaultdict
 
 from grammar_ur import note, split_tags
+from grammar_en import note as note_en
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 RAW = os.path.join(ROOT, "data-raw")
@@ -68,6 +69,7 @@ def main():
     ur_j = ayah_map("ur-jalandhry.json")
     ur_m = ayah_map("ur-mahmoodulhassan.json", clean=True)
     en_p = ayah_map("en-pickthall.json")
+    en_y = ayah_map("en-yusufali.json")
 
     # ---- Morphology: words -> segments
     combos, combo_idx = [], {}
@@ -90,7 +92,7 @@ def main():
         if key not in combo_idx:
             title, lines = note(p, rest)
             combo_idx[key] = len(combos)
-            combos.append([title, lines, key])
+            combos.append([title, lines, key, note_en(p, rest)])
         return combo_idx[key]
 
     surah_words = defaultdict(lambda: defaultdict(list))
@@ -154,6 +156,7 @@ def main():
         "surahs": surahs,
         "juz": juz,
         "grammar": [[c[0], c[1]] for c in combos],
+        "grammar_en": [[c[3][0], c[3][1]] for c in combos],
         "roots": root_rows,
         "lemmas": lemma_rows,
         "reciters": reciters,
@@ -164,6 +167,7 @@ def main():
             "ur1": "Fateh Muhammad Jalandhry",
             "ur2": "Shaykh-ul-Hind Mahmood ul Hassan",
             "en": "Marmaduke Pickthall",
+            "en2": "Abdullah Yusuf Ali",
             "grammar": "Urdu grammar notes: DRAFT pending scholar review",
             "audio": "Recitation audio: everyayah.com. Word timings: quran-align by Collin Fair (CC-BY 4.0)",
         },
@@ -179,15 +183,16 @@ def main():
                 "ur": ur_j.get((s, v), ""),
                 "ur2": ur_m.get((s, v), ""),
                 "en": en_p.get((s, v), ""),
+                "en2": en_y.get((s, v), ""),
             })
         dump({"n": s, "ayahs": ayahs}, f"s/{s:03d}.json")
 
     # ---- review sheet for the aalim
     with open(os.path.join(OUT, "grammar-templates-for-review.csv"), "w", newline="", encoding="utf-8-sig") as f:
         wr = csv.writer(f)
-        wr.writerow(["id", "corpus_tags", "occurrences", "example_word", "urdu_title", "urdu_explanation", "approved (Y/N)", "correction"])
-        for i, (title, lines, key) in sorted(enumerate(combos), key=lambda x: -combo_count[x[0]]):
-            wr.writerow([i, key, combo_count[i], combo_example[i], title, " | ".join(lines), "", ""])
+        wr.writerow(["id", "corpus_tags", "occurrences", "example_word", "urdu_title", "urdu_explanation", "english_title", "english_explanation", "approved (Y/N)", "correction"])
+        for i, (title, lines, key, en) in sorted(enumerate(combos), key=lambda x: -combo_count[x[0]]):
+            wr.writerow([i, key, combo_count[i], combo_example[i], title, " | ".join(lines), en[0], " | ".join(en[1]), "", ""])
 
     print(f"words={len(words)} grammar_templates={len(combos)} roots={len(roots)} lemmas={len(lemmas)}")
 

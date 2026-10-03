@@ -1,5 +1,7 @@
 # Quran — word by word (قرآن — لفظ بہ لفظ)
 
+Urdu and English interface (chosen on first launch, switchable in Settings).
+
 Free, ad-free Quran reader. Press and hold any word to see its meaning, how the
 word is built (prefix / stem / suffix), the grammar of each part in Urdu, its
 root, every other word from that root, and every place it appears in the Quran.
@@ -29,6 +31,9 @@ Give it to an aalim (opens in Excel; Urdu displays correctly). They mark
 `approved` Y/N and write corrections. Apply corrections in
 `scripts/grammar_ur.py`, rerun `build.py`, push.
 
+## Updating data
+After changing anything in `data/`, bump `DV` in `index.html` (e.g. "3" → "4") so phones fetch fresh files.
+
 ## Folder map
 | Path | What it is |
 |---|---|
@@ -37,6 +42,7 @@ Give it to an aalim (opens in Excel; Urdu displays correctly). They mark
 | `data-raw/` | Original sources, untouched |
 | `scripts/build.py` | Merges sources into `data/` |
 | `scripts/grammar_ur.py` | Urdu grammar explanations (edit here) |
+| `scripts/grammar_en.py` | English grammar explanations (edit here) |
 | `scripts/fetch_urdu_wbw.py` | Downloads Urdu word-by-word from Quran.com |
 | `scripts/bundle_single.py` | Makes one self-contained HTML file in `dist/` |
 
@@ -51,6 +57,7 @@ that single word.
   github.com/mustafa0x/quran-morphology. **GPL** — keep this credit, and keep the
   project open source.
 - English word-by-word: Quran.com. Urdu word-by-word (after fetch): Quran.com.
+- English translations: Abdullah Yusuf Ali (default in English), Pickthall.
 - Urdu translations: Fateh Muhammad Jalandhry; Shaykh-ul-Hind Mahmood ul Hassan
   (both public domain). English: Pickthall (public domain). Via tanzil.net /
   fawazahmed0/quran-api.
