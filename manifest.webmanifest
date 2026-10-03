@@ -1,0 +1,11 @@
+{
+  "name": "قرآن — لفظ بہ لفظ",
+  "short_name": "قرآن",
+  "lang": "ur",
+  "dir": "rtl",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#EEF2F1",
+  "theme_color": "#16353F",
+  "icons": [{ "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }]
+}
