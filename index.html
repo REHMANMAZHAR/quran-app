@@ -506,12 +506,13 @@ const ICON_PLAY = '<path d="M8 5.5v13l11-6.5z"/>', ICON_PAUSE = '<path d="M7 5h4
 async function playFrom(s, a){
   if (!META.reciters.some(r => r[0] === settings.rec)) settings.rec = META.reciters[0][0];
   if (!CUR || CUR.n !== s) await openSurah(s, a);
-  P.s = s; P.a = a; P.count = 0;
-  try { P.T = await DATA.timing(settings.rec); } catch(e) { P.T = null; }
+  P.s = s; P.a = a; P.count = 0; P.T = null;
   document.body.classList.add("playing");
   $("#player").classList.add("on");
   P.bism = (a === 1 && s !== 1 && s !== 9);
-  startAudio();
+  startAudio();  // start audio immediately, inside the tap, so phones allow it
+  const rec = settings.rec;
+  DATA.timing(rec).then(T => { if (settings.rec === rec) P.T = T; }).catch(() => {});
 }
 function startAudio(){
   const s = P.s, a = P.a;
