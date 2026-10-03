@@ -13,7 +13,7 @@
 <style>
 :root{
   --bg:#EEF2F1; --surface:#FFFFFF; --ink:#16262B; --muted:#5E716C; --line:#D5DEDB;
-  --lapis:#1E5486; --saffron:#B97810; --sage:#3E7A62; --hit:#F6E3BD;
+  --lapis:#1E5486; --saffron:#B97810; --sage:#3E7A62; --hit:#F6E3BD; --live:#D7E6F4; --bar:#16353F; --onbar:#EEF2F1;
   --ar:'Amiri Quran','Amiri','Traditional Arabic','Scheherazade New',serif;
   --ur:'Noto Nastaliq Urdu','Jameel Noori Nastaleeq','Urdu Typesetting',serif;
   --en:'Crimson Pro',Georgia,'Times New Roman',serif;
@@ -24,12 +24,12 @@
 @media (prefers-color-scheme:dark){
   :root:not([data-theme="light"]){
     --bg:#0E1A1D; --surface:#14252A; --ink:#E4ECE9; --muted:#93A8A2; --line:#26393E;
-    --lapis:#86B8E6; --saffron:#E8AE4C; --sage:#7DC3A4; --hit:#3D3218;
+    --lapis:#86B8E6; --saffron:#E8AE4C; --sage:#7DC3A4; --hit:#3D3218; --live:#1C3449; --bar:#E4ECE9; --onbar:#0E1A1D;
   }
 }
 :root[data-theme="dark"]{
   --bg:#0E1A1D; --surface:#14252A; --ink:#E4ECE9; --muted:#93A8A2; --line:#26393E;
-  --lapis:#86B8E6; --saffron:#E8AE4C; --sage:#7DC3A4; --hit:#3D3218;
+  --lapis:#86B8E6; --saffron:#E8AE4C; --sage:#7DC3A4; --hit:#3D3218; --live:#1C3449; --bar:#E4ECE9; --onbar:#0E1A1D;
 }
 html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)}
 *,*::before,*::after{box-sizing:border-box}
@@ -56,13 +56,16 @@ main{max-width:760px;margin:0 auto;padding:8px 10px 120px}
 .last{display:inline-flex;align-items:flex-start}
 .w{display:inline-flex;flex-direction:column;align-items:center;padding:2px 6px 4px;border-radius:8px;
   -webkit-touch-callout:none;-webkit-user-select:none;user-select:none;touch-action:manipulation;transition:background .15s}
-.w .ar{font-family:var(--ar);font-size:var(--arsize);line-height:1.9}
-.w .g{font-family:var(--en);font-size:12.5px;color:var(--muted);line-height:1.25;max-width:9.5em;text-align:center;margin-top:-2px}
+.w .ar{font-family:var(--ar);font-size:var(--arsize);line-height:2.3}
+.w .g{font-family:var(--en);font-size:12.5px;color:var(--muted);line-height:1.25;max-width:9.5em;text-align:center;margin-top:6px}
 .w .g.ur{font-family:var(--ur);font-size:12px;line-height:1.9}
 .nowbw .w .g{display:none}
 .w.press{background:var(--hit)}
 .w.hit{background:var(--hit);box-shadow:inset 0 -2px 0 var(--saffron)}
-.end{font-family:var(--ar);font-size:calc(var(--arsize) * .62);display:inline-grid;place-items:center;
+.w.live{background:var(--live)}
+.w.live .ar{color:var(--lapis)}
+.ayah.playing{background:var(--surface);border-radius:12px}
+.end{cursor:pointer;font-family:var(--ar);font-size:calc(var(--arsize) * .62);display:inline-grid;place-items:center;
   min-width:1.9em;height:1.9em;margin:calc(var(--arsize)*.35) 4px 0;border:1.5px solid var(--saffron);border-radius:50%;color:var(--saffron);line-height:1}
 .tr{margin:8px 4px 0;font-size:15px;line-height:2.15;color:var(--ink)}
 .tr.en{font-family:var(--en);font-size:17px;line-height:1.5;direction:ltr;text-align:left}
@@ -154,12 +157,31 @@ h3{font-size:15px;font-weight:600;margin:20px 0 4px;color:var(--lapis);line-heig
 .about{font-size:12.5px;color:var(--muted);line-height:2;margin-top:22px}
 .about .en{font-family:var(--en);direction:ltr;text-align:left;line-height:1.5;font-size:13px}
 .loading{padding:60px 0;text-align:center;color:var(--muted)}
+
+/* player */
+.player{position:fixed;left:0;right:0;bottom:0;z-index:25;display:none;align-items:center;gap:4px;
+  background:var(--bar);color:var(--onbar);padding:6px 10px calc(env(safe-area-inset-bottom,0px) + 6px)}
+.player.on{display:flex}
+.player .pb{width:44px;height:44px;display:grid;place-items:center;border-radius:50%}
+.player .pb svg{width:22px;height:22px;fill:var(--onbar)}
+.player .pb.main{background:var(--saffron)}
+.player .pb.main svg{fill:#16262B}
+.player .info{flex:1;min-width:0;line-height:1.7;padding:0 6px}
+.player .info b{font-weight:600;font-size:14px;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.player .info small{font-size:12px;opacity:.75;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.player .rep{min-width:44px;height:34px;border:1px solid currentColor;border-radius:17px;font-size:13px;padding:0 8px;opacity:.85}
+.player .rep[aria-pressed="true"]{background:var(--onbar);color:var(--bar);opacity:1}
+body.playing main{padding-bottom:180px}
+body.playing .toast{bottom:calc(env(safe-area-inset-bottom,0px) + 76px)}
+.wd-actions{display:flex;justify-content:center;gap:8px;margin:6px 0 2px}
+.wd-actions button{border:1px solid var(--line);border-radius:18px;padding:0 14px;font-size:14px}
 </style>
 </head>
 <body>
 <header class="bar">
   <button class="iconbtn" id="btnMenu" aria-label="سورتوں کی فہرست"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
   <button class="title" id="btnTitle" aria-label="سورت بدلیں"><b id="tAr">القرآن</b><small id="tEn"></small></button>
+  <button class="iconbtn" id="btnPlay" aria-label="تلاوت سنیں"><svg viewBox="0 0 24 24"><path d="M8 5.5v13l11-6.5z" style="fill:var(--ink);stroke:none"/></svg></button>
   <button class="iconbtn" id="btnSettings" aria-label="ترتیبات"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1 7 17M17 7l2.1-2.1"/></svg></button>
 </header>
 
@@ -178,6 +200,14 @@ h3{font-size:15px;font-weight:600;margin:20px 0 4px;color:var(--lapis);line-heig
   </div>
   <div class="dr-body" id="drBody"></div>
 </aside>
+<div class="player" id="player" role="region" aria-label="تلاوت">
+  <button class="pb" id="pPrev" aria-label="پچھلی آیت"><svg viewBox="0 0 24 24"><path d="M6 6v12l8.5-6zM16 6h2v12h-2z"/></svg></button>
+  <button class="pb main" id="pPlay" aria-label="چلائیں / روکیں"><svg viewBox="0 0 24 24" id="pIcon"><path d="M8 5.5v13l11-6.5z"/></svg></button>
+  <button class="pb" id="pNext" aria-label="اگلی آیت"><svg viewBox="0 0 24 24"><path d="M18 6v12l-8.5-6zM6 6h2v12H6z"/></svg></button>
+  <div class="info"><b id="pTitle"></b><small id="pRec"></small></div>
+  <button class="rep" id="pRep" aria-label="آیت دہرائیں" aria-pressed="false">×۱</button>
+  <button class="pb" id="pClose" aria-label="تلاوت بند کریں"><svg viewBox="0 0 24 24"><path d="M6.4 5 5 6.4 10.6 12 5 17.6 6.4 19l5.6-5.6 5.6 5.6 1.4-1.4-5.6-5.6L19 6.4 17.6 5 12 10.6z"/></svg></button>
+</div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <!--EMBED-->
@@ -202,7 +232,7 @@ async function gunzip(b64){
 function load(key, path){
   if (!cache[key]) {
     cache[key] = (window.EMBED
-      ? gunzip(key.startsWith("s") ? EMBED.s[+key.slice(1)] : EMBED[key])
+      ? gunzip(key.startsWith("t_") ? EMBED.t[key.slice(2)] : key.startsWith("s") ? EMBED.s[+key.slice(1)] : EMBED[key])
       : fetch(path).then(r => { if(!r.ok) throw new Error(path); return r.json(); })
     ).catch(e => { delete cache[key]; throw e; });
   }
@@ -211,12 +241,13 @@ function load(key, path){
 const DATA = {
   meta: () => load("meta", "data/meta.json"),
   occ:  () => load("occ", "data/occ.json"),
-  surah: n => load("s"+n, `data/s/${String(n).padStart(3,"0")}.json`)
+  surah: n => load("s"+n, `data/s/${String(n).padStart(3,"0")}.json`),
+  timing: rec => load("t_"+rec, `data/timing/${rec}.json`)
 };
 
 /* ---------- state ---------- */
 let META, CUR = null;
-const settings = Object.assign({ tr:"ur", wbw:true, gl:"auto", size:30, theme:"auto" }, store.get("settings", {}));
+const settings = Object.assign({ tr:"ur", wbw:true, gl:"auto", size:30, theme:"auto", rec:"Alafasy_128kbps", speed:1 }, store.get("settings", {}));
 function saveSettings(){ store.set("settings", settings); applySettings(); }
 function applySettings(){
   document.documentElement.style.setProperty("--arsize", settings.size + "px");
@@ -230,6 +261,7 @@ const glossOf = w => (settings.gl !== "en" && w[3]) ? {t:w[3], ur:true} : {t:w[1
 /* ---------- reader ---------- */
 async function openSurah(n, ayah = 1, word = null){
   closeAll();
+  if (P.s && P.s !== n) stopPlayer();
   const S = META.surahs[n-1];
   $("#tAr").textContent = "سورۃ " + S.ar;
   $("#tEn").textContent = `${S.n}. ${S.tr} · ${S.en}`;
@@ -262,7 +294,7 @@ function render(){
     A.w.forEach((w, i) => {
       const g = glossOf(w), last = i === A.w.length - 1;
       const wh = `<span class="w" data-a="${a}" data-i="${i}" tabindex="0"><span class="ar">${esc(w[0])}</span><span class="g${g.ur?" ur":""}" dir="${g.ur?"rtl":"ltr"}">${esc(g.t)}</span></span>`;
-      h += last ? `<span class="last">${wh}<span class="end">${ud(a)}</span></span>` : wh;
+      h += last ? `<span class="last">${wh}<span class="end" data-play="${a}" role="button" tabindex="0" aria-label="آیت ${a} سنیں">${ud(a)}</span></span>` : wh;
     });
     h += `</div>`;
     if (trKey !== "none" && A[trKey]) h += `<p class="tr${trKey==="en"?" en":""}">${esc(A[trKey])}</p>`;
@@ -272,6 +304,8 @@ function render(){
   h += `<div class="surah-foot">ترجمہ: ${trKey==="ur"?esc(src.ur1):trKey==="ur2"?esc(src.ur2):trKey==="en"?esc(src.en):"—"}
         <div class="nav">${n>1?`<button data-go="${n-1}">پچھلی سورت</button>`:"<span></span>"}${n<114?`<button data-go="${n+1}">اگلی سورت</button>`:""}</div></div>`;
   $("#main").innerHTML = h;
+  P.liveKey = null;
+  if (P.s === n) markAyah();
   observeAyahs();
 }
 
@@ -307,7 +341,10 @@ main.addEventListener("pointerup", e => {
 });
 main.addEventListener("contextmenu", e => { if (e.target.closest(".w")) e.preventDefault(); });
 main.addEventListener("keydown", e => { const w = e.target.closest(".w"); if (w && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); openWord(+w.dataset.a, +w.dataset.i); } });
-main.addEventListener("click", e => { const b = e.target.closest("[data-go]"); if (b) openSurah(+b.dataset.go); });
+main.addEventListener("click", e => {
+  const b = e.target.closest("[data-go]"); if (b) { openSurah(+b.dataset.go); return; }
+  const pl = e.target.closest("[data-play]"); if (pl) playFrom(CUR.n, +pl.dataset.play);
+});
 
 let toastT;
 function toast(html, ms = 2600){ const t = $("#toast"); t.innerHTML = html; t.classList.add("on"); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove("on"), ms); }
@@ -328,6 +365,7 @@ function openWord(a, i){
   if (ur) h += `<div class="wd-mean">${esc(ur)}</div><div class="wd-sub">${esc(en)}</div>`;
   else h += `<div class="wd-mean en">${esc(en)}</div>`;
   h += `<div class="wd-sub">${esc(tl)} · ${n}:${a}:${i+1}</div>`;
+  h += `<div class="wd-actions"><button data-wordaudio="${n}:${a}:${i+1}">لفظ سنیں</button><button data-ayahaudio="${n}:${a}">یہ آیت سنیں</button></div>`;
   if (segs.length > 1) h += `<div class="legend">${hasP?'<span><i style="background:var(--sage)"></i>سابقہ</span>':""}<span><i style="background:var(--ink)"></i>اصل لفظ</span>${hasS?'<span><i style="background:var(--saffron)"></i>لاحقہ</span>':""}</div>`;
   h += `</div>`;
 
@@ -380,6 +418,10 @@ async function moreOcc(){
   $("#occMore").innerHTML = st.shown < st.list.length ? `<button class="more" id="btnMore">مزید دکھائیں (${ud(st.list.length - st.shown)} باقی)</button>` : "";
 }
 $("#sheetBody").addEventListener("click", e => {
+  const wa = e.target.closest("[data-wordaudio]");
+  if (wa) { playWord(...wa.dataset.wordaudio.split(":").map(Number)); return; }
+  const aa = e.target.closest("[data-ayahaudio]");
+  if (aa) { const [s,a] = aa.dataset.ayahaudio.split(":").map(Number); closeAll(); playFrom(s, a); return; }
   const lb = e.target.closest("[data-lem]");
   if (lb) { document.querySelectorAll("[data-lem]").forEach(b => b.setAttribute("aria-pressed", b===lb)); showOcc(+lb.dataset.lem, occState && occState.current); document.getElementById("occH").scrollIntoView({behavior:"smooth", block:"start"}); return; }
   const ob = e.target.closest("[data-loc]");
@@ -425,25 +467,155 @@ function drawDrawer(){
       <span class="lbl">لفظی معنی کی زبان</span>
       <div class="seg3">${pr("gl","auto","اردو")}${pr("gl","en","English")}</div>
       ${hasUrWbw() ? "" : '<div style="font-size:12px;color:var(--muted)">اردو لفظی معنی ابھی شامل نہیں — فی الحال انگریزی دکھائی جا رہی ہے۔</div>'}
+      <label for="selRec">قاری</label>
+      <select id="selRec">${META.reciters.map(r => `<option value="${r[0]}"${settings.rec===r[0]?" selected":""}>${esc(r[1])}</option>`).join("")}</select>
+      <span class="lbl">تلاوت کی رفتار</span>
+      <div class="seg3">${pr("speed",0.75,"آہستہ")}${pr("speed",1,"عام")}${pr("speed",1.25,"تیز")}</div>
       <label for="rngSize">عربی متن کا سائز</label>
       <input id="rngSize" type="range" min="22" max="44" step="1" value="${settings.size}">
       <span class="lbl">رنگ</span>
       <div class="seg3">${pr("theme","auto","خودکار")}${pr("theme","light","روشن")}${pr("theme","dark","گہرا")}</div>
       <div class="about">ذرائع:
-        <div class="en">Grammar data: ${esc(META.sources.morphology)}. Word-by-word: ${esc(META.sources.wbw_en)}${META.sources.wbw_ur?"; "+esc(META.sources.wbw_ur):""}. Translations: ${esc(META.sources.ur1)}, ${esc(META.sources.ur2)}, ${esc(META.sources.en)}.</div>
+        <div class="en">Grammar data: ${esc(META.sources.morphology)}. ${esc(META.sources.audio)}. Word-by-word: ${esc(META.sources.wbw_en)}${META.sources.wbw_ur?"; "+esc(META.sources.wbw_ur):""}. Translations: ${esc(META.sources.ur1)}, ${esc(META.sources.ur2)}, ${esc(META.sources.en)}.</div>
         گرامر نوٹس مسودہ ہیں — عالم کی نظرِ ثانی کے بعد حتمی ہوں گے۔</div>
     </div>`;
     $("#selTr").onchange = e => { settings.tr = e.target.value; saveSettings(); rerender(); };
     $("#rngSize").oninput = e => { settings.size = +e.target.value; saveSettings(); };
+    $("#selRec").onchange = e => { settings.rec = e.target.value; saveSettings(); if (P.s) playFrom(P.s, P.a); };
   }
 }
 $("#drBody").addEventListener("click", e => {
   const s = e.target.closest("[data-s]");
   if (s) { openSurah(+s.dataset.s, +(s.dataset.a || 1)); return; }
   const b = e.target.closest("[data-set]");
-  if (b) { let v = b.dataset.v; if (v === "true") v = true; else if (v === "false") v = false; settings[b.dataset.set] = v; saveSettings(); drawDrawer(); if (b.dataset.set === "gl") rerender(); }
+  if (b) { let v = b.dataset.v; if (v === "true") v = true; else if (v === "false") v = false; else if (v !== "" && !isNaN(+v)) v = +v; settings[b.dataset.set] = v; P.audio.playbackRate = settings.speed; saveSettings(); drawDrawer(); if (b.dataset.set === "gl") rerender(); }
 });
 function rerender(){ if (!CUR) return; const last = store.get("last", {s:CUR.n, a:1}); render(); const el = document.getElementById("a"+last.a); if (el) el.scrollIntoView({block:"start"}); }
+
+/* ---------- recitation player ---------- */
+// Ayah audio: everyayah.com. Word timings: quran-align (CC-BY 4.0). Word audio: Quran.com CDN.
+const AUDIO = "https://everyayah.com/data/";
+const WBW_AUDIO = "https://audio.qurancdn.com/wbw/";
+const p3 = n => String(n).padStart(3, "0");
+const P = { audio: new Audio(), pre: new Audio(), s: 0, a: 0, bism: false, rep: 1, count: 0, T: null, liveKey: null, raf: 0, userScroll: 0 };
+P.audio.preload = "auto"; P.pre.preload = "auto";
+const REPS = [1, 3, 5, 0];
+const recName = () => META.reciters.find(x => x[0] === settings.rec) || META.reciters[0];
+const ICON_PLAY = '<path d="M8 5.5v13l11-6.5z"/>', ICON_PAUSE = '<path d="M7 5h4v14H7zM13 5h4v14h-4z"/>';
+
+async function playFrom(s, a){
+  if (!META.reciters.some(r => r[0] === settings.rec)) settings.rec = META.reciters[0][0];
+  if (!CUR || CUR.n !== s) await openSurah(s, a);
+  P.s = s; P.a = a; P.count = 0;
+  try { P.T = await DATA.timing(settings.rec); } catch(e) { P.T = null; }
+  document.body.classList.add("playing");
+  $("#player").classList.add("on");
+  P.bism = (a === 1 && s !== 1 && s !== 9);
+  startAudio();
+}
+function startAudio(){
+  const s = P.s, a = P.a;
+  P.audio.src = P.bism ? `${AUDIO}${settings.rec}/001001.mp3` : `${AUDIO}${settings.rec}/${p3(s)}${p3(a)}.mp3`;
+  P.audio.playbackRate = settings.speed;
+  P.audio.play().catch(() => {});
+  if (!P.bism && a < CUR.ayahs.length) P.pre.src = `${AUDIO}${settings.rec}/${p3(s)}${p3(a+1)}.mp3`;
+  P.liveKey = null;
+  updateBar();
+  markAyah();
+}
+function updateBar(){
+  const S = META.surahs[P.s-1], r = recName();
+  $("#pTitle").textContent = P.bism ? `${S.ar} · بسم اللہ` : `${S.ar} · آیت ${ud(P.a)}`;
+  $("#pRec").textContent = r[1];
+  $("#pRep").textContent = P.rep ? "×" + ud(P.rep) : "∞";
+  $("#pRep").setAttribute("aria-pressed", P.rep !== 1);
+  if ("mediaSession" in navigator && window.MediaMetadata) {
+    navigator.mediaSession.metadata = new MediaMetadata({ title: `${S.tr} ${P.s}:${P.a}`, artist: r[2], album: "Quran" });
+  }
+}
+function markAyah(){
+  document.querySelectorAll(".ayah.playing").forEach(x => x.classList.remove("playing"));
+  const el = document.getElementById("a" + P.a);
+  if (!el || P.bism) return;
+  el.classList.add("playing");
+  if (Date.now() - P.userScroll > 4000) {
+    const r = el.getBoundingClientRect();
+    if (r.top < 70 || r.top > innerHeight * 0.55) el.scrollIntoView({ block: "start", behavior: "smooth" });
+  }
+}
+function setLive(w0, w1){
+  const key = w0 + ":" + w1 + ":" + P.a;
+  if (key === P.liveKey) return;
+  P.liveKey = key;
+  document.querySelectorAll(".w.live").forEach(x => x.classList.remove("live"));
+  if (w0 < 0) return;
+  const el = document.getElementById("a" + P.a); if (!el) return;
+  for (let i = w0; i < w1; i++) { const w = el.querySelector(`.w[data-i="${i}"]`); if (w) w.classList.add("live"); }
+  const first = el.querySelector(`.w[data-i="${w0}"]`);
+  if (first && Date.now() - P.userScroll > 4000) {
+    const r = first.getBoundingClientRect();
+    if (r.bottom > innerHeight - 90 || r.top < 70) first.scrollIntoView({ block: "center", behavior: "smooth" });
+  }
+}
+function tick(){
+  P.raf = 0;
+  if (P.audio.paused) return;
+  if (!P.bism && P.T && P.T[P.s-1]) {
+    const seg = P.T[P.s-1][P.a-1] || [], t = P.audio.currentTime * 1000;
+    let hit = -1;
+    for (let k = 0; k < seg.length; k += 4) { if (t >= seg[k+2]) hit = k; else break; }
+    if (hit >= 0) setLive(seg[hit], seg[hit+1]); else setLive(-1, -1);
+  }
+  P.raf = requestAnimationFrame(tick);
+}
+P.audio.addEventListener("play", () => { $("#pIcon").innerHTML = ICON_PAUSE; if (!P.raf) P.raf = requestAnimationFrame(tick); });
+P.audio.addEventListener("pause", () => { $("#pIcon").innerHTML = ICON_PLAY; });
+P.audio.addEventListener("ended", () => {
+  if (P.bism) { P.bism = false; startAudio(); return; }
+  P.count++;
+  if (P.rep === 0 || P.count < P.rep) { startAudio(); return; }
+  P.count = 0;
+  if (P.a < CUR.ayahs.length) { P.a++; startAudio(); }
+  else { setLive(-1, -1); $("#pIcon").innerHTML = ICON_PLAY; toast("سورت مکمل ہوئی"); }
+});
+P.audio.addEventListener("error", () => { if (P.s && P.audio.getAttribute("src")) toast("تلاوت لوڈ نہیں ہوئی — انٹرنیٹ چیک کریں"); });
+function stopPlayer(){
+  P.audio.pause(); P.audio.removeAttribute("src"); P.s = 0;
+  document.body.classList.remove("playing"); $("#player").classList.remove("on");
+  document.querySelectorAll(".ayah.playing").forEach(x => x.classList.remove("playing"));
+  setLive(-1, -1);
+}
+function step(d){
+  if (!P.s) return;
+  P.a = Math.min(Math.max(1, P.a + d), CUR.ayahs.length);
+  P.bism = false; P.count = 0; startAudio();
+}
+$("#pPlay").onclick = () => { if (P.audio.paused) P.audio.play().catch(() => {}); else P.audio.pause(); };
+$("#pNext").onclick = () => step(1);
+$("#pPrev").onclick = () => step(-1);
+$("#pClose").onclick = stopPlayer;
+$("#pRep").onclick = () => {
+  P.rep = REPS[(REPS.indexOf(P.rep) + 1) % REPS.length]; P.count = 0; updateBar();
+  toast(P.rep === 1 ? "ہر آیت ایک بار" : P.rep ? `ہر آیت ${ud(P.rep)} بار` : "یہ آیت مسلسل دہرائی جائے گی");
+};
+$("#btnPlay").onclick = () => {
+  if (P.s) { $("#pPlay").click(); return; }
+  if (!CUR) return;
+  const last = store.get("last", { s: CUR.n, a: 1 });
+  playFrom(CUR.n, last.s === CUR.n ? last.a : 1);
+};
+["wheel", "touchmove"].forEach(ev => addEventListener(ev, () => { P.userScroll = Date.now(); }, { passive: true }));
+if ("mediaSession" in navigator) {
+  try {
+    navigator.mediaSession.setActionHandler("play", () => P.audio.play());
+    navigator.mediaSession.setActionHandler("pause", () => P.audio.pause());
+    navigator.mediaSession.setActionHandler("nexttrack", () => step(1));
+    navigator.mediaSession.setActionHandler("previoustrack", () => step(-1));
+  } catch(e) {}
+}
+function playWord(s, a, w){
+  new Audio(`${WBW_AUDIO}${p3(s)}_${p3(a)}_${p3(w)}.mp3`).play().catch(() => toast("اس لفظ کی آواز دستیاب نہیں"));
+}
 
 /* ---------- start ---------- */
 (async function(){

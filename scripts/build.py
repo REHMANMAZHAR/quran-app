@@ -143,6 +143,10 @@ def main():
     root_rows = [[r, sum(len(occ[i]) for i in root_lemmas[ri]), sorted(root_lemmas[ri], key=lambda i: -len(occ[i]))]
                  for ri, r in enumerate(roots)]
 
+    # ---- word timings for recitation highlighting (quran-align, CC-BY 4.0)
+    reciters = build_timings({k: len(v) for k, v in surah_words.items()},
+                             {(s, v): len(ws) for s, vs in surah_words.items() for v, ws in vs.items()})
+
     surahs = load("surahs.json")
     juz = [[s, a] for s, a, j in load("juz.json") if j <= 30]
 
@@ -152,6 +156,7 @@ def main():
         "grammar": [[c[0], c[1]] for c in combos],
         "roots": root_rows,
         "lemmas": lemma_rows,
+        "reciters": reciters,
         "sources": {
             "morphology": "Quranic Arabic Corpus v0.4 (University of Leeds, GPL) - corrected fork by mustafa0x",
             "wbw_en": "Quran.com word-by-word English",
@@ -160,6 +165,7 @@ def main():
             "ur2": "Shaykh-ul-Hind Mahmood ul Hassan",
             "en": "Marmaduke Pickthall",
             "grammar": "Urdu grammar notes: DRAFT pending scholar review",
+            "audio": "Recitation audio: everyayah.com. Word timings: quran-align by Collin Fair (CC-BY 4.0)",
         },
     }
     dump(meta, "meta.json")
@@ -184,6 +190,45 @@ def main():
             wr.writerow([i, key, combo_count[i], combo_example[i], title, " | ".join(lines), "", ""])
 
     print(f"words={len(words)} grammar_templates={len(combos)} roots={len(roots)} lemmas={len(lemmas)}")
+
+
+RECITERS = [  # everyayah.com folder, display name (Urdu), display name (English)
+    ("Alafasy_128kbps", "مشاری راشد العفاسی", "Mishary Alafasy"),
+    ("Abdul_Basit_Murattal_64kbps", "عبدالباسط عبدالصمد (مرتل)", "Abdul Basit (Murattal)"),
+    ("Abdul_Basit_Mujawwad_128kbps", "عبدالباسط عبدالصمد (مجوّد)", "Abdul Basit (Mujawwad)"),
+    ("Husary_64kbps", "محمود خلیل الحصری", "Al-Husary"),
+    ("Husary_Muallim_128kbps", "الحصری — معلّم (سیکھنے کے لیے)", "Al-Husary (Teaching)"),
+    ("Minshawy_Murattal_128kbps", "محمد صدیق المنشاوی (مرتل)", "Al-Minshawi (Murattal)"),
+    ("Minshawy_Mujawwad_192kbps", "محمد صدیق المنشاوی (مجوّد)", "Al-Minshawi (Mujawwad)"),
+    ("Saood_ash-Shuraym_128kbps", "سعود الشریم", "Ash-Shuraim"),
+    ("Abu_Bakr_Ash-Shaatree_128kbps", "ابوبکر الشاطری", "Abu Bakr Ash-Shatri"),
+    ("Hani_Rifai_192kbps", "ہانی الرفاعی", "Hani Ar-Rifai"),
+    ("Mohammad_al_Tablaway_128kbps", "محمد الطبلاوی", "At-Tablawi"),
+]
+
+
+def build_timings(_surah_sizes, ayah_words):
+    """data/timing/<folder>.json = T[surah-1][ayah-1] = flat [w_from, w_to, ms_start, ms_end, ...]."""
+    tdir = os.path.join(RAW, "timing")
+    os.makedirs(os.path.join(OUT, "timing"), exist_ok=True)
+    out = []
+    for folder, ur, en in RECITERS:
+        path = os.path.join(tdir, folder + ".json")
+        if not os.path.exists(path):
+            continue
+        with open(path, encoding="utf8") as f:
+            rows = json.load(f)
+        T = [[[] for _ in range(max(v for (s2, v) in ayah_words if s2 == s))] for s in range(1, 115)]
+        for r in rows:
+            n = ayah_words.get((r["surah"], r["ayah"]), 0)
+            flat = []
+            for w0, w1, st, en_ms in r.get("segments", []):
+                w0, w1 = min(w0, n - 1), min(max(w1, w0 + 1), n)  # clamp the few text-split mismatches
+                flat += [w0, w1, st, en_ms]
+            T[r["surah"] - 1][r["ayah"] - 1] = flat
+        dump(T, f"timing/{folder}.json")
+        out.append([folder, ur, en])
+    return out
 
 
 def dump(obj, name):

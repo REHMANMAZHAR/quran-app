@@ -40,6 +40,12 @@ Give it to an aalim (opens in Excel; Urdu displays correctly). They mark
 | `scripts/fetch_urdu_wbw.py` | Downloads Urdu word-by-word from Quran.com |
 | `scripts/bundle_single.py` | Makes one self-contained HTML file in `dist/` |
 
+## Recitation
+Tap ▶ in the top bar (or any ayah number) to play. Words light up as the qari
+recites them. 11 reciters, repeat ×1/×3/×5/∞, three speeds, Bismillah before
+each surah (except Al-Fatiha and At-Tawbah). "لفظ سنیں" in the word sheet plays
+that single word.
+
 ## Sources and licences
 - Morphology: Quranic Arabic Corpus v0.4 (University of Leeds), corrected fork
   github.com/mustafa0x/quran-morphology. **GPL** — keep this credit, and keep the
@@ -48,9 +54,11 @@ Give it to an aalim (opens in Excel; Urdu displays correctly). They mark
 - Urdu translations: Fateh Muhammad Jalandhry; Shaykh-ul-Hind Mahmood ul Hassan
   (both public domain). English: Pickthall (public domain). Via tanzil.net /
   fawazahmed0/quran-api.
+- Recitation audio: everyayah.com (streamed, credit reciters + everyayah.com).
+  Word timings: quran-align by Collin Fair, CC-BY 4.0 (data-raw/timing/).
+  Word pronunciation audio: Quran.com CDN.
 - Urdu grammar notes: written for this project, **draft until scholar review**.
 
 ## Next phases
-Indo-Pak script option · Dr. Israr Ahmed audio (after MAKQ permission) ·
-reciters with word highlighting · Mufradat / Lane's Lexicon dictionary entries ·
+Indo-Pak script option · Dr. Israr Ahmed audio (after MAKQ permission) · Mufradat / Lane's Lexicon dictionary entries ·
 Pashto & Sindhi · grammar course built on this same data · Play Store wrapper.

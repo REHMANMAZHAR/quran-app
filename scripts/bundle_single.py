@@ -11,6 +11,9 @@ def b64(path):
 html = open(os.path.join(ROOT, "index.html"), encoding="utf8").read()
 parts = ['window.EMBED={meta:"%s",occ:"%s",s:{' % (b64("data/meta.json"), b64("data/occ.json"))]
 parts.append(",".join('%d:"%s"' % (n, b64(f"data/s/{n:03d}.json")) for n in range(1, 115)))
+parts.append("},t:{")
+tdir = os.path.join(ROOT, "data", "timing")
+parts.append(",".join('"%s":"%s"' % (f[:-5], b64(f"data/timing/{f}")) for f in sorted(os.listdir(tdir)) if f.endswith(".json")))
 parts.append("}};")
 html = html.replace("<!--EMBED-->", "<script>" + "".join(parts) + "</script>")
 html = html.replace('<link rel="manifest" href="manifest.webmanifest">\n', "").replace('<link rel="icon" href="icon.svg" type="image/svg+xml">\n', "")
