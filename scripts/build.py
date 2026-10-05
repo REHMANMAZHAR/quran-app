@@ -57,6 +57,14 @@ def main():
         wbw_en[k] = en.strip()
         translit[k] = tl.strip()
 
+    # Corrections: Quran.com English splits some 2-3 word phrases by giving every word the
+    # whole phrase (e.g. 40:3 ذِى and ٱلطَّوْلِ both "Owner (of) the abundance"). Each word
+    # gets its own gloss here. Every change is listed in data/corrections-log.csv.
+    en_fix = load("wbw-en-fixes.json") if os.path.exists(os.path.join(RAW, "wbw-en-fixes.json")) else {}
+    for key, fx in en_fix.items():
+        wbw_en[tuple(map(int, key.split(":")))] = fx["to"]
+    print(f"English word fixes applied: {len(en_fix)}")
+
     wbw_ur = {}
     if os.path.exists(os.path.join(RAW, "wbw-ur.json")):
         for key, txt in load("wbw-ur.json").items():
@@ -80,9 +88,15 @@ def main():
     combo_example = {}
     words = defaultdict(list)  # (s,v,w) -> [(text, tagstr)]
 
+    # Corrections: case tags in the corpus that contradict the written ending / i'rab
+    # (e.g. 40:3:7 ذِى tagged NOM, must be GEN). Reasons are in morphology-fixes.json.
+    morph_fix = load("morphology-fixes.json") if os.path.exists(os.path.join(RAW, "morphology-fixes.json")) else {}
     with open(os.path.join(RAW, "quran-morphology.txt"), encoding="utf8") as f:
         for line in f:
             loc, text, pos, tags = line.rstrip("\n").split("\t")
+            if loc in morph_fix:
+                fx = morph_fix[loc]
+                tags = "|".join(fx["to"] if t == fx["from"] else t for t in tags.split("|"))
             s, v, w, _seg = map(int, loc.split(":"))
             words[(s, v, w)].append((text, pos, tags))
 
@@ -94,6 +108,12 @@ def main():
             combo_idx[key] = len(combos)
             combos.append([title, lines, key, note_en(p, rest)])
         return combo_idx[key]
+
+    # Lemma corrections from the aalim review of the vocabulary bank: dictionary headwords,
+    # reviewed meanings, 1 merge and 6 splits (e.g. بَرّ land / dutiful). See lemma-fixes.json.
+    lfx = load("lemma-fixes.json") if os.path.exists(os.path.join(RAW, "lemma-fixes.json")) else {"by_lemma": {}, "splits": {}}
+    LBY, LSP = lfx["by_lemma"], lfx["splits"]
+    split_meta = {x["key"]: x for parts in LSP.values() for x in parts}
 
     surah_words = defaultdict(lambda: defaultdict(list))
     lemma_gloss = defaultdict(Counter)
@@ -110,6 +130,12 @@ def main():
             combo_example.setdefault(ci, f"{s}:{v}:{w}")
             li = -1
             if lem:
+                fk = f"{lem}|{root or ''}"
+                if fk in LSP:
+                    part = next((x for x in LSP[fk] if x["ayahs"] and f"{s}:{v}" in x["ayahs"]), LSP[fk][-1])
+                    lem = part["key"]
+                elif fk in LBY and LBY[fk].get("merge_into"):
+                    lem = LBY[fk]["merge_into"].split("|")[0]
                 lk = (lem, pos)
                 if lk not in lemma_idx:
                     lemma_idx[lk] = len(lemmas)
@@ -128,8 +154,10 @@ def main():
         ar = "".join(x[0] for x in out_segs)
         en = wbw_en.get(k, "")
         if stem_lemma >= 0:
-            bare = all(x[3] == "" for x in out_segs)  # no prefix/suffix -> cleaner gloss
-            lemma_gloss[stem_lemma][en] += 10 if bare else 1
+            # only "ال" allowed as prefix for a "bare" form; conjunctions/prepositions/pronouns
+            # add words to the gloss ("and prolonged", "(in) height")
+            bare = all(x[3] == "" or (x[3] == "p" and x[0].startswith(("ٱل", "ال"))) for x in out_segs)
+            lemma_gloss[stem_lemma][clean_gloss(en)] += 10 if bare else 1
             occ[stem_lemma].append(f"{s}:{v}:{w}")
         surah_words[s][v].append([ar, en, translit.get(k, ""), wbw_ur.get(k, ""), out_segs, stem_lemma])
 
@@ -137,7 +165,16 @@ def main():
     lemma_rows = []
     for i, (lem, pos) in enumerate(lemmas):
         g = lemma_gloss[i].most_common(1)
-        lemma_rows.append([lem, pos, lemma_root.get(i, -1), len(occ[i]), g[0][0] if g else ""])
+        gl = g[0][0] if g else ""
+        head = lem
+        if lem in split_meta:
+            head, gl = split_meta[lem]["headword"], split_meta[lem]["meaning"]
+        else:
+            fx = LBY.get(f"{lem}|{roots[lemma_root[i]] if i in lemma_root else ''}")
+            if fx:
+                head = fx.get("headword", lem)
+                gl = fx.get("meaning", gl)
+        lemma_rows.append([head, pos, lemma_root.get(i, -1), len(occ[i]), gl])
 
     root_lemmas = defaultdict(list)
     for i, r in lemma_root.items():
@@ -234,6 +271,20 @@ def build_timings(_surah_sizes, ayah_words):
         dump(T, f"timing/{folder}.json")
         out.append([folder, ur, en])
     return out
+
+
+LEAD = re.compile(r"^(?:and|so|then|but|or|nor|indeed|surely|verily|certainly|by|for|with|in|on|to|from|of|the|a|an)\s+", re.I)
+
+
+def clean_gloss(g):
+    """Dictionary-style gloss for the root/lemma list: drop brackets and particle words."""
+    orig = g
+    g = re.sub(r"\[[^\]]*\]|\([^)]*\)", " ", g)
+    g = re.sub(r"\s+", " ", g).strip(" ,.;:'\"")
+    prev = None
+    while prev != g:
+        prev, g = g, LEAD.sub("", g)
+    return g or orig.strip()
 
 
 def dump(obj, name):

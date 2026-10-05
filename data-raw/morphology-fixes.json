@@ -1,0 +1,206 @@
+{
+ "9:67:2:3": {
+  "word": "وَٱلْمُنَٰفِقَٰتُ",
+  "from": "GEN",
+  "to": "NOM",
+  "why": "Coordinated with the subject ٱلْمُنَٰفِقُونَ (مبتدأ) — marfūʿ, ending ـاتُ"
+ },
+ "9:71:2:3": {
+  "word": "وَٱلْمُؤْمِنَٰتُ",
+  "from": "GEN",
+  "to": "NOM",
+  "why": "Coordinated with the subject ٱلْمُؤْمِنُونَ — marfūʿ, ending ـاتُ"
+ },
+ "57:13:4:3": {
+  "word": "وَٱلْمُنَٰفِقَٰتُ",
+  "from": "GEN",
+  "to": "NOM",
+  "why": "Coordinated with the doer ٱلْمُنَٰفِقُونَ (فاعل) — marfūʿ"
+ },
+ "18:46:6:3": {
+  "word": "وَٱلْبَٰقِيَٰتُ",
+  "from": "GEN",
+  "to": "NOM",
+  "why": "Subject (مبتدأ) of خَيْرٌ — marfūʿ, ending ـاتُ"
+ },
+ "18:46:7:2": {
+  "word": "ٱلصَّٰلِحَٰتُ",
+  "from": "GEN",
+  "to": "NOM",
+  "why": "Adjective of the marfūʿ subject — marfūʿ"
+ },
+ "19:76:6:3": {
+  "word": "وَٱلْبَٰقِيَٰتُ",
+  "from": "GEN",
+  "to": "NOM",
+  "why": "Subject (مبتدأ) of خَيْرٌ — marfūʿ"
+ },
+ "19:76:7:2": {
+  "word": "ٱلصَّٰلِحَٰتُ",
+  "from": "GEN",
+  "to": "NOM",
+  "why": "Adjective of the marfūʿ subject — marfūʿ"
+ },
+ "37:48:2:1": {
+  "word": "قَٰصِرَٰتُ",
+  "from": "GEN",
+  "to": "NOM",
+  "why": "Delayed subject (مبتدأ مؤخر) after وَعِندَهُمْ — marfūʿ"
+ },
+ "38:52:2:1": {
+  "word": "قَٰصِرَٰتُ",
+  "from": "GEN",
+  "to": "NOM",
+  "why": "Delayed subject (مبتدأ مؤخر) after وَعِندَهُمْ — marfūʿ"
+ },
+ "38:31:5:2": {
+  "word": "ٱلصَّٰفِنَٰتُ",
+  "from": "GEN",
+  "to": "NOM",
+  "why": "Deputy doer (نائب فاعل) of عُرِضَ — marfūʿ"
+ },
+ "39:38:22:1": {
+  "word": "كَٰشِفَٰتُ",
+  "from": "GEN",
+  "to": "NOM",
+  "why": "Predicate (خبر) of هُنَّ — marfūʿ"
+ },
+ "39:38:29:1": {
+  "word": "مُمْسِكَٰتُ",
+  "from": "GEN",
+  "to": "NOM",
+  "why": "Predicate (خبر) of هُنَّ — marfūʿ"
+ },
+ "14:37:8:1": {
+  "word": "ذِى",
+  "from": "ACC",
+  "to": "GEN",
+  "why": "Second term of iḍāfa after غَيْرِ — majrūr; ذِى is the genitive of ذُو"
+ },
+ "16:90:7:1": {
+  "word": "ذِى",
+  "from": "NOM",
+  "to": "GEN",
+  "why": "Second term of iḍāfa after إِيتَآءِ — majrūr (ذِى)"
+ },
+ "39:28:4:1": {
+  "word": "ذِى",
+  "from": "NOM",
+  "to": "GEN",
+  "why": "Second term of iḍāfa after غَيْرَ — majrūr (ذِى)"
+ },
+ "39:37:11:1": {
+  "word": "ذِى",
+  "from": "NOM",
+  "to": "GEN",
+  "why": "Adjective of بِعَزِيزٍ (majrūr) — majrūr (ذِى)"
+ },
+ "40:3:7:1": {
+  "word": "ذِى",
+  "from": "NOM",
+  "to": "GEN",
+  "why": "Adjective of ٱللَّهِ (40:2), in the genitive chain غَافِرِ … شَدِيدِ … — majrūr (ذِى)"
+ },
+ "55:78:4:1": {
+  "word": "ذِى",
+  "from": "NOM",
+  "to": "GEN",
+  "why": "Adjective of رَبِّكَ (majrūr) — majrūr (ذِى); contrast 55:27 ذُو (marfūʿ, for وَجْهُ)"
+ },
+ "18:18:6:1": {
+  "word": "ذَاتَ",
+  "from": "NOM",
+  "to": "ACC",
+  "why": "Adverb of place (ظرف) — manṣūb (ذَاتَ)"
+ },
+ "18:18:8:2": {
+  "word": "وَذَاتَ",
+  "from": "NOM",
+  "to": "ACC",
+  "why": "Coordinated adverb — manṣūb (ذَاتَ)"
+ },
+ "27:60:13:1": {
+  "word": "ذَاتَ",
+  "from": "NOM",
+  "to": "ACC",
+  "why": "Adjective of حَدَآئِقَ (object, manṣūb) — manṣūb (ذَاتَ)"
+ },
+ "35:1:9:1": {
+  "word": "أُو۟لِىٓ",
+  "from": "NOM",
+  "to": "ACC",
+  "why": "Adjective of رُسُلًا (manṣūb) — manṣūb (أُو۟لِىٓ)"
+ },
+ "38:45:6:1": {
+  "word": "أُو۟لِى",
+  "from": "NOM",
+  "to": "ACC",
+  "why": "Adjective/apposition of عِبَٰدَنَآ (object of ٱذْكُرْ) — manṣūb (أُو۟لِى)"
+ },
+ "48:16:8:1": {
+  "word": "أُو۟لِى",
+  "from": "NOM",
+  "to": "GEN",
+  "why": "Adjective of قَوْمٍ (after إِلَىٰ) — majrūr (أُو۟لِى)"
+ },
+ "46:32:14:1": {
+  "word": "أَوْلِيَآءُ",
+  "from": "ACC",
+  "to": "NOM",
+  "why": "Delayed noun of لَيْسَ (اسم ليس مؤخر) — marfūʿ (أَوْلِيَآءُ)"
+ },
+ "26:19:2:1": {
+  "word": "فَعْلَتَكَ",
+  "from": "NOM",
+  "to": "ACC",
+  "why": "Object (مفعول به) of فَعَلْتَ — manṣūb (فَعْلَتَكَ)"
+ },
+ "12:43:14:2": {
+  "word": "وَأُخَرَ",
+  "from": "NOM",
+  "to": "GEN",
+  "why": "Coordinated with سُنۢبُلَٰتٍ (majrūr) — diptote, majrūr with fatḥa (أُخَرَ)"
+ },
+ "18:49:9:2": {
+  "word": "يَٰوَيْلَتَنَا",
+  "from": "NOM",
+  "to": "ACC",
+  "why": "Vocative in iḍāfa (منادى مضاف) after يَٰ — manṣūb"
+ },
+ "21:46:8:2": {
+  "word": "يَٰوَيْلَنَآ",
+  "from": "NOM",
+  "to": "ACC",
+  "why": "Vocative in iḍāfa (منادى مضاف) — manṣūb"
+ },
+ "21:97:10:2": {
+  "word": "يَٰوَيْلَنَا",
+  "from": "NOM",
+  "to": "ACC",
+  "why": "Vocative in iḍāfa (منادى مضاف) — manṣūb"
+ },
+ "36:52:2:2": {
+  "word": "يَٰوَيْلَنَا",
+  "from": "NOM",
+  "to": "ACC",
+  "why": "Vocative in iḍāfa (منادى مضاف) — manṣūb"
+ },
+ "37:20:2:2": {
+  "word": "يَٰوَيْلَنَا",
+  "from": "NOM",
+  "to": "ACC",
+  "why": "Vocative in iḍāfa (منادى مضاف) — manṣūb"
+ },
+ "55:33:1:2": {
+  "word": "يَٰمَعْشَرَ",
+  "from": "NOM",
+  "to": "ACC",
+  "why": "Vocative in iḍāfa (منادى مضاف) after يَٰ — manṣūb"
+ },
+ "33:30:1:2": {
+  "word": "يَٰنِسَآءَ",
+  "from": "NOM",
+  "to": "ACC",
+  "why": "Vocative in iḍāfa (منادى مضاف) after يَٰ — manṣūb"
+ }
+}
