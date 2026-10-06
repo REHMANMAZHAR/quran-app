@@ -52,11 +52,6 @@ $("#drBody").addEventListener("click", e => {
   if (settings.tajweed && settings.script === "ip") { settings.script = "uth"; saveSettings(); document.documentElement.classList.remove("ipk"); }
   if (CUR) rerender();
 });
-/* toolbar chip in the surah header: quick on/off + legend */
-const _surahToolsTJ = surahTools;
-surahTools = function(n){
-  return _surahToolsTJ(n).replace(/<\/div><\/div>$/, "") + `</div><div class="tsz"><button data-tool="tj" aria-pressed="${!!settings.tajweed}" style="min-width:auto;padding:0 12px">${T("tjSet")}</button>${settings.tajweed ? `<button data-tool="tjkey" style="min-width:auto;padding:0 12px">?</button>` : ""}</div></div>`;
-};
 $("#main").addEventListener("click", e => {
   const b = e.target.closest("[data-tool=tj],[data-tool=tjkey]"); if (!b) return;
   if (b.dataset.tool === "tj") { settings.tajweed = !settings.tajweed; if (settings.tajweed && settings.script === "ip") { settings.script = "uth"; document.documentElement.classList.remove("ipk"); } saveSettings(); rerender(); }

@@ -168,6 +168,3 @@ document.addEventListener("click", e => {
     return; }
   const pl = e.target.closest("[data-hzplay]"); if (pl) { closeAll(); document.body.classList.remove("hifz"); document.querySelectorAll(".w.shown").forEach(x => x.classList.remove("shown")); playFrom(HZ.s, +pl.dataset.hzplay, true); }
 });
-/* entry point: button in the surah header */
-const _surahToolsHZ = surahTools;
-surahTools = function(n){ return _surahToolsHZ(n).replace(/<\/div>$/, "") + `<div class="tsz"><button data-hz="setup" style="min-width:auto;padding:0 14px">${T("hzBtn")}</button></div></div>`; };
