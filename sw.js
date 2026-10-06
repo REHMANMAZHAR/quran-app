@@ -2,7 +2,7 @@
 // - The page itself: network first (so updates arrive), cached copy when offline.
 // - Data files: served from cache instantly, refreshed in the background.
 // - Fonts: cached. Recitation audio is streamed, not cached (it would fill the phone).
-const V = "quran-v24";
+const V = "quran-v25";
 const SHELL = ["./", "index.html", "manifest.webmanifest", "icon.svg"];  // css/ and js/ are cached on first load (network first)
 self.addEventListener("install", e => e.waitUntil(caches.open(V).then(c => c.addAll(SHELL)).then(() => self.skipWaiting())));
 self.addEventListener("activate", e => e.waitUntil(
@@ -29,3 +29,5 @@ self.addEventListener("fetch", e => {
     e.respondWith(caches.match(req).then(hit => hit || fetch(req).then(r => put(req, r))));
   }
 });
+/* tapping a prayer reminder opens the app */
+self.addEventListener("notificationclick", e => { e.notification.close(); e.waitUntil(clients.matchAll({ type: "window" }).then(w => w.length ? w[0].focus() : clients.openWindow("./"))); });

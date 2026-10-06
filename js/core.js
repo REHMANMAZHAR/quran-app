@@ -113,6 +113,8 @@ function applySettings(){
   document.documentElement.style.setProperty("--arsize", settings.size + "px");
   document.documentElement.style.setProperty("--ts", settings.ts || 1);
   document.body.classList.toggle("nowbw", !settings.wbw);
+  document.body.classList.toggle("notr", settings.showTr === false);
+  document.documentElement.setAttribute("data-paper", settings.paper || "mint");
   if (settings.theme === "auto") document.documentElement.removeAttribute("data-theme");
   else document.documentElement.setAttribute("data-theme", settings.theme);
 }
@@ -347,9 +349,9 @@ function drawDrawer(){
       <span class="lbl">${T("speed")}</span>
       <div class="seg3">${pr("speed",0.75,T("slow"))}${pr("speed",1,T("normal"))}${pr("speed",1.25,T("fast"))}</div>
       <label for="rngSize">${T("size")}</label>
-      <input id="rngSize" type="range" min="22" max="44" step="1" value="${settings.size}">
+      <input id="rngSize" type="range" min="16" max="48" step="1" value="${settings.size}">
       <label for="rngTs">${T("tsize")} <b id="tsVal">${nf(Math.round((settings.ts || 1) * 100))}%</b></label>
-      <input id="rngTs" type="range" min="0.8" max="1.7" step="0.05" value="${settings.ts || 1}">
+      <input id="rngTs" type="range" min="0.7" max="1.8" step="0.05" value="${settings.ts || 1}">
       <span class="lbl">${T("theme")}</span>
       <div class="seg3">${pr("theme","auto",T("auto"))}${pr("theme","light",T("light"))}${pr("theme","dark",T("dark"))}</div>
       <div class="about">${T("sources")}

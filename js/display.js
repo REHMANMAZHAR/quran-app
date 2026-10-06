@@ -1,6 +1,7 @@
 "use strict";
 /* ---------- Reading toolbar (one row), Display sheet, Hifz sheet, themes and accent colours ---------- */
 Object.assign(L.ur, {
+  viewH:"دکھائیں", vWbw:"لفظی معنی", vTr:"ترجمہ", vBoth:"دونوں", paperH:"صفحے کا رنگ", pp_mint:"ہلکا سبز", pp_white:"سفید", pp_cream:"کریم", pp_sky:"ہلکا نیلا", pp_sand:"ریتلا", pp_navy:"گہرا نیلا", pp_black:"سیاہ",
   dispT:"ڈسپلے", hifzT:"حفظ", pageT:"صفحہ", tsizeH:"متن کا سائز", tjH:"تجوید کے رنگ", tjSub:"عثمانی رسم الخط میں قواعد رنگوں سے", tjKeyBtn:"رنگوں کا مطلب",
   themeH:"تھیم", thAuto:"خودکار", thLight:"روشن", thSepia:"سیپیا", thDark:"تاریک", accentH:"رنگ", moreSizes:"عربی اور ترجمہ الگ الگ سائز: سیٹنگز",
   ac_gold:"سنہری", ac_emerald:"زمردی", ac_lapis:"نیلا", ac_maroon:"عنابی", ac_slate:"سرمئی",
@@ -8,6 +9,7 @@ Object.assign(L.ur, {
   hifzOn:"حفظ موڈ — متن چھپا ہے", showText:"متن دکھائیں"
 });
 Object.assign(L.en, {
+  viewH:"Show", vWbw:"Word by word", vTr:"Translation", vBoth:"Both", paperH:"Page colour", pp_mint:"Mint", pp_white:"White", pp_cream:"Cream", pp_sky:"Sky", pp_sand:"Sand", pp_navy:"Navy", pp_black:"Black",
   dispT:"Display", hifzT:"Hifz", pageT:"Page", tsizeH:"Text size", tjH:"Tajweed colours", tjSub:"Rules shown in colour, Uthmani script", tjKeyBtn:"What the colours mean",
   themeH:"Theme", thAuto:"Auto", thLight:"Light", thSepia:"Sepia", thDark:"Dark", accentH:"Accent colour", moreSizes:"Separate Arabic and translation sizes: Settings",
   ac_gold:"Gold", ac_emerald:"Emerald", ac_lapis:"Lapis", ac_maroon:"Maroon", ac_slate:"Slate",
@@ -41,8 +43,14 @@ surahTools = function(n){
 /* Display sheet */
 function displaySheet(){
   const pct = Math.round((settings.size / 30) * 100), th = settings.theme || "auto";
+  const vm = settings.wbw && settings.showTr !== false ? "both" : settings.wbw ? "wbw" : "tr";
+  const vb = (v, k) => `<button data-vm="${v}" aria-pressed="${vm === v}">${T(k)}</button>`;
+  const dark = th === "dark" || (th === "auto" && matchMedia("(prefers-color-scheme: dark)").matches);
+  const papers = th === "sepia" ? [] : dark ? ["navy", "black"] : ["mint", "white", "cream", "sky", "sand"];
+  const cur = settings.paper || "mint";
   const seg = (v, k) => `<button data-th="${v}" aria-pressed="${th === v}">${T(k)}</button>`;
   $("#sheetBody").innerHTML = `<h3 class="ds-h">${T("dispT")}</h3>
+    <section class="ds"><b>${T("viewH")}</b><div class="rtb-seg wide">${vb("wbw", "vWbw")}${vb("tr", "vTr")}${vb("both", "vBoth")}</div></section>
     <section class="ds"><div class="ds-row"><b>${T("tsizeH")}</b><span class="muted">${nf(pct)}%</span></div>
       <div class="ds-size"><button data-ds="-1" aria-label="${T("smaller")}">A−</button><div class="ds-prev" style="font-size:${settings.size}px">بِسْمِ ٱللَّهِ</div><button data-ds="1" aria-label="${T("bigger")}">A+</button></div>
       <p class="ds-note">${T("moreSizes")}</p></section>
@@ -50,6 +58,7 @@ function displaySheet(){
       <input type="checkbox" role="switch" id="dsTj"${settings.tajweed ? " checked" : ""}><i aria-hidden="true"></i></label>
       ${settings.tajweed ? `<details class="tjd"><summary>${T("tjKeyBtn")}</summary>${tajLegendHTML()}</details>` : ""}</section>
     <section class="ds"><b>${T("themeH")}</b><div class="rtb-seg wide">${seg("auto", "thAuto")}${seg("light", "thLight")}${seg("sepia", "thSepia")}${seg("dark", "thDark")}</div></section>
+    ${papers.length ? `<section class="ds"><b>${T("paperH")}</b><div class="ds-acc">${papers.map(p => `<button data-paper="${p}" class="acc pp-${p}" aria-pressed="${cur === p || (dark && p === "navy" && cur !== "black")}" aria-label="${T("pp_" + p)}"><i></i><small>${T("pp_" + p)}</small></button>`).join("")}</div></section>` : ""}
     <section class="ds"><b>${T("accentH")}</b><div class="ds-acc">${ACCENTS.map(a => `<button data-acc="${a}" class="acc acc-${a}" aria-pressed="${settings.accent === a}" aria-label="${T("ac_" + a)}"><i></i><small>${T("ac_" + a)}</small></button>`).join("")}</div></section>`;
 }
 /* Hifz sheet */
@@ -81,9 +90,11 @@ $("#main").addEventListener("click", e => {
 document.addEventListener("click", e => {
   if (e.target.closest("[data-hide-off]")) { setHide(false); return; }
   const d = e.target.closest("#sheetBody [data-ds]"); if (d) { const k = +d.dataset.ds;
-    settings.size = Math.min(44, Math.max(22, settings.size + k * 2)); settings.ts = Math.round(Math.min(1.7, Math.max(0.8, (settings.ts || 1) + k * 0.1)) * 100) / 100;
+    settings.size = Math.min(48, Math.max(16, settings.size + k * 2)); settings.ts = Math.round(Math.min(1.8, Math.max(0.7, (settings.ts || 1) + k * 0.1)) * 100) / 100;
     saveSettings(); displaySheet(); return; }
   const th = e.target.closest("#sheetBody [data-th]"); if (th) { settings.theme = th.dataset.th; saveSettings(); displaySheet(); return; }
+  const vm = e.target.closest("#sheetBody [data-vm]"); if (vm) { const v = vm.dataset.vm; settings.wbw = v !== "tr"; settings.showTr = v !== "wbw"; saveSettings(); displaySheet(); return; }
+  const pp = e.target.closest("#sheetBody [data-paper]"); if (pp) { settings.paper = pp.dataset.paper; saveSettings(); displaySheet(); return; }
   const ac = e.target.closest("#sheetBody [data-acc]"); if (ac) { settings.accent = ac.dataset.acc; saveSettings(); displaySheet(); return; }
 });
 document.addEventListener("change", e => {
@@ -108,3 +119,44 @@ drawDrawer = function(){
   set.insertAdjacentHTML("beforeend", `<span class="lbl">${T("accentH")}</span><div class="ds-acc">${ACCENTS.map(a => `<button data-acc2="${a}" class="acc acc-${a}" aria-pressed="${settings.accent === a}" aria-label="${T("ac_" + a)}"><i></i><small>${T("ac_" + a)}</small></button>`).join("")}</div>`);
 };
 $("#drBody").addEventListener("click", e => { const a = e.target.closest("[data-acc2]"); if (a) { settings.accent = a.dataset.acc2; saveSettings(); drawDrawer(); } });
+/* ---------- auto-scroll: hands-free reading ---------- */
+Object.assign(L.ur, { asH:"خودکار اسکرول", asSub:"صفحہ خود آہستہ آہستہ اوپر جائے — رفتار کم یا زیادہ کریں", asStart:"شروع کریں", asSpeed:n=>`رفتار ${ud(n)}`, asPause:"روکیں", asPlay:"چلائیں", asSlower:"آہستہ", asFaster:"تیز", asStop:"بند" });
+Object.assign(L.en, { asH:"Auto-scroll", asSub:"The page moves up slowly by itself — make it slower or faster", asStart:"Start", asSpeed:n=>`Speed ${n}`, asPause:"Pause", asPlay:"Play", asSlower:"Slower", asFaster:"Faster", asStop:"Stop" });
+const AS_SPEEDS = [8, 12, 17, 24, 33, 45, 60];   // pixels per second
+const AS = { on: false, run: false, lv: settings.asLv != null ? settings.asLv : 2, last: 0, acc: 0, raf: 0 };
+function asTick(t){
+  if (!AS.on) return;
+  if (AS.run) {
+    const dt = AS.last ? Math.min(0.1, (t - AS.last) / 1000) : 0; AS.acc += AS_SPEEDS[AS.lv] * dt;
+    if (AS.acc >= 1) { const px = Math.floor(AS.acc); AS.acc -= px; scrollBy(0, px);
+      if (innerHeight + scrollY >= document.documentElement.scrollHeight - 2) { AS.run = false; asBar(); } }
+  }
+  AS.last = t; AS.raf = requestAnimationFrame(asTick);
+}
+function asBar(){
+  let b = document.getElementById("asBar");
+  if (!AS.on) { if (b) b.remove(); return; }
+  if (!b) { b = document.createElement("div"); b.id = "asBar"; document.body.appendChild(b); }
+  b.innerHTML = `<button data-as="toggle" aria-label="${T(AS.run ? "asPause" : "asPlay")}">${AS.run ? `<svg viewBox="0 0 24 24"><path d="M8 5v14M16 5v14"/></svg>` : `<svg viewBox="0 0 24 24"><path d="M8 5.5v13l11-6.5z" style="fill:currentColor"/></svg>`}</button>
+    <button data-as="-1" aria-label="${T("asSlower")}">−</button><span>${T("asSpeed", nf(AS.lv + 1))}</span><button data-as="1" aria-label="${T("asFaster")}">+</button>
+    <button data-as="stop" aria-label="${T("asStop")}"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></button>`;
+}
+function asStart(){ AS.on = true; AS.run = true; AS.last = 0; cancelAnimationFrame(AS.raf); AS.raf = requestAnimationFrame(asTick); asBar(); }
+function asStop(){ AS.on = false; AS.run = false; cancelAnimationFrame(AS.raf); asBar(); }
+document.addEventListener("click", e => {
+  const b = e.target.closest("[data-as]"); if (!b) return;
+  const v = b.dataset.as;
+  if (v === "start") { closeAll(); asStart(); }
+  else if (v === "stop") asStop();
+  else if (v === "toggle") { AS.run = !AS.run; AS.last = 0; asBar(); }
+  else { AS.lv = Math.max(0, Math.min(AS_SPEEDS.length - 1, AS.lv + +v)); settings.asLv = AS.lv; saveSettings(); asBar(); }
+});
+/* a finger on the page pauses; leaving the reader stops */
+addEventListener("touchstart", e => { if (AS.on && AS.run && !e.target.closest("#asBar")) { AS.run = false; asBar(); } }, { passive: true });
+const _showViewAS = showView;
+showView = function(v){ if (v !== "read") asStop(); _showViewAS(v); };
+const _displaySheetAS = displaySheet;
+displaySheet = function(){
+  _displaySheetAS();
+  $("#sheetBody").querySelector(".ds").insertAdjacentHTML("beforebegin", `<section class="ds ds-row"><span><b>${T("asH")}</b><small>${T("asSub")}</small></span><button class="btn" data-as="start">${T("asStart")}</button></section>`);
+};

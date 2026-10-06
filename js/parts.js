@@ -124,8 +124,8 @@ $("#main").addEventListener("click", async e => {
   else if (t === "page") openPageView();
   else if (t === "tsz") {             // A− / A+ : Arabic and translation together
     const d = +b.dataset.v;
-    settings.size = Math.min(44, Math.max(22, settings.size + d * 2));
-    settings.ts = Math.round(Math.min(1.7, Math.max(0.8, (settings.ts || 1) + d * 0.1)) * 100) / 100;
+    settings.size = Math.min(48, Math.max(16, settings.size + d * 2));
+    settings.ts = Math.round(Math.min(1.8, Math.max(0.7, (settings.ts || 1) + d * 0.1)) * 100) / 100;
     saveSettings(); toast(esc(T("textSizeNow", nf(settings.size), nf(Math.round(settings.ts * 100)))), 1200);
   }
 });

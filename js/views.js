@@ -140,6 +140,17 @@ const MASNOON = [
  ["distress","In distress","پریشانی کے وقت","لَا إِلَهَ إِلَّا اللَّهُ الْعَظِيمُ الْحَلِيمُ، لَا إِلَهَ إِلَّا اللَّهُ رَبُّ الْعَرْشِ الْعَظِيمِ، لَا إِلَهَ إِلَّا اللَّهُ رَبُّ السَّمَاوَاتِ وَرَبُّ الْأَرْضِ وَرَبُّ الْعَرْشِ الْكَرِيمِ","There is no god but Allah, the Mighty, the Forbearing. There is no god but Allah, Lord of the mighty Throne. There is no god but Allah, Lord of the heavens, Lord of the earth and Lord of the noble Throne.","اللہ کے سوا کوئی معبود نہیں جو عظمت والا، بردبار ہے۔ اللہ کے سوا کوئی معبود نہیں جو عرشِ عظیم کا رب ہے۔ اللہ کے سوا کوئی معبود نہیں جو آسمانوں کا رب، زمین کا رب اور عرشِ کریم کا رب ہے۔","Sahih al-Bukhari 6346; Sahih Muslim 2730",1],
  ["sneeze","After sneezing","چھینک کے بعد","الْحَمْدُ لِلَّهِ","Praise be to Allah. (Reply: يَرْحَمُكَ اللَّهُ — may Allah have mercy on you; then: يَهْدِيكُمُ اللَّهُ وَيُصْلِحُ بَالَكُمْ — may Allah guide you and set your affairs right.)","تمام تعریف اللہ کے لیے ہے۔ (سننے والا کہے: يَرْحَمُكَ اللَّهُ — اللہ تم پر رحم کرے؛ پھر چھینکنے والا: يَهْدِيكُمُ اللَّهُ وَيُصْلِحُ بَالَكُمْ — اللہ تمہیں ہدایت دے اور تمہارا حال درست کرے۔)","Sahih al-Bukhari 6224",1]
 ];
+/* Quranic duas: start at the words of the dua itself (رَبَّنَا، رَبِّ، اللَّهُمَّ), not at the narration before it */
+function duaStart(W){
+  const k = W.findIndex((w, i) => i > 0 && /^(و|ف)?(ربنا|رب|اللهم)$/.test(hzNorm(w[0])));
+  return k > 0 ? k : 0;
+}
+function duaTrim(t){
+  const m = t.search(/(اے ہمارے (رب|پروردگار)|اے میرے (رب|پروردگار)|پروردگار[ا]?|اے (ہمارے )?رب|اے اللہ|O our Lord|O my Lord|Our Lord|My Lord|O Lord)/);
+  return m > 0 ? "… " + t.slice(m) : t;
+}
+/* second translation: Urdu when the main one is English, English when it is Urdu */
+function otherTr(A){ const main = settings.tr || "ur"; return /^ur/.test(main) ? (A.en2 || A.en) : (A.ur || A.ur2); }
 const DS = Object.assign({ fav:{}, cnt:{}, tab:"q" }, store.get("duas", {}));
 const saveD = () => store.set("duas", DS);
 async function renderDuas(){
@@ -150,9 +161,13 @@ async function renderDuas(){
     const list = EX.duas.filter(d => tab === "q" || DS.fav["q" + d[0] + ":" + d[1]]);
     const cards = await Promise.all(list.map(async d => {
       const [s, a, b, ten, tur, who] = d, id = "q" + s + ":" + a, sd = await DATA.surah(s); let ar = "", tr = "";
-      for (let x = a; x <= b; x++) { const A = sd.ayahs[x - 1]; ar += A.w.map(w => w[0]).join(" ") + ` ﴿${nf(x)}﴾ `; tr += trOf(A) + " "; }
+      let tr2 = "";
+      for (let x = a; x <= b; x++) { const A = sd.ayahs[x - 1], st = x === a ? duaStart(A.w) : 0;
+        ar += (st ? "… " : "") + A.w.slice(st).map(w => w[0]).join(" ") + ` ﴿${nf(x)}﴾ `;
+        tr += (x === a && st ? duaTrim(trOf(A)) : trOf(A)) + " ";
+        const o = otherTr(A); if (o) tr2 += (x === a && st ? duaTrim(o) : o) + " "; }
       return `<article class="dua"><div class="dh"><b>${esc(en ? ten : tur)}</b>${star(id)}</div><div class="who">${esc(who)} · ${esc(surahName(s))} ${nf(s)}:${nf(a)}${b !== a ? "–" + nf(b) : ""}</div>
-        <p class="dar" dir="rtl" lang="ar">${esc(ar)}</p><p class="dtr ${/[؀-ۿ]/.test(tr) ? "ur" : ""}">${esc(tr.trim())}</p>
+        <p class="dar" dir="rtl" lang="ar">${esc(ar)}</p><p class="dtr ${/[؀-ۿ]/.test(tr) ? "ur" : ""}">${esc(tr.trim())}</p>${tr2.trim() ? `<p class="dtr dtr2 ${/[؀-ۿ]/.test(tr2) ? "ur" : ""}">${esc(tr2.trim())}</p>` : ""}
         <div class="wd-actions"><button data-go2="${s}:${a}">${T("openR")}</button><button data-dplay="${s}:${a}">▶</button></div></article>`;
     }));
     body = cards.join("");
@@ -161,7 +176,7 @@ async function renderDuas(){
     body += MASNOON.filter(m => tab === "m" || DS.fav["m" + m[0]]).map(m => {
       const [id, ten, tur, ar, men, mur, src, n] = m, c = DS.cnt[id] || 0;
       return `<article class="dua"><div class="dh"><b>${esc(en ? ten : tur)}</b>${star("m" + id)}</div><p class="dar" dir="rtl" lang="ar">${esc(ar)}</p>
-        <p class="dtr ${en ? "" : "ur"}">${esc(en ? men : mur)}</p><div class="who">${T("src")} ${esc(src)}</div>
+        <p class="dtr ${en ? "" : "ur"}">${esc(en ? men : mur)}</p><p class="dtr dtr2 ${en ? "ur" : ""}">${esc(en ? mur : men)}</p><div class="who">${T("src")} ${esc(src)}</div>
         <div class="ctr"><button class="btn" data-cnt="${id}">${T("count")} · <b>${nf(c)}</b>${n > 1 ? " / " + nf(n) : ""}</button><button class="btn ghost" data-cnt0="${id}">${T("reset")}</button></div></article>`;
     }).join("") + (tab === "m" ? `<p class="draft">${T("draftDua")}</p>` : "");
   }
