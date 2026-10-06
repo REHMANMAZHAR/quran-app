@@ -1,0 +1,20 @@
+name: fetch-urdu-wbw
+on:
+  push:
+    branches: [align]
+    paths: [align/urdu.txt]
+permissions:
+  contents: write
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.11" }
+      - run: pip install requests
+      - run: |
+          mkdir -p data-raw
+          python scripts/fetch_urdu_wbw.py > data-raw/urdu-log.txt 2>&1 || true
+          git config user.name "Claude for RMK"; git config user.email qurantosoulapp@gmail.com
+          git add -f data-raw && git commit -qm "Urdu WBW [skip ci]" && git push -q origin HEAD:refs/heads/urdu-out
