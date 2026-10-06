@@ -14,7 +14,7 @@ jobs:
       - uses: actions/setup-python@v5
         with: { python-version: "3.11" }
       - run: pip install faster-whisper==1.0.3
-      - run: python align/transcribe.py || echo "FAILED" > align/out/fail.txt
+      - run: mkdir -p align/out; python align/transcribe.py > align/out/log.txt 2>&1 || true
       - run: |
           git config user.name "Claude for RMK"; git config user.email qurantosoulapp@gmail.com
           mkdir -p align/out; git add align/out && git commit -m "transcripts" && git pull --rebase && git push || true
