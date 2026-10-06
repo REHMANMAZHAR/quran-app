@@ -69,7 +69,7 @@ function hzListen(){
         let add = txt.trim(); const prev = HZ.prevFinal || "";
         if (prev && add.startsWith(prev)) add = add.slice(prev.length);
         HZ.prevFinal = txt.trim();
-        add.split(/\s+/).filter(Boolean).forEach(hzToken);
+        hzSegment(add.split(/\s+/).filter(Boolean));
       } else interim += " " + txt;
     }
     hzPreview(interim.split(/\s+/).filter(Boolean));            // show words the moment they are heard, before the pause
@@ -86,37 +86,53 @@ function hzMark(k, st, heard){
   const el = hzEl(x); if (!el) return;
   el.classList.remove("hz-ok", "hz-miss", "hz-chk"); el.classList.add("shown", "hz-" + st); if (heard) el.title = `${T("hzHeard")} ${heard}`;
 }
-function hzToken(tok){
-  if (!HZ.on || HZ.p >= HZ.E.length) return;
-  HZ.heardAny = true;
-  const t = hzNorm(tok); if (!t) return;
-  // look ahead up to 4 words for a match (allows for skipped words)
-  for (let j = HZ.p; j < Math.min(HZ.E.length, HZ.p + 4); j++) {
-    const need = j === HZ.p ? 0.72 : 0.85;
-    if (hzSim(HZ.E[j].t, tok) >= need) {
-      for (let k = HZ.p; k < j; k++) hzMark(k, "miss");
-      hzMark(j, "ok"); HZ.p = j + 1; hzFollow(); if (HZ.p >= HZ.E.length) setTimeout(hzStop, 600); return;
-    }
+/* Align a run of heard words with the expected words (best overall fit, not word-by-word guessing).
+   Handles: recogniser merging two words into one or splitting one into two, small particles it drops,
+   extra noise words, and ta'awwudh/basmalah before the start. */
+function hzAlign(T, p){
+  const n = T.length, m = Math.min(HZ.E.length - p, n * 2 + 6), W = HZ.E.slice(p, p + m).map(x => x.t);
+  const NEG = -1e9, dp = Array.from({ length: n + 1 }, () => new Array(m + 1).fill(NEG)), bk = Array.from({ length: n + 1 }, () => new Array(m + 1).fill(null));
+  const short = w => hzKey(w).length <= 2;
+  dp[0][0] = 0;
+  for (let a = 0; a <= n; a++) for (let b = 0; b <= m; b++) {
+    const cur = dp[a][b]; if (cur === NEG) continue;
+    const up = (a2, b2, v, op) => { if (a2 <= n && b2 <= m && cur + v > dp[a2][b2]) { dp[a2][b2] = cur + v; bk[a2][b2] = [a, b, op]; } };
+    if (a < n && b < m) { const s = hzSim(W[b], T[a]); if (s >= 0.62) up(a + 1, b + 1, 2 * s, "ok"); else if (s >= 0.45) up(a + 1, b + 1, 0.2, "chk"); }
+    if (a < n && b + 1 < m) { const s = hzSim(W[b] + W[b + 1], T[a]); if (s >= 0.7) up(a + 1, b + 2, 3.2 * s, "ok2"); }
+    if (a + 1 < n && b < m) { const s = hzSim(W[b], T[a] + T[a + 1]); if (s >= 0.7) up(a + 2, b + 1, 2.2 * s, "ok"); }
+    if (b < m) up(a, b + 1, short(W[b]) ? -0.35 : -1.2, "miss");
+    if (a < n) up(a + 1, b, p === 0 && b === 0 && HZ_SKIP.has(hzNorm(T[a])) ? 0 : -0.6, "extra");
   }
-  if (HZ.p === 0 && HZ_SKIP.has(t)) return;                     // ta'awwudh / basmalah before the first ayah
-  if (hzSim(HZ.E[HZ.p].t, tok) >= 0.45) { hzMark(HZ.p, "chk", tok); HZ.p++; hzFollow(); if (HZ.p >= HZ.E.length) setTimeout(hzStop, 600); }
-  // otherwise: an extra word or recogniser noise — ignored
+  let best = 0, bj = 0; for (let b = 0; b <= m; b++) if (dp[n][b] > best || (dp[n][b] === best && b < bj)) { best = dp[n][b]; bj = b; }
+  if (best <= 0) return { ops: [], end: p };
+  const ops = []; let a = n, b = bj;
+  while (a > 0 || b > 0) { const k = bk[a][b]; if (!k) break; const [a0, b0, op] = k;
+    if (op === "ok" || op === "chk") ops.push([op, p + b0, T[a0]]); else if (op === "ok2") { ops.push(["ok", p + b0]); ops.push(["ok", p + b0 + 1]); } else if (op === "miss") ops.push(["miss", p + b0]);
+    a = a0; b = b0; }
+  ops.reverse();
+  let end = p; ops.forEach(o => { if (o[0] !== "miss") end = Math.max(end, o[1] + 1); });
+  return { ops: ops.filter(o => o[1] < end), end };          // never mark words after the last one heard
+}
+function hzSegment(T){
+  if (!HZ.on || HZ.p >= HZ.E.length || !T.length) return;
+  HZ.heardAny = true;
+  const { ops, end } = hzAlign(T, HZ.p);
+  // one dropped word on its own is usually the recogniser, not the hafiz: mark it "check" (orange); 2+ in a row = missed (red)
+  ops.forEach((o, k) => {
+    if (o[0] === "miss") { const run = (ops[k - 1] && ops[k - 1][0] === "miss") || (ops[k + 1] && ops[k + 1][0] === "miss"); hzMark(o[1], run ? "miss" : "chk"); }
+    else hzMark(o[1], o[0], o[0] === "chk" ? o[2] : null);
+  });
+  HZ.p = end; hzFollow(); if (HZ.p >= HZ.E.length) setTimeout(hzStop, 600);
 }
 /* fast preview from interim (not yet final) words: only ever marks words green, never red; the final result confirms or corrects */
 function hzPreview(toks){
   if (!HZ.on) return;
   HZ.E.forEach((x, k) => { if (x.pv && k >= HZ.p) { x.pv = false; const el = hzEl(x); if (el && !x.st) el.classList.remove("shown", "hz-ok"); } });
-  let q = HZ.p;
-  toks.forEach((tok, n) => {
-    if (q >= HZ.E.length) return;
-    const last = n === toks.length - 1, need = last ? 0.95 : 0.8;   // the last interim word may still be half-spoken
-    let j = -1;
-    if (hzSim(HZ.E[q].t, tok) >= need) j = q; else if (q + 1 < HZ.E.length && hzSim(HZ.E[q + 1].t, tok) >= 0.9) j = q + 1;
-    if (j < 0) return;
-    for (let k = q; k <= j; k++) if (k === j) { const x = HZ.E[k]; x.pv = true; const el = hzEl(x); if (el) el.classList.add("shown", "hz-ok"); }
-    q = j + 1;
-  });
-  HZ.pq = q; hzFollow(q);
+  const T = toks.slice(0, -1);                              // the last interim word may still be half-spoken
+  if (!T.length) return;
+  const { ops, end } = hzAlign(T, HZ.p);
+  ops.forEach(o => { if (o[0] === "ok") { const x = HZ.E[o[1]]; x.pv = true; const el = hzEl(x); if (el) el.classList.add("shown", "hz-ok"); } });
+  hzFollow(end);
 }
 function hzFollow(at){
   const x = HZ.E[Math.min(at != null ? at : HZ.p, HZ.E.length - 1)]; const el = document.getElementById("a" + x.a);
