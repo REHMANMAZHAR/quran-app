@@ -2,7 +2,7 @@
 // - The page itself: network first (so updates arrive), cached copy when offline.
 // - Data files: served from cache instantly, refreshed in the background.
 // - Fonts: cached. Recitation audio is streamed, not cached (it would fill the phone).
-const V = "quran-v5";
+const V = "quran-v6";
 const SHELL = ["./", "index.html", "manifest.webmanifest", "icon.svg"];
 self.addEventListener("install", e => e.waitUntil(caches.open(V).then(c => c.addAll(SHELL)).then(() => self.skipWaiting())));
 self.addEventListener("activate", e => e.waitUntil(
