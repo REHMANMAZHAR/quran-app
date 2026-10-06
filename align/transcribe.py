@@ -9,8 +9,15 @@ for line in open("align/parts.txt"):
     n, fname = line.split(" ", 1)
     out = f"align/out/{int(n):03d}.json"
     if os.path.exists(out): continue
-    url = "http://media.tanzeem.org/audios/004/04-198/" + urllib.parse.quote(fname)
-    urllib.request.urlretrieve(url, "a.mp3")
+    ok, errs = False, []
+    for base in ("https://media.tanzeem.org/audios/004/04-198/", "http://media.tanzeem.org/audios/004/04-198/"):
+        try:
+            req = urllib.request.Request(base + urllib.parse.quote(fname), headers={"User-Agent": "Mozilla/5.0 (Linux; Android 14) Chrome/120 Mobile"})
+            with urllib.request.urlopen(req, timeout=120) as r, open("a.mp3", "wb") as f: f.write(r.read())
+            ok = True; break
+        except Exception as e: errs.append(f"{base}: {e!r}")
+    if not ok:
+        json.dump({"n": int(n), "error": errs}, open(out.replace(".json", ".err.json"), "w")); continue
     segs, info = model.transcribe("a.mp3", language="ur", beam_size=1, vad_filter=True, condition_on_previous_text=False)
     rows = [[round(s.start, 1), round(s.end, 1), s.text.strip()] for s in segs]
     json.dump({"n": int(n), "file": fname, "dur": info.duration, "segs": rows}, open(out, "w"), ensure_ascii=False)
