@@ -18,16 +18,169 @@ const BQ_SLUG = ["bayan-ul-quran-introduction-by-dr-israr-ahmad-1-108", "bayan-u
 const BQ_OK = ["3598482016904", "3598482082440", "3598509542024", "3598515112584", "3598518520456", "3598544734856", "3599382743688", "3599382809224", "3599411645064", "3599420033672", "3599427570312", null, null, "3599470561928", "3599477312136", "3599616903816", null, "3599689386632", "3599689321096", "3606209235592", "3606209366664", "3606209628808", null, "3606209497736", "3606209563272", "3606269856392", "3606364162696", "3606364228232", "3606364293768", "3606364359304", "3608076356232", "3608076290696", "3608076421768", "3608076225160", "3608076159624", "3608136845960", "3608136977032", "3608137108104", "3608137042568", "3608136911496", "3608420944520", "3608421010056", "3608421141128", "3608421075592", "3608421206664", "3610380601992", "3610380470920", "3610380405384", "3610380536456", null, "3599771044488", "3599793785480", "3599804795528", "3599824325256", "3602944101000", "3602944035464", "3602943838856", "3602943904392", "3602943969928", "3602944166536", null, "3604103891592", "3604213271176", null, "3604103629448", "3604103826056", "3604103563912", "3604213402248", "3604213205640", null, null, "3605150239368", "3605149977224", "3605149649544", "3605149715080", "3605150108296", "3605149846152", "3605150042760", "3605150173832", "3605150304904", "3605457013384", "3605457078920", "3605457144456", "3605457209992", "3605457275528", "3611362593416", "3611362855560", "3611362724488", "3611362658952", "3611362790024", "3611440974472", "3611441367688", "3611440843400", "3611441302152", "3611441564296", "3611441498760", "3611441236616", null, "3611441040008", "3611441433224", "3611702594184", "3611702463112", "3611702332040", "3611702266504", "3611702397576", null, "3611702659720", "3611702528648"];
 /* Dr. Israr Ahmad, English "Dora-e-Tarjuma-e-Quran" (official Tanzeem-e-Islami audio, 112 parts): [n, s1,a1, s2,a2] */
 const EN = [[1,1,1,1,999],[2,2,1,2,20],[3,2,21,2,46],[4,2,47,2,82],[5,2,83,2,103],[6,2,104,2,141],[7,2,142,2,167],[8,2,168,2,188],[9,2,189,2,220],[10,2,221,2,248],[11,2,249,2,266],[12,2,267,2,999],[13,3,1,3,32],[14,3,33,3,80],[15,3,81,3,120],[16,3,121,3,155],[17,3,156,3,171],[18,3,172,3,999],[19,4,1,4,14],[20,4,15,4,28],[21,4,29,4,57],[22,4,58,4,64],[23,4,65,4,87],[24,4,88,4,110],[25,4,111,4,134],[26,4,135,4,158],[27,4,159,4,999],[28,5,1,5,18],[29,5,19,5,50],[30,5,51,5,77],[31,5,78,5,100],[32,5,101,6,7],[33,6,8,6,41],[34,6,42,6,72],[35,6,73,6,96],[36,6,97,6,129],[37,6,130,6,999],[38,7,1,7,37],[39,7,37,7,84],[40,7,85,7,131],[41,7,132,7,160],[42,7,161,7,999],[43,8,1,8,28],[44,8,29,8,51],[45,8,52,8,999],[46,9,1,9,22],[47,9,23,9,72],[48,9,73,9,100],[49,9,101,9,999],[50,10,1,10,36],[51,10,37,10,74],[52,10,75,10,999],[53,11,1,11,49],[54,11,50,11,115],[55,11,116,12,40],[56,12,41,12,999],[57,13,1,13,32],[58,13,33,14,999],[59,15,1,15,999],[60,16,1,16,60],[61,16,61,16,110],[62,16,111,17,40],[63,17,41,17,100],[64,17,101,18,29],[65,18,30,18,102],[66,18,102,19,87],[67,19,88,20,90],[68,20,90,21,50],[69,21,51,22,9],[70,22,10,22,72],[71,22,73,23,77],[72,23,78,24,38],[73,24,39,25,44],[74,25,45,26,68],[75,26,69,27,42],[76,27,43,28,13],[77,28,14,28,999],[78,29,1,29,999],[79,30,1,30,999],[80,31,1,32,999],[81,33,1,33,52],[82,33,53,34,999],[83,35,1,36,22],[84,36,22,37,98],[85,37,99,38,999],[86,39,1,39,51],[87,39,52,40,46],[88,40,47,41,35],[89,41,35,42,13],[90,42,13,42,999],[91,43,1,44,999],[92,45,1,46,26],[93,46,27,47,999],[94,48,1,49,13],[95,49,14,50,999],[96,51,1,53,999],[97,54,1,56,999],[98,57,1,57,25],[99,57,26,58,999],[100,59,1,60,999],[101,61,1,62,999],[102,63,1,65,999],[103,66,1,69,999],[104,70,1,72,999],[105,73,1,75,25],[106,75,26,78,999],[107,79,1,83,14],[108,83,15,87,999],[109,88,1,91,10],[110,91,11,93,999],[111,94,1,100,999],[112,101,1,114,999]];
+/* Dr. Israr Ahmad, Urdu audio — Dora Tarjuma Quran 1998 (Bayan-ul-Quran), official Tanzeem-e-Islami, 148 parts: [n, s1,a1, s2,a2, file] */
+const UR = [
+[1,0,0,0,0,"001-Taaruf-e-Quran01.mp3"],
+[2,0,0,0,0,"002-Taaruf-e-Quran02.mp3"],
+[3,0,0,0,0,"003-Taaruf-e-Quran03.mp3"],
+[4,0,0,0,0,"004-Taaruf-e-Quran04.mp3"],
+[5,1,1,1,999,"005-Al-Fatehah.mp3"],
+[6,2,1,2,29,"006-Al-Baqarah(1-29).mp3"],
+[7,2,30,2,46,"007-Al-Baqarah(30-46).mp3"],
+[8,2,47,2,74,"008-Al-Baqarah(47-74).mp3"],
+[9,2,75,2,107,"009-Al-Baqarah(75-107).mp3"],
+[10,2,108,2,141,"010-Al-Baqarah(108-141).mp3"],
+[11,2,142,2,176,"011-Al-Baqarah(142-176).mp3"],
+[12,2,177,2,196,"012-Al-Baqarah(177-196).mp3"],
+[13,2,197,2,228,"013-Al-Baqarah(197-228).mp3"],
+[14,2,229,2,253,"014-Al-Baqarah(229-253).mp3"],
+[15,2,254,2,273,"015-Al-Baqarah(254-273).mp3"],
+[16,2,274,2,999,"016-Al-Baqarah(274-End).mp3"],
+[17,3,1,3,48,"017-Aal-e-Imran(1-48).mp3"],
+[18,3,49,3,101,"018-Aal-e-Imran(49-101).mp3"],
+[19,3,102,3,151,"019-Aal-e-Imran(102-151).mp3"],
+[20,3,152,3,999,"020-Aal-e-Imran(152-End).mp3"],
+[21,4,1,4,30,"021-An-Nisa(1-30).mp3"],
+[22,4,31,4,65,"022-An-Nisa(31-65).mp3"],
+[23,4,66,4,100,"023-An-Nisa(66-100).mp3"],
+[24,4,101,4,142,"024-An-Nisa(101-142).mp3"],
+[25,4,143,5,4,"025-An-Nisa(143)Al-Maidah-4.mp3"],
+[26,5,5,5,43,"026-Al-Maidah(5-43).mp3"],
+[27,5,44,5,86,"027-Al-Maidah(44-86).mp3"],
+[28,5,87,5,999,"028-Al-Maidah(87-End).mp3"],
+[29,6,1,6,49,"029-Al-Anam(1-49).mp3"],
+[30,6,50,6,90,"030-Al-Anam(50-90).mp3"],
+[31,6,91,6,129,"031-Al-Anam(91-129).mp3"],
+[32,6,130,7,19,"032-Al-Anam(130)Al-Araf(19).mp3"],
+[33,7,20,7,58,"033-Al-Araf(20-58).mp3"],
+[34,7,59,7,129,"034-Al-Araf(59-129).mp3"],
+[35,7,130,7,166,"035-Al-Araf(130-166).mp3"],
+[36,7,167,7,999,"036-Al-Araf(167-End).mp3"],
+[37,8,1,8,40,"037-Al-Anfal(1-40).mp3"],
+[38,8,41,8,999,"038-Al-Anfal(41-End).mp3"],
+[39,9,1,9,34,"039-At-Taubah(1-34).mp3"],
+[40,9,35,9,85,"040-At-Taubah(35-85).mp3"],
+[41,9,86,9,999,"041-At-Taubah(86-End).mp3"],
+[42,10,1,10,999,"042-Surah-Younus.mp3"],
+[43,11,1,11,999,"043-Surah-Hood.mp3"],
+[44,12,1,12,999,"044-Surah-Yousuf.mp3"],
+[45,13,1,13,999,"045-Surah-Ar-Raad.mp3"],
+[46,14,1,14,999,"046-Surah-Ibraheem.mp3"],
+[47,15,1,15,999,"047-Surah-Al-Hijr.mp3"],
+[48,16,1,16,65,"048-An-Nahl(1-65).mp3"],
+[49,16,66,16,999,"049-An-Nahl(66-End).mp3"],
+[50,17,1,17,999,"050-Bani-Israeel.mp3"],
+[51,18,1,18,999,"050-Surah-Al-Kahf.mp3"],
+[52,19,1,19,999,"051-Surah-Maryam.mp3"],
+[53,20,1,20,999,"052-Surah-Taahaa.mp3"],
+[54,21,1,21,999,"053-Surah-Al-Ambia.mp3"],
+[55,22,1,22,999,"054-Surah-Al-Hajj.mp3"],
+[56,23,1,23,999,"055-Surah-Al-Mominun.mp3"],
+[57,24,1,24,999,"056-Surah-An-Noor.mp3"],
+[58,25,1,25,999,"057-Surah-Al-Furqan.mp3"],
+[59,26,1,26,999,"058-Surah-Ash-Shuara.mp3"],
+[60,27,1,27,999,"059-Surah-An-Naml.mp3"],
+[61,28,1,28,999,"060-Surah-Al-Qassas.mp3"],
+[62,29,1,29,999,"061-Surah-Ankaboot.mp3"],
+[63,30,1,30,999,"062-Surah-Room.mp3"],
+[64,31,1,31,999,"063-Surah-Luqman.mp3"],
+[65,32,1,32,999,"064-Surah-Sajdah.mp3"],
+[66,33,1,33,999,"065-Surah-Al-Ahzab.mp3"],
+[67,34,1,34,999,"066-Surah-Saba.mp3"],
+[68,35,1,35,999,"067-Surah-Fatir.mp3"],
+[69,36,1,36,999,"068-Surah-Yaassen.mp3"],
+[70,37,1,37,999,"069-Surah-Saafat.mp3"],
+[71,38,1,38,999,"070-Surah-Saad.mp3"],
+[72,39,1,39,999,"071-Surah-Zumar.mp3"],
+[73,40,1,40,999,"072-Surah-Momin.mp3"],
+[74,41,1,41,999,"073-Surah-Haamem-As-Sajdah.mp3"],
+[75,42,1,42,999,"074-Surah-Ash-Shura.mp3"],
+[76,43,1,43,999,"075-Surah-Zukruf.mp3"],
+[77,44,1,44,999,"076-Surah-Dukhan.mp3"],
+[78,45,1,45,999,"077-Surah-Jasia.mp3"],
+[79,46,1,46,999,"078-Surah-Ahkaf.mp3"],
+[80,47,1,47,999,"079-Surah-Muhammad.mp3"],
+[81,48,1,48,999,"080-Surah-Fath.mp3"],
+[82,49,1,49,999,"081-Surah-Hujurat.mp3"],
+[83,50,1,50,999,"082-Surah-Qaaf.mp3"],
+[84,51,1,51,999,"083-Surah-Zareaat.mp3"],
+[85,52,1,52,999,"084-Surah-Toor.mp3"],
+[86,53,1,53,999,"085-Surah-An-Najm.mp3"],
+[87,54,1,54,999,"086-Surah-Qmr.mp3"],
+[88,55,1,55,999,"087-Surah-Rehman.mp3"],
+[89,56,1,56,999,"088-Surah-Waqiah.mp3"],
+[90,57,1,57,999,"089-Surah-Hadeed.mp3"],
+[91,58,1,58,999,"090-Surah-Mujadilah.mp3"],
+[92,59,1,59,999,"091-Surah-Hashr.mp3"],
+[93,60,1,60,999,"092-Surah-Mumtahenah.mp3"],
+[94,61,1,61,999,"093-Surah-Saff.mp3"],
+[95,62,1,62,999,"094-Surah-Jumah.mp3"],
+[96,63,1,63,999,"095-Surah-Munafequn.mp3"],
+[97,64,1,64,999,"096-Surah-Taghabn.mp3"],
+[98,65,1,65,999,"097-Surah-Talaq.mp3"],
+[99,66,1,66,999,"098-Surah-Tahreem.mp3"],
+[100,67,1,67,999,"099-Surah-Mulk.mp3"],
+[101,68,1,68,999,"100-Surah-Qlam-Surah-Noon.mp3"],
+[102,69,1,69,999,"101-Surah-Haaqah.mp3"],
+[103,70,1,70,999,"102-Surah-Maarij.mp3"],
+[104,71,1,71,999,"103-Surah-Nuh.mp3"],
+[105,72,1,72,999,"104-Surah-Jinn.mp3"],
+[106,73,1,73,999,"105-Surah-Muzammil.mp3"],
+[107,74,1,74,999,"106-Surah-Muddassir.mp3"],
+[108,75,1,75,999,"107-Surah-Qiamah.mp3"],
+[109,76,1,76,999,"108-Surah-Dahr.mp3"],
+[110,77,1,77,999,"109-Surah-Mursalat.mp3"],
+[111,78,1,78,999,"110-Surah-Naba.mp3"],
+[112,79,1,79,999,"111-Surah-Naziaat.mp3"],
+[113,80,1,80,999,"112-Surah-Abs.mp3"],
+[114,81,1,81,999,"113-Surah-Takwer.mp3"],
+[115,82,1,82,999,"114-Surah-Anfitar.mp3"],
+[116,83,1,83,999,"115-Surah-Mutaffifeen.mp3"],
+[117,84,1,84,999,"116-Surah-Inshiqaq.mp3"],
+[118,85,1,85,999,"117-Surah-Buruj.mp3"],
+[119,86,1,86,999,"118-Surah-Tariq.mp3"],
+[120,87,1,87,999,"119-Surah-Aala.mp3"],
+[121,88,1,88,999,"120-Surah-Ghashia.mp3"],
+[122,89,1,89,999,"121-Surah-Fajr.mp3"],
+[123,90,1,90,999,"122-Surah-Balad.mp3"],
+[124,91,1,91,999,"123-Surah-Shams.mp3"],
+[125,92,1,92,999,"124-Surah-Laiyel.mp3"],
+[126,93,1,93,999,"125-Surah-Zuha.mp3"],
+[127,94,1,94,999,"126-Surah-Alam-Nashrah.mp3"],
+[128,95,1,95,999,"127-Surah-Teen.mp3"],
+[129,96,1,96,999,"128-Surah-Alaq.mp3"],
+[130,97,1,97,999,"129-Surah-Qdr.mp3"],
+[131,98,1,98,999,"130-Surah-Bayenah.mp3"],
+[132,99,1,99,999,"131-Surah-Zilzal.mp3"],
+[133,100,1,100,999,"132-Surah-Aadiad.mp3"],
+[134,101,1,101,999,"133-Surah-Qariah.mp3"],
+[135,102,1,102,999,"134-Surah-Takasur.mp3"],
+[136,103,1,103,999,"135-Surah-Asr.mp3"],
+[137,104,1,104,999,"136-Surah-Humazah.mp3"],
+[138,105,1,105,999,"137-Surah-Feel.mp3"],
+[139,106,1,106,999,"138-Surah-Quraish.mp3"],
+[140,107,1,107,999,"139-Surah-Maaoun.mp3"],
+[141,108,1,108,999,"140-Surah-Kusar.mp3"],
+[142,109,1,109,999,"141-Surah-Kaferun.mp3"],
+[143,110,1,110,999,"142-Surah-Nasr.mp3"],
+[144,111,1,111,999,"143-Surah-Lahb.mp3"],
+[145,112,1,112,999,"144-Surah-Ikhlas.mp3"],
+[146,113,1,113,999,"145-Surah-Falaq.mp3"],
+[147,114,1,114,999,"146-Surah-Nass.mp3"],
+[148,0,0,0,0,"147-Ending-speech.mp3"]];
+const UR_URL = n => "https://media.tanzeem.org/audios/004/04-198/" + encodeURIComponent(UR[n - 1][5]).replace(/%2F/g, "/");
 const EN_URL = n => `https://media.tanzeem.org/audios/017/DTQE-17-19/AE-17-019-${p3(n)}.mp3`;
-const RANGES = { bq:BQ, en:EN };
+const RANGES = { bq:BQ, en:EN, ur:UR };
+const AUDIO_SER = { ur:UR_URL, en:EN_URL };
 const SERIES = {
   bq: { total:108, credit:"Dr. Israr Ahmad · Bayan-ul-Quran (1998)", src:"https://www.drisrar.com/", srcName:"drisrar.com (official)" },
+  ur: { total:148, credit:"Dr. Israr Ahmad · Bayan-ul-Quran, Dora Tarjuma Quran 1998 (Urdu audio)", src:"https://www.tanzeem.org/category-dora-tarjuma-quran-1998/", srcName:"tanzeem.org (official)" },
   en: { total:112, credit:"Dr. Israr Ahmad · Dora-e-Tarjuma-e-Quran (English)", src:"https://www.tanzeem.org/", srcName:"Tanzeem-e-Islami (official)" },
   lq: { list:"UUZcujrtvcTaAiV9MzKBJJPQ", total:0, credit:"Lisan ul Quran · Ustad Amir Sohail", src:"https://play.google.com/store/apps/details?id=com.lisanulquran.amirsohail", srcName:"Lisan ul Quran app" }
 };
 const TAFSIR_TXT = (s, a) => `https://quran.com/${s}:${a}/tafsirs/tafsir-bayan-ul-quran`, TAFSIR_PDF = "https://tanzeem.org/book_categories/bayan-ul-quran/";
 Object.assign(L.ur, {
-  bqName:"بیان القرآن — ڈاکٹر اسرار احمد (اردو ویڈیو)", enName:"ڈاکٹر اسرار احمد — انگریزی آڈیو لیکچرز", lqName:"لسان القرآن — استاد عامر سہیل", lecH:"لیکچرز", lec:n=>`لیکچر ${ud(n)}`, part:n=>`حصہ ${ud(n)}`, lesson:n=>`سبق ${ud(n)}`,
+  bqName:"بیان القرآن — ڈاکٹر اسرار احمد (اردو ویڈیو)", enName:"ڈاکٹر اسرار احمد — انگریزی آڈیو لیکچرز", urName:"بیان القرآن — ڈاکٹر اسرار احمد (اردو آڈیو)", urBtn:"🎧 ڈاکٹر اسرار — اردو آڈیو تفسیر", lqName:"لسان القرآن — استاد عامر سہیل", lecH:"لیکچرز", lec:n=>`لیکچر ${ud(n)}`, part:n=>`حصہ ${ud(n)}`, lesson:n=>`سبق ${ud(n)}`,
   lecAyahs:(a,b)=>`آیات ${ud(a)}–${ud(b)}`, intro:"تعارف", closing:"اختتامی خطاب", tafseerBtn:"▶ ڈاکٹر اسرار — اردو ویڈیو", enBtn:"🎧 ڈاکٹر اسرار — انگریزی آڈیو", txtBtn:"📖 ڈاکٹر اسرار — تحریری تفسیر (اردو)", startAt:t=>`${t} سے جاری رکھیں`,
   cont:"جاری رکھیں", startS:"شروع کریں", openYT:"یوٹیوب پر دیکھیں", prevL:"پچھلا", nextL:"اگلا", via:s=>`آفیشل · ${s}`,
   lqNote:"آفیشل چینل کی ویڈیوز (نئی پہلے)", getApp:"ان کی آفیشل ایپ", noLec:"اس آیت کا لیکچر نہیں ملا",
@@ -36,7 +189,7 @@ Object.assign(L.ur, {
   txtNote:"تحریری تفسیر Quran.com پر (بیان القرآن، اردو)۔ مکمل کتاب PDF: tanzeem.org", pdf:"PDF کتاب"
 });
 Object.assign(L.en, {
-  bqName:"Bayan-ul-Quran — Dr. Israr Ahmad (Urdu video)", enName:"Dr. Israr Ahmad — English audio lectures", lqName:"Lisan ul Quran — Ustad Amir Sohail", lecH:"Lectures", lec:n=>`Lecture ${n}`, part:n=>`Part ${n}`, lesson:n=>`Lesson ${n}`,
+  bqName:"Bayan-ul-Quran — Dr. Israr Ahmad (Urdu video)", enName:"Dr. Israr Ahmad — English audio lectures", urName:"Bayan-ul-Quran — Dr. Israr Ahmad (Urdu audio)", urBtn:"🎧 Dr. Israr — Urdu audio tafsir", lqName:"Lisan ul Quran — Ustad Amir Sohail", lecH:"Lectures", lec:n=>`Lecture ${n}`, part:n=>`Part ${n}`, lesson:n=>`Lesson ${n}`,
   lecAyahs:(a,b)=>`Ayahs ${a}–${b}`, intro:"Introduction", closing:"Closing speech", tafseerBtn:"▶ Dr. Israr — Urdu video", enBtn:"🎧 Dr. Israr — English audio", txtBtn:"📖 Dr. Israr — written tafsir (Urdu)", startAt:t=>`Continue at ${t}`,
   cont:"Continue", startS:"Start", openYT:"Watch on YouTube", prevL:"Previous", nextL:"Next", via:s=>`Official · ${s}`,
   lqNote:"Videos from the official channel (newest first)", getApp:"Their official app", noLec:"No lecture found for this ayah",
@@ -44,8 +197,9 @@ Object.assign(L.en, {
   enHint:"Audio streams from the official tanzeem.org. The app remembers your minute.", audioFail:"The audio didn't load — open it directly:", openFile:"Open audio file",
   txtNote:"Written tafsir on Quran.com (Bayan-ul-Quran, Urdu). Full book PDF: tanzeem.org", pdf:"PDF book"
 });
-const VS = Object.assign({ bq:{ n:0, t:{}, off:null }, en:{ n:0, t:{} }, lq:{ i:0, t:{} } }, store.get("vid", {}));
+const VS = Object.assign({ bq:{ n:0, t:{}, off:null }, ur:{ n:0, t:{} }, en:{ n:0, t:{} }, lq:{ i:0, t:{} } }, store.get("vid", {}));
 if (!VS.en) VS.en = { n:0, t:{} };
+if (!VS.ur) VS.ur = { n:0, t:{} };
 const saveV = () => store.set("vid", VS);
 const mmss = s => { s = Math.floor(s || 0); return Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0"); };
 const key = (s, a) => s * 1000 + a;
@@ -61,15 +215,15 @@ function lecLabel(n, s, ser = "bq"){
 }
 /* buttons for one ayah: Urdu video, English audio, written tafsir (used in the ayah menu and the word sheet) */
 function israrButtons(s, a){
-  const v = lecFor(s, a), e = lecFor(s, a, "en");
-  return `${v ? `<button data-lec="${v}">${T("tafseerBtn")}</button>` : ""}${e ? `<button data-lecen="${e}">${T("enBtn")}</button>` : ""}<a class="btnlink" href="${TAFSIR_TXT(s, a)}" target="_blank" rel="noopener">${T("txtBtn")}</a>`;
+  const v = lecFor(s, a), e = lecFor(s, a, "en"), u = lecFor(s, a, "ur");
+  return `${u ? `<button data-lecur="${u}">${T("urBtn")}</button>` : ""}${v ? `<button data-lec="${v}">${T("tafseerBtn")}</button>` : ""}${e ? `<button data-lecen="${e}">${T("enBtn")}</button>` : ""}<a class="btnlink" href="${TAFSIR_TXT(s, a)}" target="_blank" rel="noopener">${T("txtBtn")}</a>`;
 }
 /* surah header: lectures covering this surah */
 function lecStrip(s){
   const row = (ser, attr, lbl, nameK) => { const ls = lecsInSurah(s, ser); if (!ls.length) return "";
     return `<div class="lh2">${esc(T(nameK))}</div><div class="chips">${ls.map(L =>
       `<button class="chip" ${attr}="${L[0]}"><b>${lbl(nf(L[0]))}</b><span>${esc(lecLabel(L[0], s, ser))}</span>${VS[ser].n === L[0] ? `<i>${T("lastWatched")}</i>` : ""}</button>`).join("")}</div>`; };
-  const h = row("bq", "data-lec", x => T("lec", x), "bqName") + row("en", "data-lecen", x => T("part", x), "enName");
+  const h = row("ur", "data-lecur", x => T("part", x), "urName") + row("bq", "data-lec", x => T("lec", x), "bqName") + row("en", "data-lecen", x => T("part", x), "enName");
   return h ? `<div class="lecstrip">${h}<a class="txtlink" href="${TAFSIR_TXT(s, 1)}" target="_blank" rel="noopener">${T("txtBtn")} ↗</a></div>` : "";
 }
 /* player panel */
@@ -81,8 +235,8 @@ function loadYT(){
 function openLecture(series, n){
   if (vCur) stopMedia();
   vCur = { series, n };
-  const S = SERIES[series], start = series === "lq" ? (VS.lq.t[n] || 0) : series === "en" ? (VS.en.t[n] || 0) : 0;
-  const title = series === "bq" ? `${T("lec", nf(n))} · ${esc(lecLabel(n))}` : series === "en" ? `${T("part", nf(n))} · ${esc(lecLabel(n, 0, "en"))}` : T("lesson", nf(n + 1));
+  const S = SERIES[series], start = series === "lq" ? (VS.lq.t[n] || 0) : AUDIO_SER[series] ? (VS[series].t[n] || 0) : 0, isAu = !!AUDIO_SER[series];
+  const title = series === "bq" ? `${T("lec", nf(n))} · ${esc(lecLabel(n))}` : isAu ? `${T("part", nf(n))} · ${esc(lecLabel(n, 0, series))}` : T("lesson", nf(n + 1));
   const drWatch = `https://www.drisrar.com/watch/${BQ_SLUG[n - 1]}_${BQ_CODE[n - 1]}.html`;
   let body;
   if (series === "bq") {
@@ -90,13 +244,13 @@ function openLecture(series, n){
     body = `<div class="vp-frame okframe"><iframe src="${src}" allow="autoplay; fullscreen; picture-in-picture; encrypted-media" allowfullscreen title="${esc(title)}"></iframe></div>
       <a class="vp-big" href="${drWatch}" target="_blank" rel="noopener">▶ ${T("openDrBig", nf(n))}</a>
       <p class="vp-credit">${T("drHint")}</p>`;
-  } else if (series === "en") {
-    body = `<div class="vp-audio"><audio id="vpAudio" controls preload="metadata" src="${EN_URL(n)}"></audio>
-      <p class="vp-credit" id="vpAErr" hidden>${T("audioFail")} <a href="${EN_URL(n).replace("https:", "http:")}" target="_blank" rel="noopener"><b>${T("openFile")}</b></a></p>
+  } else if (isAu) {
+    body = `<div class="vp-audio"><audio id="vpAudio" controls preload="metadata" src="${AUDIO_SER[series](n)}"></audio>
+      <p class="vp-credit" id="vpAErr" hidden>${T("audioFail")} <a href="${AUDIO_SER[series](n).replace("https:", "http:")}" target="_blank" rel="noopener"><b>${T("openFile")}</b></a></p>
       <p class="vp-credit">${T("enHint")}</p></div>`;
   } else body = `<div class="vp-frame"><div id="ytp"></div></div>`;
   $("#vpanel").innerHTML = `<div class="vp-top"><button class="iconbtn" data-v="close" aria-label="${T("back")}"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg><span class="cap">${T("closeV")}</span></button>
-      <div class="vp-t"><b>${esc(T(series === "bq" ? "bqName" : series === "en" ? "enName" : "lqName"))}</b><small id="vpTitle">${title}</small></div></div>
+      <div class="vp-t"><b>${esc(T(series === "bq" ? "bqName" : series === "en" ? "enName" : series === "ur" ? "urName" : "lqName"))}</b><small id="vpTitle">${title}</small></div></div>
     ${body}
     <div class="vp-nav"><button class="btn ghost" data-v="prev">${T("prevL")}</button><button class="btn ghost" data-v="next">${T("nextL")}</button></div>
     <p class="vp-credit">${esc(T("via", S.credit))} · <a href="${S.src}" target="_blank" rel="noopener">${esc(series === "lq" ? T("getApp") : S.srcName)}</a>
@@ -112,13 +266,13 @@ function openLecture(series, n){
     });
     clearInterval(vTimer); vTimer = setInterval(saveVid, 4000);
   }
-  if (series === "en") {
+  if (isAu) {
     const au = $("#vpAudio");
     au.addEventListener("loadedmetadata", () => { if (start > 5 && start < au.duration - 5) au.currentTime = start; }, { once:true });
     au.addEventListener("error", () => { $("#vpAErr").hidden = false; });
     au.addEventListener("play", () => { if (P.s && !P.audio.paused) P.audio.pause(); });
-    au.addEventListener("ended", () => { delete VS.en.t[n]; saveV(); if (n < 112) openLecture("en", n + 1); });
-    if ("mediaSession" in navigator) try { navigator.mediaSession.metadata = new MediaMetadata({ title:`${T("part", nf(n))} · ${lecLabel(n, 0, "en")}`, artist:"Dr. Israr Ahmad", album:"Dora-e-Tarjuma-e-Quran (English)" }); } catch(e){}
+    au.addEventListener("ended", () => { delete VS[series].t[n]; saveV(); if (n < S.total) openLecture(series, n + 1); });
+    if ("mediaSession" in navigator) try { navigator.mediaSession.metadata = new MediaMetadata({ title:`${T("part", nf(n))} · ${lecLabel(n, 0, series)}`, artist:"Dr. Israr Ahmad", album:S.credit }); } catch(e){}
     clearInterval(vTimer); vTimer = setInterval(saveVid, 4000);
   }
   if (series === "lq") VS.lq.i = n; else VS[series].n = n;
@@ -131,7 +285,7 @@ function onYTState(e){
 }
 function saveVid(){
   if (!vCur) return;
-  if (vCur.series === "en") { const au = $("#vpAudio"); if (au && au.currentTime > 5) { VS.en.t[vCur.n] = Math.floor(au.currentTime); saveV(); } return; }
+  if (AUDIO_SER[vCur.series]) { const au = $("#vpAudio"); if (au && au.currentTime > 5) { VS[vCur.series].t[vCur.n] = Math.floor(au.currentTime); saveV(); } return; }
   if (!YTP || !YTP.getCurrentTime) return;
   const t = YTP.getCurrentTime(); if (!(t > 5)) return;
   VS.lq.t[vCur.n] = Math.floor(t); saveV();
@@ -156,17 +310,18 @@ $("#vpanel").addEventListener("click", e => {
 });
 $("#scrim").addEventListener("click", () => { if (vCur) closeVideo(); });
 document.addEventListener("keydown", e => { if (e.key === "Escape" && vCur) closeVideo(); });
-const lecClick = e => { const c = e.target.closest("[data-lec],[data-lecen]"); if (!c) return false;
-  c.dataset.lec ? openLecture("bq", +c.dataset.lec) : openLecture("en", +c.dataset.lecen); return true; };
+const lecClick = e => { const c = e.target.closest("[data-lec],[data-lecen],[data-lecur]"); if (!c) return false;
+  c.dataset.lec ? openLecture("bq", +c.dataset.lec) : c.dataset.lecur ? openLecture("ur", +c.dataset.lecur) : openLecture("en", +c.dataset.lecen); return true; };
 $("#main").addEventListener("click", lecClick);
-$("#sheetBody").addEventListener("click", e => { const c = e.target.closest("[data-lec],[data-lecen]"); if (c) { closeAll(); lecClick(e); } });
+$("#sheetBody").addEventListener("click", e => { const c = e.target.closest("[data-lec],[data-lecen],[data-lecur]"); if (c) { closeAll(); lecClick(e); } });
 /* Learn tab card */
 function lecturesCard(){
-  const bn = VS.bq.n || 5, en = VS.en.n || 1, et = VS.en.t[en] || 0, li = VS.lq.i || 0, lt = VS.lq.t[li] || 0;
+  const un = VS.ur.n || 5, ut = VS.ur.t[un] || 0, bn = VS.bq.n || 5, en = VS.en.n || 1, et = VS.en.t[en] || 0, li = VS.lq.i || 0, lt = VS.lq.t[li] || 0;
   return `<div class="lh"><h3>${T("lecH")}</h3></div><div class="games">
+    <button class="game" data-lecs="ur"><b>${esc(T("urName"))}</b><small>${T("part", nf(un))} · ${esc(lecLabel(un, 0, "ur"))}</small><small>${ut ? T("startAt", mmss(ut)) : (VS.ur.n ? T("cont") : T("startS"))}</small></button>
     <button class="game" data-lecs="bq"><b>${esc(T("bqName"))}</b><small>${T("lec", nf(bn))} · ${esc(lecLabel(bn))}</small><small>${VS.bq.n ? T("cont") : T("startS")}</small></button>
     <button class="game" data-lecs="en"><b>${esc(T("enName"))}</b><small>${T("part", nf(en))} · ${esc(lecLabel(en, 0, "en"))}</small><small>${et ? T("startAt", mmss(et)) : (VS.en.n ? T("cont") : T("startS"))}</small></button>
     <button class="game" data-lecs="lq"><b>${esc(T("lqName"))}</b><small>${T("lesson", nf(li + 1))}</small><small>${lt ? T("startAt", mmss(lt)) : (VS.lq.i ? T("cont") : T("startS"))}</small></button></div>`;
 }
 $("#learn").addEventListener("click", e => { const c = e.target.closest("[data-lecs]"); if (!c) return; const s = c.dataset.lecs;
-  openLecture(s, s === "bq" ? (VS.bq.n || 5) : s === "en" ? (VS.en.n || 1) : (VS.lq.i || 0)); });
+  openLecture(s, s === "bq" ? (VS.bq.n || 5) : s === "en" ? (VS.en.n || 1) : s === "ur" ? (VS.ur.n || 5) : (VS.lq.i || 0)); });
