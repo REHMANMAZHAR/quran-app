@@ -755,3 +755,20 @@ body.playing #asBar{bottom:calc(140px + env(safe-area-inset-bottom))}
 #hmPrayer .pr{margin-top:4px}
 .tabbar button span{font-size:11px}
 .notr .tafbtn{width:24px;height:24px;opacity:.6}.notr .tafbtn .tafico{width:16px;height:16px}
+/* ===== stronger, larger icons everywhere ===== */
+.iconbtn svg{width:26px;height:26px;stroke-width:2.2}
+.bar .iconbtn svg{stroke:var(--ink)}
+.bar .iconbtn svg path[style*="fill"]{fill:var(--ink) !important}
+.cap{font-size:11.5px;font-weight:700;color:var(--ink)}
+html[lang="ur"] .cap{font-size:11px;font-weight:700}
+.tabbar svg{width:27px;height:27px;stroke-width:2.3}
+.tabbar button{font-size:12.5px;font-weight:700}
+.rtb-b svg{width:28px;height:28px;stroke-width:2.2;stroke:var(--ink)}
+.rtb-b span{font-size:12px;font-weight:700;color:var(--ink)}
+.rtb-b[aria-pressed="true"] svg{stroke:var(--gold)}
+.tafbtn{width:34px;height:34px;opacity:1}
+.tafbtn .tafico,.tafico{width:22px;height:22px;stroke-width:2.2;stroke:var(--gold)}
+.notr .tafbtn{width:30px;height:30px;opacity:1}.notr .tafbtn .tafico{width:20px;height:20px}
+.tafmark{font-size:13.5px}
+.end{border-width:2px;font-weight:700}
+.player svg,.player .pb svg{stroke-width:2.2}
