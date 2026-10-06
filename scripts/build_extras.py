@@ -14,7 +14,7 @@ ayahs = sorted(words)
 tags = {}
 for r in csv.DictReader(open(R("data/grammar-templates-for-review.csv"), encoding="utf-8-sig")):
     t = r["corpus_tags"]
-    if "PREF" in t or "SUFF" in t or t.startswith("V|"): tags[r["id"]] = t
+    tags[r["id"]] = t
 # --- Quranic duas (selection; ayah text comes from the app's own data) ---
 DUAS = [
  ("1:6-7","Guide us to the straight path","ہمیں سیدھا راستہ دکھا","Al-Fatiha"),
@@ -112,4 +112,14 @@ for k, t in toks.items():
     out.sort(reverse=True)
     if out: sim[f"{k[0]}:{k[1]}"] = [[f"{c[0]}:{c[1]}", r] for r, c in out[:6]]
 json.dump(sim, open(R("data/similar.json"), "w", encoding="utf8"), separators=(",", ":"))
+# --- search index: one line per ayah: normalized Arabic | Yusuf Ali | Jalandhry ---
+def strip_ar(t):
+    t = re.sub("[\u064B-\u065F\u0670\u06D6-\u06ED\u0640]", "", t)
+    return t.translate(str.maketrans({"\u0671": "ا", "أ": "ا", "إ": "ا", "آ": "ا", "ى": "ي", "ة": "ه"}))
+idx_out = []
+for n in range(1, 115):
+    d = json.load(open(R(f"data/s/{n:03d}.json"), encoding="utf8"))
+    for a, A in enumerate(d["ayahs"], 1):
+        idx_out.append([n, a, strip_ar(" ".join(w[0] for w in A["w"])), A.get("en2", ""), A.get("ur", "")])
+json.dump(idx_out, open(R("data/search.json"), "w", encoding="utf8"), ensure_ascii=False, separators=(",", ":"))
 print(f"extras: {len(pages)-2} pages, {len(tags)} part tags, {len(duas)} duas; similar: {len(sim)} ayahs have look-alikes")

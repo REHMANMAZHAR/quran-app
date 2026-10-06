@@ -45,12 +45,15 @@ const shortM = m => m.split(/ \/ |; /)[0].replace(/\s*\([^)]*\)/g, "").trim();
 const shuffle = a => { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
 const WR = r => LV.V.words[r - 1];
 
+/* views: read (#main) plus full-screen sections; each module registers VIEWS[name] = { el, title:()=>[ar,en], render } */
+const VIEWS = { learn: { el:"#learn", title:() => [T("learnT"), T("learnSub")], render:() => learnHome() } };
 function showView(v){
   LV.view = v;
-  $("#main").hidden = v !== "read"; $("#learn").hidden = v !== "learn";
-  document.querySelectorAll(".tabbar button").forEach(b => b.setAttribute("aria-selected", b.dataset.v === v));
-  $("#btnPlay").hidden = v !== "read";
-  if (v === "learn") { $("#tAr").textContent = T("learnT"); $("#tEn").textContent = T("learnSub"); learnHome(); }
+  $("#main").hidden = v !== "read";
+  document.querySelectorAll("section.view").forEach(el => el.hidden = !(VIEWS[v] && el.matches(VIEWS[v].el)));
+  document.querySelectorAll(".tabbar button").forEach(b => b.setAttribute("aria-selected", b.dataset.v === v || (v === "page" && b.dataset.v === "read") || (v === "search" && false)));
+  $("#btnPlay").hidden = v !== "read" && v !== "page";
+  if (VIEWS[v]) { const [a, e] = VIEWS[v].title(); $("#tAr").textContent = a; $("#tEn").textContent = e; VIEWS[v].render(); }
   else if (CUR) { const S = META.surahs[CUR.n - 1]; $("#tAr").textContent = T("surahPre") + S.ar; $("#tEn").textContent = `${S.n}. ${S.tr} · ${S.en}`; }
   scrollTo(0, 0);
 }
@@ -79,9 +82,10 @@ async function learnHome(){
       <div style="display:grid;gap:8px;margin-top:14px">${due ? `<button class="btn wide" data-act="review">${T("review", nf(due))}</button>` : ""}
       ${nextDeck >= 0 ? `<button class="btn ${due ? "ghost " : ""}wide" data-deck="${nextDeck}">${T("startNew")} · ${T("deck", nf(nextDeck + 1))}</button>` : ""}</div>
       ${T("enNote") ? `<p style="color:var(--muted);font-size:12.5px;margin:10px 0 0">${T("enNote")}</p>` : ""}</div>
+    ${wotdHTML()}
+    ${questHTML()}
     <div class="lh"><h3>${T("gamesH")}</h3></div>
-    <div class="games"><button class="game" data-act="match"><b>${T("matchT")}</b><small>${T("matchS")}</small>${bm ? `<small>${T("best", fmtT(bm))}</small>` : ""}</button>
-      <div class="game soon"><b>${T("soonT")}</b><small>${T("soonS")}</small></div></div>
+    ${gamesGridHTML()}
     ${lecturesCard()}
     <div class="lh"><h3>${T("decksH")}</h3><small>${T("decksS")}</small></div>
     <div class="decks">${deckHTML}</div>`;
@@ -170,5 +174,5 @@ $("#learn").addEventListener("click", e => {
 });
 $("#learn").addEventListener("keydown", e => { if ((e.key === "Enter" || e.key === " ") && e.target.dataset.act === "flip") { e.preventDefault(); LV.flip = !LV.flip; drawCard(); } });
 document.querySelector(".tabbar").addEventListener("click", e => { const b = e.target.closest("[data-v]"); if (b && b.dataset.v !== LV.view) showView(b.dataset.v); });
-function labelTabs(){ document.querySelectorAll(".tabbar [data-v]").forEach(b => b.querySelector("span").textContent = T(b.dataset.v === "read" ? "tabRead" : "tabLearn")); }
+function labelTabs(){ const K = { read:"tabRead", learn:"tabLearn", duas:"tabDuas", me:"tabMe" }; document.querySelectorAll(".tabbar [data-v]").forEach(b => b.querySelector("span").textContent = T(K[b.dataset.v])); }
 

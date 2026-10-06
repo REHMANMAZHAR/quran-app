@@ -9,7 +9,8 @@ def b64(path):
     with open(os.path.join(ROOT, path), "rb") as f:
         return base64.b64encode(gzip.compress(f.read(), 9)).decode()
 html = open(os.path.join(ROOT, "index.html"), encoding="utf8").read()
-parts = ['window.EMBED={meta:"%s",occ:"%s",vocab:"%s",s:{' % (b64("data/meta.json"), b64("data/occ.json"), b64("data/learn/vocab.json"))]
+extra = {"vocab": "data/learn/vocab.json", "senses": "data/learn/senses.json", "extras": "data/extras.json", "similar": "data/similar.json", "indopak": "data/indopak.json", "search": "data/search.json"}
+parts = ['window.EMBED={meta:"%s",occ:"%s",%s,s:{' % (b64("data/meta.json"), b64("data/occ.json"), ",".join('%s:"%s"' % (k, b64(v)) for k, v in extra.items()))]
 parts.append(",".join('%d:"%s"' % (n, b64(f"data/s/{n:03d}.json")) for n in range(1, 115)))
 parts.append("},t:{")
 tdir = os.path.join(ROOT, "data", "timing")

@@ -71,13 +71,13 @@ async function gunzip(b64){
 function load(key, path){
   if (!cache[key]) {
     cache[key] = (window.EMBED
-      ? gunzip(key.startsWith("t_") ? EMBED.t[key.slice(2)] : key.startsWith("s") ? EMBED.s[+key.slice(1)] : EMBED[key])
+      ? (key.startsWith("t_") ? gunzip(EMBED.t[key.slice(2)]) : /^s\d+$/.test(key) ? gunzip(EMBED.s[+key.slice(1)]) : EMBED[key] ? gunzip(EMBED[key]) : Promise.reject(new Error(key)))
       : fetch(path).then(r => { if(!r.ok) throw new Error(path); return r.json(); })
     ).catch(e => { delete cache[key]; throw e; });
   }
   return cache[key];
 }
-const DV = "4";  // bump whenever data/ changes, so phones fetch fresh files instead of old cached ones
+const DV = "5";  // bump whenever data/ changes, so phones fetch fresh files instead of old cached ones
 const DATA = {
   meta: () => load("meta", `data/meta.json?v=${DV}`),
   occ:  () => load("occ", `data/occ.json?v=${DV}`),
@@ -87,7 +87,7 @@ const DATA = {
 
 /* ---------- state ---------- */
 let META, CUR = null;
-const settings = Object.assign({ lang:null, tr:null, wbw:true, gl:null, size:30, theme:"auto", rec:"Alafasy_128kbps", speed:1 }, store.get("settings", {}));
+const settings = Object.assign({ script:"uth", lang:null, tr:null, wbw:true, gl:null, size:30, theme:"auto", rec:"Alafasy_128kbps", speed:1 }, store.get("settings", {}));
 if (settings.gl === "auto") settings.gl = "ur";
 function saveSettings(){ store.set("settings", settings); applySettings(); }
 function applyLang(){
@@ -106,7 +106,7 @@ function applyLang(){
   $("#pPrev").innerHTML = `<svg viewBox="0 0 24 24"><path d="${ur ? A : B}"/></svg>`;
   $("#pNext").innerHTML = `<svg viewBox="0 0 24 24"><path d="${ur ? B : A}"/></svg>`;
   labelTabs();
-  if (typeof LV !== "undefined" && LV.view === "learn") showView("learn");
+  if (typeof LV !== "undefined" && LV.view !== "read") showView(LV.view);
 }
 function applySettings(){
   document.documentElement.style.setProperty("--arsize", settings.size + "px");
@@ -129,6 +129,7 @@ async function openSurah(n, ayah = 1, word = null){
   let d;
   try { d = await DATA.surah(n); }
   catch(e){ $("#main").innerHTML = `<div class="loading">${T("loadFail")}</div>`; return; }
+  if (settings.script === "ip" && !IPK) { try { IPK = await DATA.indopak(); } catch(e){} }
   if (!CUR || CUR.n !== n) { CUR = d; render(); }
   const el = document.getElementById("a" + ayah);
   document.querySelectorAll(".w.hit").forEach(x => x.classList.remove("hit"));
@@ -147,14 +148,14 @@ function render(){
   const n = CUR.n, S = META.surahs[n-1];
   const trKey = settings.tr;
   let h = "";
-  h += lecStrip(n);
+  h += surahTools(n) + lecStrip(n);
   if (n !== 1 && n !== 9) h += '<div class="bism">بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</div>';
   CUR.ayahs.forEach((A, ai) => {
     const a = ai + 1;
-    h += `<article class="ayah" id="a${a}" data-a="${a}"><div class="words">`;
+    h += `<article class="ayah${ayahCls(n, a)}" id="a${a}" data-a="${a}"><div class="words">`;
     A.w.forEach((w, i) => {
       const g = glossOf(w), last = i === A.w.length - 1;
-      const wh = `<span class="w" data-a="${a}" data-i="${i}" tabindex="0"><span class="ar">${esc(w[0])}</span><span class="g${g.ur?" ur":""}" dir="${g.ur?"rtl":"ltr"}">${esc(g.t)}</span></span>`;
+      const wh = `<span class="w" data-a="${a}" data-i="${i}" tabindex="0"><span class="ar">${esc(wordText(n, a, i, w[0]))}</span><span class="g${g.ur?" ur":""}" dir="${g.ur?"rtl":"ltr"}">${esc(g.t)}</span></span>`;
       h += last ? `<span class="last">${wh}<span class="end" data-play="${a}" role="button" tabindex="0" aria-label="${T("listen", a)}">${ud(a)}</span></span>` : wh;
     });
     h += `</div>`;
@@ -206,12 +207,13 @@ main.addEventListener("contextmenu", e => { if (e.target.closest(".w")) e.preven
 main.addEventListener("keydown", e => { const w = e.target.closest(".w"); if (w && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); openWord(+w.dataset.a, +w.dataset.i); } });
 main.addEventListener("click", e => {
   const b = e.target.closest("[data-go]"); if (b) { openSurah(+b.dataset.go); return; }
-  const pl = e.target.closest("[data-play]"); if (pl) playFrom(CUR.n, +pl.dataset.play);
+  const pl = e.target.closest("[data-play]"); if (pl) openAyahMenu(CUR.n, +pl.dataset.play);
 });
 
 let toastT;
 function toast(html, ms = 2600){ const t = $("#toast"); t.innerHTML = html; t.classList.add("on"); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove("on"), ms); }
 function quickMeaning(a, i){
+  if (document.body.classList.contains("hifz")) { const el = document.querySelector(`#a${a} .w[data-i="${i}"]`); if (el) el.classList.toggle("shown"); return; }
   const w = CUR.ayahs[a-1].w[i], g = glossOf(w);
   toast(`<span class="tar">${esc(w[0])}</span><span dir="${g.ur?"rtl":"ltr"}">${esc(g.t)}</span><br><small>${T("hold")}</small>`);
 }
@@ -234,11 +236,12 @@ function openWord(a, i){
 
   h += `<h3>${T("gramH")}</h3>`;
   const G = (settings.lang === "en" && META.grammar_en) || META.grammar;
-  segs.forEach(s => {
+  segs.forEach((s, j) => {
     const [title, lines] = G[s[1]];
     const L = s[2] >= 0 ? META.lemmas[s[2]] : null;
     h += `<div class="seg-row"><div class="sar seg-${s[3]}">${esc(s[0])}</div><div><b>${esc(title)}</b>`;
     if (lines.length) h += `<ul>${lines.map(x => `<li>${esc(x)}</li>`).join("")}</ul>`;
+    h += partMeaningHTML(segs, j);
     if (L && s[3] === "" && L[2] >= 0) h += `<div class="lem">${T("base")} <span>${esc(L[0])}</span></div>`;
     h += `</div></div>`;
   });
@@ -252,8 +255,9 @@ function openWord(a, i){
         return `<li><button data-lem="${li}" aria-pressed="${li===stem}"><span class="la">${esc(X[0])}</span><span class="lg">${esc(X[4])}</span><span class="lc">${T("times", X[3])}</span></button></li>`; }).join("")}</ul>`;
     if (R[2].length > 14) h += `<div class="cnt" style="color:var(--muted);font-size:13px">${T("moreW", R[2].length-14)}</div>`;
   }
+  h += senseHTML(stem, w) + irabHTML(n, a, i, segs);
   if (L) h += `<h3 id="occH">«<span style="font-family:var(--ar);font-size:22px">${esc(L[0])}</span>» ${T("inQuran", L[3])}</h3><ul class="occ" id="occList"></ul><div id="occMore"></div>`;
-  h += `<div class="draft">${T("draft")}</div>`;
+  h += reviewHTML(n, a, i);
 
   $("#sheetBody").innerHTML = h;
   openSheet();
@@ -445,6 +449,8 @@ P.audio.addEventListener("ended", () => {
   P.count++;
   if (P.rep === 0 || P.count < P.rep) { startAudio(); return; }
   P.count = 0;
+  if (P.loop && P.loop.s === P.s && P.loop.b != null && P.a >= P.loop.b) { P.a = P.loop.a; startAudio(); return; }
+  if (typeof sleepAtEnd === "function" && sleepAtEnd()) return;
   if (P.a < CUR.ayahs.length) { P.a++; startAudio(); }
   else { setLive(-1, -1); $("#pIcon").innerHTML = ICON_PLAY; toast(T("done")); }
 });

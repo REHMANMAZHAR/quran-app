@@ -14,8 +14,13 @@
   applyLang();
   try { META = await metaP; }
   catch(e){ $("#main").innerHTML = `<div class="loading">${T("loadFail")}</div>`; return; }
+  try { [EX, LV.V] = await Promise.all([DATA.extras(), DATA.vocab()]); } catch(e) {}
+  DATA.senses().then(x => { SENSES = x; }).catch(() => {});
+  const dl = deepLink();
+  if (dl) { await openSurah(dl.s, dl.a, dl.w); history.replaceState(null, "", location.pathname); return registerSW(); }
   const last = store.get("last", null);
   await openSurah(last ? last.s : 1, last ? last.a : 1);
   if (last && (last.s !== 1 || last.a !== 1)) toast(esc(T("resume", settings.lang === "en" ? META.surahs[last.s-1].tr : META.surahs[last.s-1].ar, last.a)));
-  if (!window.EMBED && "serviceWorker" in navigator && location.protocol === "https:") navigator.serviceWorker.register("sw.js").catch(() => {});
+  registerSW();
 })();
+function registerSW(){ if (!window.EMBED && "serviceWorker" in navigator && location.protocol === "https:") navigator.serviceWorker.register("sw.js").catch(() => {}); }

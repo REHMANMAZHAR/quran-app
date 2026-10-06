@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Amiri+Quran&family=Scheherazade+New&family=Noto+Nastaliq+Urdu:wght@400;600&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/app.css?v=6">
+<link rel="stylesheet" href="css/app.css?v=7">
 <script>
 /* Move to qurantosoul.com: the old GitHub Pages link forwards there and carries the
    reader's saved data (last ayah, settings) in the #hash (never sent to any server). */
@@ -41,15 +41,22 @@
 <path d="M98 140 Q80 128 60 132 L60 106 Q80 102 98 114 Z" fill="#F3EDE0"/><path d="M102 140 Q120 128 140 132 L140 106 Q120 102 102 114 Z" fill="#F3EDE0"/>
 <path d="M100 116 L100 142" stroke="#D4AF5A" stroke-width="3" stroke-linecap="round"/></svg>
   <button class="title" id="btnTitle" aria-label="سورت بدلیں"><b id="tAr">القرآن</b><small id="tEn"></small></button>
+  <button class="iconbtn" id="btnSearch" aria-label="Search"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/></svg></button>
   <button class="iconbtn" id="btnPlay" aria-label="تلاوت سنیں"><svg viewBox="0 0 24 24"><path d="M8 5.5v13l11-6.5z" style="fill:var(--ink);stroke:none"/></svg></button>
   <button class="iconbtn" id="btnSettings" aria-label="ترتیبات"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1 7 17M17 7l2.1-2.1"/></svg></button>
 </header>
 
 <main id="main"><div class="loading">…</div></main>
-<section id="learn" hidden aria-live="polite"></section>
+<section id="learn" class="view" hidden aria-live="polite"></section>
+<section id="duas" class="view" hidden></section>
+<section id="me" class="view" hidden></section>
+<section id="searchv" class="view" hidden></section>
+<section id="mushaf" class="view" hidden></section>
 <nav class="tabbar" aria-label="QuranToSoul">
   <button data-v="read" aria-selected="true"><svg viewBox="0 0 24 24"><path d="M12 6.5C10 5 7 4.5 3.5 5v13c3.5-.5 6.5 0 8.5 1.5 2-1.5 5-2 8.5-1.5V5C17 4.5 14 5 12 6.5zM12 6.5v13"/></svg><span></span></button>
   <button data-v="learn" aria-selected="false"><svg viewBox="0 0 24 24"><path d="M12 4 2.5 9 12 14l9.5-5zM6 11v4.5c1.5 1.5 3.7 2.5 6 2.5s4.5-1 6-2.5V11M21.5 9v5"/></svg><span></span></button>
+  <button data-v="duas" aria-selected="false"><svg viewBox="0 0 24 24"><path d="M7 21v-6.5C5.2 13.6 4 11.6 4 9.3V5.5c0-.8 1.2-.8 1.2 0V9M7 9V3.8c0-.8 1.3-.8 1.3 0V9M17 21v-6.5c1.8-.9 3-2.9 3-5.2V5.5c0-.8-1.2-.8-1.2 0V9M17 9V3.8c0-.8-1.3-.8-1.3 0V9"/></svg><span></span></button>
+  <button data-v="me" aria-selected="false"><svg viewBox="0 0 24 24"><path d="M6 3.5h12v17l-6-4-6 4z"/></svg><span></span></button>
 </nav>
 
 <div class="scrim" id="scrim"></div>
@@ -77,9 +84,15 @@
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <!--EMBED-->
-<script src="js/core.js?v=6"></script>
-<script src="js/learn.js?v=6"></script>
-<script src="js/lectures.js?v=6"></script>
-<script src="js/start.js?v=6"></script>
+<script src="js/core.js?v=7"></script>
+<script src="js/learn.js?v=7"></script>
+<script src="js/lectures.js?v=7"></script>
+<script src="js/parts.js?v=7"></script>
+<script src="js/ayah.js?v=7"></script>
+<script src="js/views.js?v=7"></script>
+<script src="js/play.js?v=7"></script>
+<script src="js/games.js?v=7"></script>
+<script src="js/course.js?v=7"></script>
+<script src="js/start.js?v=7"></script>
 </body>
 </html>
