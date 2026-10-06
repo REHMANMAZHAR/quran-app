@@ -77,7 +77,7 @@ function load(key, path){
   }
   return cache[key];
 }
-const DV = "5";  // bump whenever data/ changes, so phones fetch fresh files instead of old cached ones
+const DV = "6";  // bump whenever data/ changes, so phones fetch fresh files instead of old cached ones
 const DATA = {
   meta: () => load("meta", `data/meta.json?v=${DV}`),
   occ:  () => load("occ", `data/occ.json?v=${DV}`),
