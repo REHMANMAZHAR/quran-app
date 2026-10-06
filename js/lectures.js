@@ -180,7 +180,7 @@ const SERIES = {
 };
 const TAFSIR_TXT = (s, a) => `https://quran.com/${s}:${a}/tafsirs/tafsir-bayan-ul-quran`, TAFSIR_PDF = "https://tanzeem.org/book_categories/bayan-ul-quran/";
 Object.assign(L.ur, {
-  bqName:"بیان القرآن — ڈاکٹر اسرار احمد (اردو ویڈیو)", enName:"ڈاکٹر اسرار احمد — انگریزی آڈیو لیکچرز", urName:"بیان القرآن — ڈاکٹر اسرار احمد (اردو آڈیو)", urBtn:"🎧 ڈاکٹر اسرار — اردو آڈیو تفسیر", tafShort:"تفسیر", tafSet:"تفسیر (ڈاکٹر اسرار احمد)", txtName:"تحریری تفسیر (اردو، Quran.com)", tafMarkSet:"قرآن کے متن میں تفسیر کے نشان دکھائیں", lqName:"لسان القرآن — استاد عامر سہیل", lecH:"لیکچرز", lec:n=>`لیکچر ${ud(n)}`, part:n=>`حصہ ${ud(n)}`, lesson:n=>`سبق ${ud(n)}`,
+  bqName:"بیان القرآن — ڈاکٹر اسرار احمد (اردو ویڈیو)", enName:"ڈاکٹر اسرار احمد — انگریزی آڈیو لیکچرز", urName:"بیان القرآن — ڈاکٹر اسرار احمد (اردو آڈیو)", urBtn:"🎧 ڈاکٹر اسرار — اردو آڈیو تفسیر", tafShort:"تفسیر", miniV:"چھوٹا کریں", openV:"بڑا کریں", nowAyah:(s,a)=>`اب: ${s} — آیت ${a}`, fromAyah:a=>`آیت ${a} سے`, tafSet:"تفسیر (ڈاکٹر اسرار احمد)", txtName:"تحریری تفسیر (اردو، Quran.com)", tafMarkSet:"قرآن کے متن میں تفسیر کے نشان دکھائیں", lqName:"لسان القرآن — استاد عامر سہیل", lecH:"لیکچرز", lec:n=>`لیکچر ${ud(n)}`, part:n=>`حصہ ${ud(n)}`, lesson:n=>`سبق ${ud(n)}`,
   lecAyahs:(a,b)=>`آیات ${ud(a)}–${ud(b)}`, intro:"تعارف", closing:"اختتامی خطاب", tafseerBtn:"▶ ڈاکٹر اسرار — اردو ویڈیو", enBtn:"🎧 ڈاکٹر اسرار — انگریزی آڈیو", txtBtn:"📖 ڈاکٹر اسرار — تحریری تفسیر (اردو)", startAt:t=>`${t} سے جاری رکھیں`,
   cont:"جاری رکھیں", startS:"شروع کریں", openYT:"یوٹیوب پر دیکھیں", prevL:"پچھلا", nextL:"اگلا", via:s=>`آفیشل · ${s}`,
   lqNote:"آفیشل چینل کی ویڈیوز (نئی پہلے)", getApp:"ان کی آفیشل ایپ", noLec:"اس آیت کا لیکچر نہیں ملا",
@@ -189,7 +189,7 @@ Object.assign(L.ur, {
   txtNote:"تحریری تفسیر Quran.com پر (بیان القرآن، اردو)۔ مکمل کتاب PDF: tanzeem.org", pdf:"PDF کتاب"
 });
 Object.assign(L.en, {
-  bqName:"Bayan-ul-Quran — Dr. Israr Ahmad (Urdu video)", enName:"Dr. Israr Ahmad — English audio lectures", urName:"Bayan-ul-Quran — Dr. Israr Ahmad (Urdu audio)", urBtn:"🎧 Dr. Israr — Urdu audio tafsir", tafShort:"Tafsir", tafSet:"Tafsir (Dr. Israr Ahmad)", txtName:"Written tafsir (Urdu, Quran.com)", tafMarkSet:"Show tafsir markers in the Quran text", lqName:"Lisan ul Quran — Ustad Amir Sohail", lecH:"Lectures", lec:n=>`Lecture ${n}`, part:n=>`Part ${n}`, lesson:n=>`Lesson ${n}`,
+  bqName:"Bayan-ul-Quran — Dr. Israr Ahmad (Urdu video)", enName:"Dr. Israr Ahmad — English audio lectures", urName:"Bayan-ul-Quran — Dr. Israr Ahmad (Urdu audio)", urBtn:"🎧 Dr. Israr — Urdu audio tafsir", tafShort:"Tafsir", miniV:"Minimise", openV:"Expand", nowAyah:(s,a)=>`Now: ${s} — ayah ${a}`, fromAyah:a=>`from ayah ${a}`, tafSet:"Tafsir (Dr. Israr Ahmad)", txtName:"Written tafsir (Urdu, Quran.com)", tafMarkSet:"Show tafsir markers in the Quran text", lqName:"Lisan ul Quran — Ustad Amir Sohail", lecH:"Lectures", lec:n=>`Lecture ${n}`, part:n=>`Part ${n}`, lesson:n=>`Lesson ${n}`,
   lecAyahs:(a,b)=>`Ayahs ${a}–${b}`, intro:"Introduction", closing:"Closing speech", tafseerBtn:"▶ Dr. Israr — Urdu video", enBtn:"🎧 Dr. Israr — English audio", txtBtn:"📖 Dr. Israr — written tafsir (Urdu)", startAt:t=>`Continue at ${t}`,
   cont:"Continue", startS:"Start", openYT:"Watch on YouTube", prevL:"Previous", nextL:"Next", via:s=>`Official · ${s}`,
   lqNote:"Videos from the official channel (newest first)", getApp:"Their official app", noLec:"No lecture found for this ayah",
@@ -216,11 +216,31 @@ function lecLabel(n, s, ser = "bq"){
 /* Tafsir source is one choice in Settings (default: Urdu audio). Reading view shows only a thin marker where a new part begins. */
 const TAF_SER = { ur:{ attr:"data-lecur", num:"part", name:"urName" }, bq:{ attr:"data-lec", num:"lec", name:"bqName" }, en:{ attr:"data-lecen", num:"part", name:"enName" } };
 const tafSrc = () => settings.taf || "ur";
+const TT = {};
+["ur", "en"].forEach(k => fetch(`data/tafsir/${k}-times.json?v=${DV}`).then(r => r.ok ? r.json() : null).then(j => { if (j) TT[k] = j; }).catch(() => {}));
+/* all timed ayahs of one part, in order: [[s, a, seconds], ...] */
+function partMarks(src, n){
+  const T0 = TT[src]; if (!T0) return [];
+  return Object.entries(T0).filter(([, v]) => v[0] === n).map(([k, v]) => { const [s, a] = k.split(":").map(Number); return [s, a, v[1]]; })
+    .sort((x, y) => x[0] - y[0] || x[1] - y[1]);
+}
+let tafCur = "";
+function tafNow(marks, t){
+  let m = marks[0]; for (const x of marks) { if (x[2] <= t + 1) m = x; else break; }
+  const k = m[0] + ":" + m[1]; if (k === tafCur) return; tafCur = k;
+  const el = $("#vpNow"); if (el) el.textContent = T("nowAyah", esc(surahName(m[0])), nf(m[1]));
+  document.querySelectorAll(".vp-ayahs button").forEach(b => b.classList.toggle("on", b.dataset.sa === k));
+  const on = document.querySelector(".vp-ayahs button.on"); if (on) on.scrollIntoView({ block:"nearest", inline:"center" });
+  document.querySelectorAll(".ayah.tafnow").forEach(x => x.classList.remove("tafnow"));
+  if (CUR && CUR.n === m[0]) { const a = document.getElementById("a" + m[1]); if (a) a.classList.add("tafnow"); }
+}
+const ayahTime = (src, s, a) => { const t = TT[src] && TT[src][s + ":" + a]; return t && t[0] === lecFor(s, a, src) ? t[1] : null; };
 function israrButtons(s, a){
   const src = tafSrc();
   if (src === "txt") return `<a class="btnlink" href="${TAFSIR_TXT(s, a)}" target="_blank" rel="noopener">${T("txtBtn")}</a>`;
   const n = lecFor(s, a, src), C = TAF_SER[src];
-  return n ? `<button ${C.attr}="${n}">${T(src === "ur" ? "urBtn" : src === "en" ? "enBtn" : "tafseerBtn")} · ${T(C.num, nf(n))}</button>` : "";
+  const at = ayahTime(src, s, a);
+  return n ? `<button ${C.attr}="${n}"${at != null ? ` data-at="${at}"` : ""}>${T(src === "ur" ? "urBtn" : src === "en" ? "enBtn" : "tafseerBtn")} · ${at != null ? T("fromAyah", nf(a)) : T(C.num, nf(n))}</button>` : "";
 }
 function tafMark(s, a){
   const src = tafSrc(); if (settings.tafMark === false || src === "txt") return "";
@@ -246,13 +266,13 @@ function loadYT(){
   if (!ytReady) ytReady = new Promise(res => { window.onYouTubeIframeAPIReady = res; const s = document.createElement("script"); s.src = "https://www.youtube.com/iframe_api"; document.head.appendChild(s); });
   return ytReady;
 }
-function openLecture(series, n){
+function openLecture(series, n, at){
   if (vCur) stopMedia();
   vCur = { series, n };
-  const S = SERIES[series], start = series === "lq" ? (VS.lq.t[n] || 0) : AUDIO_SER[series] ? (VS[series].t[n] || 0) : 0, isAu = !!AUDIO_SER[series];
+  const S = SERIES[series], start = at != null ? at : series === "lq" ? (VS.lq.t[n] || 0) : AUDIO_SER[series] ? (VS[series].t[n] || 0) : 0, isAu = !!AUDIO_SER[series];
   const title = series === "bq" ? `${T("lec", nf(n))} · ${esc(lecLabel(n))}` : isAu ? `${T("part", nf(n))} · ${esc(lecLabel(n, 0, series))}` : T("lesson", nf(n + 1));
   const drWatch = `https://www.drisrar.com/watch/${BQ_SLUG[n - 1]}_${BQ_CODE[n - 1]}.html`;
-  let body;
+  let body; const marks = isAu ? partMarks(series, n) : [];
   if (series === "bq") {
     const src = BQ_OK[n - 1] ? `https://ok.ru/videoembed/${BQ_OK[n - 1]}` : `https://www.drisrar.com/embed/${BQ_CODE[n - 1]}`;
     body = `<div class="vp-frame okframe"><iframe src="${src}" allow="autoplay; fullscreen; picture-in-picture; encrypted-media" allowfullscreen title="${esc(title)}"></iframe></div>
@@ -260,16 +280,18 @@ function openLecture(series, n){
       <p class="vp-credit">${T("drHint")}</p>`;
   } else if (isAu) {
     body = `<div class="vp-audio"><audio id="vpAudio" controls preload="metadata" src="${AUDIO_SER[series](n)}"></audio>
+      ${marks.length ? `<div class="vp-now" id="vpNow"></div><div class="vp-ayahs">${marks.map(m => `<button data-seek="${m[2]}" data-sa="${m[0]}:${m[1]}">${nf(m[1])}</button>`).join("")}</div>` : ""}
       <p class="vp-credit" id="vpAErr" hidden>${T("audioFail")} <a href="${AUDIO_SER[series](n).replace("https:", "http:")}" target="_blank" rel="noopener"><b>${T("openFile")}</b></a></p>
       <p class="vp-credit">${T("enHint")}</p></div>`;
   } else body = `<div class="vp-frame"><div id="ytp"></div></div>`;
   $("#vpanel").innerHTML = `<div class="vp-top"><button class="iconbtn" data-v="close" aria-label="${T("back")}"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg><span class="cap">${T("closeV")}</span></button>
+      ${isAu ? `<button class="iconbtn" data-v="mini" aria-label="${T("miniV")}"><b class="mi">▾</b><span class="cap">${T("miniV")}</span></button>` : ""}
       <div class="vp-t"><b>${esc(T(series === "bq" ? "bqName" : series === "en" ? "enName" : series === "ur" ? "urName" : "lqName"))}</b><small id="vpTitle">${title}</small></div></div>
     ${body}
     <div class="vp-nav"><button class="btn ghost" data-v="prev">${T("prevL")}</button><button class="btn ghost" data-v="next">${T("nextL")}</button></div>
     <p class="vp-credit">${esc(T("via", S.credit))} · <a href="${S.src}" target="_blank" rel="noopener">${esc(series === "lq" ? T("getApp") : S.srcName)}</a>
       ${series === "lq" ? `<br>${T("lqNote")} · <a href="https://www.youtube.com/playlist?list=${S.list}" target="_blank" rel="noopener">${T("openYT")}</a>` : ""}</p>`;
-  $("#vpanel").classList.add("on"); $("#scrim").classList.add("on");
+  $("#vpanel").classList.add("on"); $("#vpanel").classList.remove("mini"); $("#scrim").classList.add("on");
   if (P.s && !P.audio.paused) P.audio.pause();
   if (series === "lq") {
     loadYT().then(() => {
@@ -282,8 +304,9 @@ function openLecture(series, n){
   }
   if (isAu) {
     const au = $("#vpAudio");
-    au.addEventListener("loadedmetadata", () => { if (start > 5 && start < au.duration - 5) au.currentTime = start; }, { once:true });
+    au.addEventListener("loadedmetadata", () => { if ((at != null || start > 5) && start < au.duration - 5) au.currentTime = start; }, { once:true });
     au.addEventListener("error", () => { $("#vpAErr").hidden = false; });
+    if (marks.length) au.addEventListener("timeupdate", () => tafNow(marks, au.currentTime));
     au.addEventListener("play", () => { if (P.s && !P.audio.paused) P.audio.pause(); });
     au.addEventListener("ended", () => { delete VS[series].t[n]; saveV(); if (n < S.total) openLecture(series, n + 1); });
     if ("mediaSession" in navigator) try { navigator.mediaSession.metadata = new MediaMetadata({ title:`${T("part", nf(n))} · ${lecLabel(n, 0, series)}`, artist:"Dr. Israr Ahmad", album:S.credit }); } catch(e){}
@@ -310,22 +333,25 @@ function stopMedia(){
   if (YTP) { try { YTP.pauseVideo(); YTP.destroy(); } catch(e){} YTP = null; }
 }
 function closeVideo(){
-  stopMedia();
-  $("#vpanel").classList.remove("on"); $("#vpanel").innerHTML = ""; $("#scrim").classList.remove("on"); vCur = null;
+  stopMedia(); tafCur = ""; document.querySelectorAll(".ayah.tafnow").forEach(x => x.classList.remove("tafnow"));
+  $("#vpanel").classList.remove("on", "mini"); $("#vpanel").innerHTML = ""; $("#scrim").classList.remove("on"); vCur = null;
   if (LV.view === "learn") learnHome();
 }
 $("#vpanel").addEventListener("click", e => {
+  const sk = e.target.closest("[data-seek]"); if (sk) { const au = $("#vpAudio"); if (au) { au.currentTime = +sk.dataset.seek; au.play().catch(() => {}); } return; }
   const b = e.target.closest("[data-v]"); if (!b || !vCur) return;
   const v = b.dataset.v;
   if (v === "close") return closeVideo();
+  if (v === "mini") { const m = $("#vpanel").classList.toggle("mini"); $("#scrim").classList.toggle("on", !m); b.querySelector(".mi").textContent = m ? "▴" : "▾"; b.querySelector(".cap").textContent = T(m ? "openV" : "miniV"); return; }
   const max = vCur.series === "lq" ? 999 : SERIES[vCur.series].total, min = vCur.series === "lq" ? 0 : 1;
   const n = Math.min(max, Math.max(min, vCur.n + (v === "next" ? 1 : -1)));
   if (n !== vCur.n) openLecture(vCur.series, n);
 });
-$("#scrim").addEventListener("click", () => { if (vCur) closeVideo(); });
+$("#scrim").addEventListener("click", () => { if (vCur && !$("#vpanel").classList.contains("mini")) closeVideo(); });
 document.addEventListener("keydown", e => { if (e.key === "Escape" && vCur) closeVideo(); });
 const lecClick = e => { const c = e.target.closest("[data-lec],[data-lecen],[data-lecur]"); if (!c) return false;
-  c.dataset.lec ? openLecture("bq", +c.dataset.lec) : c.dataset.lecur ? openLecture("ur", +c.dataset.lecur) : openLecture("en", +c.dataset.lecen); return true; };
+  const at = c.dataset.at != null ? +c.dataset.at : undefined;
+  c.dataset.lec ? openLecture("bq", +c.dataset.lec) : c.dataset.lecur ? openLecture("ur", +c.dataset.lecur, at) : openLecture("en", +c.dataset.lecen, at); return true; };
 $("#main").addEventListener("click", lecClick);
 $("#sheetBody").addEventListener("click", e => { const c = e.target.closest("[data-lec],[data-lecen],[data-lecur]"); if (c) { closeAll(); lecClick(e); } });
 /* Learn tab card */
