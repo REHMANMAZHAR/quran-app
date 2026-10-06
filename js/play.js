@@ -5,6 +5,7 @@ Object.assign(L.ur, {
   dlAudio:"اس سورت کی تلاوت آف لائن محفوظ کریں", dlProg:(a,b)=>`محفوظ ہو رہی ہے ${ud(a)}/${ud(b)}`, dlDone:"آف لائن محفوظ — انٹرنیٹ کے بغیر سن سکتے ہیں", dlFail:"کچھ آیات محفوظ نہیں ہوئیں",
   offPack:"پورا متن آف لائن محفوظ کریں (۱۲ MB)", offProg:(a,b)=>`محفوظ ہو رہا ہے ${ud(a)}/${ud(b)}`, offDone:"تمام متن آف لائن دستیاب ہے",
   offH:"آف لائن", scholarH:"علمی نظرِ ثانی", scholarTxt:"الفاظ کے بنیادی معانی: عالم نے نظرِ ثانی کی (اکتوبر ۲۰۲۶)۔ گرامر نوٹس، دعاؤں کے ترجمے اور کورس: مسودہ — نظرِ ثانی جاری۔ کوئی غلطی نظر آئے تو بتائیں۔",
+  gapH:"آیات کے درمیان وقفہ", gap0:"کوئی نہیں", gapS:n=>`${ud(n)} سیکنڈ`,
   feedback:"رائے / تجویز بھیجیں", fbSubj:"QuranToSoul — رائے"
 });
 Object.assign(L.en, {
@@ -12,6 +13,7 @@ Object.assign(L.en, {
   dlAudio:"Save this surah's recitation offline", dlProg:(a,b)=>`Saving ${a}/${b}`, dlDone:"Saved offline — you can listen without internet", dlFail:"Some ayahs could not be saved",
   offPack:"Save all text offline (12 MB)", offProg:(a,b)=>`Saving ${a}/${b}`, offDone:"All text is available offline",
   offH:"Offline", scholarH:"Scholar review", scholarTxt:"Base meanings of words: reviewed by a scholar (Oct 2026). Grammar notes, dua translations and the course: draft — review in progress. Please report anything that looks wrong.",
+  gapH:"Pause between ayahs", gap0:"None", gapS:n=>`${n} s`,
   feedback:"Send feedback / suggestion", fbSubj:"QuranToSoul — feedback"
 });
 /* sleep timer: cycles off → 15 → 30 → 60 min → end of surah */
@@ -55,7 +57,7 @@ drawDrawer = function(){
   _drawDrawer();
   if (tab !== "settings") return;
   const set = document.querySelector("#drBody .set"); if (!set) return;
-  set.insertAdjacentHTML("beforeend", `${typeof tajSettingsHTML === "function" ? tajSettingsHTML() : ""}${typeof tafSettingsHTML === "function" ? tafSettingsHTML() : ""}<span class="lbl">${T("offH")}</span>
+  set.insertAdjacentHTML("beforeend", `<span class="lbl">${T("gapH")}</span><div class="seg3">${[0, 1, 2, 3, 5].map(g => `<button data-set="gap" data-v="${g}" aria-pressed="${(settings.gap || 0) === g}">${g ? T("gapS", nf(g)) : T("gap0")}</button>`).join("")}</div>${typeof tajSettingsHTML === "function" ? tajSettingsHTML() : ""}${typeof tafSettingsHTML === "function" ? tafSettingsHTML() : ""}<span class="lbl">${T("offH")}</span>
     <div class="wd-actions" style="flex-direction:column;align-items:stretch"><button data-x="pack">${T("offPack")}</button>${CUR ? `<button data-x="audio">${T("dlAudio")} · ${esc(surahName(CUR.n))}</button>` : ""}</div>
     <span class="lbl">${T("scholarH")}</span><div style="font-size:13px;line-height:1.8">${T("scholarTxt")}</div>
     <div class="wd-actions" style="margin-top:10px"><button data-x="fb">✉ ${T("feedback")}</button></div>`);

@@ -401,12 +401,23 @@ async function playFrom(s, a, noTaud){
   const rec = settings.rec;
   DATA.timing(rec).then(T => { if (settings.rec === rec) P.T = T; }).catch(() => {});
 }
+/* gapless recitation: the next ayah is loaded in a second player while this one plays, then the two are swapped */
+const audioUrl = (s, a, taud, bism) => taud ? `${AUDIO}${P.taudAlt ? "Alafasy_128kbps" : settings.rec}/audhubillah.mp3` : bism ? `${AUDIO}${settings.rec}/001001.mp3` : `${AUDIO}${settings.rec}/${p3(s)}${p3(a)}.mp3`;
 function startAudio(){
-  const s = P.s, a = P.a;
-  P.audio.src = P.taud ? `${AUDIO}${P.taudAlt ? "Alafasy_128kbps" : settings.rec}/audhubillah.mp3` : P.bism ? `${AUDIO}${settings.rec}/001001.mp3` : `${AUDIO}${settings.rec}/${p3(s)}${p3(a)}.mp3`;
-  P.audio.playbackRate = settings.speed;
-  P.audio.play().catch(() => {});
-  if (!P.bism && !P.taud && a < CUR.ayahs.length) P.pre.src = `${AUDIO}${settings.rec}/${p3(s)}${p3(a+1)}.mp3`;
+  const s = P.s, a = P.a, url = audioUrl(s, a, P.taud, P.bism);
+  if (P.pre.getAttribute("src") === url && P.pre.readyState >= 2) {
+    const old = P.audio; old.pause(); P.audio = P.pre; P.pre = old;
+    P.audio.currentTime = 0; P.audio.playbackRate = settings.speed;
+    P.audio.play().catch(() => { const b = P.audio; P.audio = P.pre; P.pre = b; P.audio.src = url; P.audio.play().catch(() => {}); });
+  } else {
+    P.audio.src = url; P.audio.playbackRate = settings.speed; P.audio.play().catch(() => {});
+  }
+  // what comes next: after ta'awwudh → basmalah or the ayah; after basmalah → the ayah; else the next ayah
+  let nx = null;
+  if (P.taud) nx = P.bism ? audioUrl(s, a, false, true) : audioUrl(s, a);
+  else if (P.bism) nx = audioUrl(s, a);
+  else if (P.rep === 1 && a < CUR.ayahs.length) nx = audioUrl(s, a + 1);
+  if (nx && P.pre.getAttribute("src") !== nx) { P.pre.pause(); P.pre.src = nx; P.pre.load(); }
   P.liveKey = null;
   updateBar();
   markAyah();
@@ -456,9 +467,10 @@ function tick(){
   }
   P.raf = requestAnimationFrame(tick);
 }
-P.audio.addEventListener("play", () => { $("#pIcon").innerHTML = ICON_PAUSE; if (!P.raf) P.raf = requestAnimationFrame(tick); });
-P.audio.addEventListener("pause", () => { $("#pIcon").innerHTML = ICON_PLAY; });
-P.audio.addEventListener("ended", () => {
+const onA = (ev, fn) => [P.audio, P.pre].forEach(el => el.addEventListener(ev, e => { if (e.target === P.audio) fn(e); }));
+onA("play", () => { $("#pIcon").innerHTML = ICON_PAUSE; if (!P.raf) P.raf = requestAnimationFrame(tick); });
+onA("pause", () => { $("#pIcon").innerHTML = ICON_PLAY; });
+onA("ended", () => {
   if (P.taud) { P.taud = false; startAudio(); return; }
   if (P.bism) { P.bism = false; startAudio(); return; }
   P.count++;
@@ -466,10 +478,10 @@ P.audio.addEventListener("ended", () => {
   P.count = 0;
   if (P.loop && P.loop.s === P.s && P.loop.b != null && P.a >= P.loop.b) { P.a = P.loop.a; startAudio(); return; }
   if (typeof sleepAtEnd === "function" && sleepAtEnd()) return;
-  if (P.a < CUR.ayahs.length) { P.a++; startAudio(); }
+  if (P.a < CUR.ayahs.length) { P.a++; if (settings.gap) setTimeout(() => { if (P.s) startAudio(); }, settings.gap * 1000); else startAudio(); }
   else { setLive(-1, -1); $("#pIcon").innerHTML = ICON_PLAY; toast(T("done")); }
 });
-P.audio.addEventListener("error", () => {
+onA("error", () => {
   if (P.taud) { if (!P.taudAlt && settings.rec !== "Alafasy_128kbps") { P.taudAlt = true; } else { P.taud = false; } startAudio(); return; }  // reciter has no ta'awwudh file: use Alafasy's, else go on
   if (P.s && P.audio.getAttribute("src")) toast(T("audioFail"));
 });

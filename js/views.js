@@ -151,7 +151,9 @@ function duaTrim(t){
 }
 /* second translation: Urdu when the main one is English, English when it is Urdu */
 function otherTr(A){ const main = settings.tr || "ur"; return /^ur/.test(main) ? (A.en2 || A.en) : (A.ur || A.ur2); }
-const DS = Object.assign({ fav:{}, cnt:{}, tab:"q" }, store.get("duas", {}));
+const DS = Object.assign({ fav:{}, cnt:{}, tab:"q", trl:"ur" }, store.get("duas", {}));
+/* duas: translation language chosen in the Duas tab (Urdu by default) */
+const duaTr = A => DS.trl === "en" ? (A.en2 || A.en || "") : (A.ur || A.ur2 || "");
 const saveD = () => store.set("duas", DS);
 async function renderDuas(){
   if (!EX) { $("#duas").innerHTML = `<div class="loading">${T("loading")}</div>`; try { EX = await DATA.extras(); } catch(e) { $("#duas").innerHTML = `<div class="loading">${T("loadFail")}</div>`; return; } }
@@ -164,7 +166,7 @@ async function renderDuas(){
       let tr2 = "";
       for (let x = a; x <= b; x++) { const A = sd.ayahs[x - 1], st = x === a ? duaStart(A.w) : 0;
         ar += (st ? "… " : "") + A.w.slice(st).map(w => w[0]).join(" ") + ` ﴿${nf(x)}﴾ `;
-        tr += (x === a && st ? duaTrim(trOf(A)) : trOf(A)) + " ";
+        const dt = duaTr(A); tr += (x === a && st ? duaTrim(dt) : dt) + " ";
         const o = otherTr(A); if (o) tr2 += (x === a && st ? duaTrim(o) : o) + " "; }
       return `<article class="dua"><div class="dh"><b>${esc(en ? ten : tur)}</b>${star(id)}</div><div class="who">${esc(who)} · ${esc(surahName(s))} ${nf(s)}:${nf(a)}${b !== a ? "–" + nf(b) : ""}</div>
         <p class="dar" dir="rtl" lang="ar">${esc(ar)}</p><p class="dtr ${/[؀-ۿ]/.test(tr) ? "ur" : ""}">${esc(tr.trim())}</p>
@@ -176,13 +178,15 @@ async function renderDuas(){
     body += MASNOON.filter(m => tab === "m" || DS.fav["m" + m[0]]).map(m => {
       const [id, ten, tur, ar, men, mur, src, n] = m, c = DS.cnt[id] || 0;
       return `<article class="dua"><div class="dh"><b>${esc(en ? ten : tur)}</b>${star("m" + id)}</div><p class="dar" dir="rtl" lang="ar">${esc(ar)}</p>
-        <p class="dtr ${en ? "" : "ur"}">${esc(en ? men : mur)}</p><div class="who">${T("src")} ${esc(src)}</div>
+        <p class="dtr ${DS.trl === "en" ? "" : "ur"}">${esc(DS.trl === "en" ? men : mur)}</p><div class="who">${T("src")} ${esc(src)}</div>
         <div class="ctr"><button class="btn" data-cnt="${id}">${T("count")} · <b>${nf(c)}</b>${n > 1 ? " / " + nf(n) : ""}</button><button class="btn ghost" data-cnt0="${id}">${T("reset")}</button></div></article>`;
     }).join("") + (tab === "m" ? `<p class="draft">${T("draftDua")}</p>` : "");
   }
-  $("#duas").innerHTML = `<div class="seg3 dtabs"><button data-dt="q" aria-pressed="${tab === "q"}">${T("qDuas")}</button><button data-dt="m" aria-pressed="${tab === "m"}">${T("mDuas")}</button><button data-dt="f" aria-pressed="${tab === "f"}">★ ${T("fav")}</button></div>${body || `<p class="muted">${T("nothing")}</p>`}`;
+  const trl = `<div class="dtrl"><span>${en ? "Translation" : "ترجمہ"}</span><div class="rtb-seg"><button data-dtrl="ur" aria-pressed="${DS.trl !== "en"}">اردو</button><button data-dtrl="en" aria-pressed="${DS.trl === "en"}">English</button></div></div>`;
+  $("#duas").innerHTML = trl + `<div class="seg3 dtabs"><button data-dt="q" aria-pressed="${tab === "q"}">${T("qDuas")}</button><button data-dt="m" aria-pressed="${tab === "m"}">${T("mDuas")}</button><button data-dt="f" aria-pressed="${tab === "f"}">★ ${T("fav")}</button></div>${body || `<p class="muted">${T("nothing")}</p>`}`;
 }
 $("#duas").addEventListener("click", e => {
+  const tl = e.target.closest("[data-dtrl]"); if (tl) { DS.trl = tl.dataset.dtrl; saveD(); renderDuas(); return; }
   const t = e.target.closest("[data-dt]"); if (t) { DS.tab = t.dataset.dt; saveD(); renderDuas(); return; }
   const f = e.target.closest("[data-fav]"); if (f) { const id = f.dataset.fav; if (DS.fav[id]) delete DS.fav[id]; else DS.fav[id] = 1; saveD(); f.textContent = DS.fav[id] ? "★" : "☆"; f.setAttribute("aria-pressed", !!DS.fav[id]); return; }
   const c = e.target.closest("[data-cnt]"); if (c) { const id = c.dataset.cnt; DS.cnt[id] = (DS.cnt[id] || 0) + 1; saveD(); c.querySelector("b").textContent = nf(DS.cnt[id]); if (navigator.vibrate) navigator.vibrate(15);
