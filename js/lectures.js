@@ -180,7 +180,7 @@ const SERIES = {
 };
 const TAFSIR_TXT = (s, a) => `https://quran.com/${s}:${a}/tafsirs/tafsir-bayan-ul-quran`, TAFSIR_PDF = "https://tanzeem.org/book_categories/bayan-ul-quran/";
 Object.assign(L.ur, {
-  bqName:"بیان القرآن — ڈاکٹر اسرار احمد (اردو ویڈیو)", enName:"ڈاکٹر اسرار احمد — انگریزی آڈیو لیکچرز", urName:"بیان القرآن — ڈاکٹر اسرار احمد (اردو آڈیو)", urBtn:"🎧 ڈاکٹر اسرار — اردو آڈیو تفسیر", tafShort:"تفسیر", miniV:"چھوٹا کریں", openV:"بڑا کریں", nowAyah:(s,a)=>`اب: ${s} — آیت ${a}`, fromAyah:a=>`آیت ${a} سے`, tafSet:"تفسیر (ڈاکٹر اسرار احمد)", txtName:"تحریری تفسیر (اردو، Quran.com)", tafMarkSet:"قرآن کے متن میں تفسیر کے نشان دکھائیں", lqName:"لسان القرآن — استاد عامر سہیل", lecH:"لیکچرز", lec:n=>`لیکچر ${ud(n)}`, part:n=>`حصہ ${ud(n)}`, lesson:n=>`سبق ${ud(n)}`,
+  bqName:"بیان القرآن — ڈاکٹر اسرار احمد (اردو ویڈیو)", enName:"ڈاکٹر اسرار احمد — انگریزی آڈیو لیکچرز", urName:"بیان القرآن — ڈاکٹر اسرار احمد (اردو آڈیو)", urBtn:"🎧 ڈاکٹر اسرار — اردو آڈیو تفسیر", tafShort:"تفسیر", tafFrom:a=>`آیت ${a} سے ڈاکٹر اسرار کی تفسیر سنیں`, miniV:"چھوٹا کریں", openV:"بڑا کریں", nowAyah:(s,a)=>`اب: ${s} — آیت ${a}`, fromAyah:a=>`آیت ${a} سے`, tafSet:"تفسیر (ڈاکٹر اسرار احمد)", txtName:"تحریری تفسیر (اردو، Quran.com)", tafMarkSet:"قرآن کے متن میں تفسیر کے نشان اور 🎧 بٹن دکھائیں", lqName:"لسان القرآن — استاد عامر سہیل", lecH:"لیکچرز", lec:n=>`لیکچر ${ud(n)}`, part:n=>`حصہ ${ud(n)}`, lesson:n=>`سبق ${ud(n)}`,
   lecAyahs:(a,b)=>`آیات ${ud(a)}–${ud(b)}`, intro:"تعارف", closing:"اختتامی خطاب", tafseerBtn:"▶ ڈاکٹر اسرار — اردو ویڈیو", enBtn:"🎧 ڈاکٹر اسرار — انگریزی آڈیو", txtBtn:"📖 ڈاکٹر اسرار — تحریری تفسیر (اردو)", startAt:t=>`${t} سے جاری رکھیں`,
   cont:"جاری رکھیں", startS:"شروع کریں", openYT:"یوٹیوب پر دیکھیں", prevL:"پچھلا", nextL:"اگلا", via:s=>`آفیشل · ${s}`,
   lqNote:"آفیشل چینل کی ویڈیوز (نئی پہلے)", getApp:"ان کی آفیشل ایپ", noLec:"اس آیت کا لیکچر نہیں ملا",
@@ -189,7 +189,7 @@ Object.assign(L.ur, {
   txtNote:"تحریری تفسیر Quran.com پر (بیان القرآن، اردو)۔ مکمل کتاب PDF: tanzeem.org", pdf:"PDF کتاب"
 });
 Object.assign(L.en, {
-  bqName:"Bayan-ul-Quran — Dr. Israr Ahmad (Urdu video)", enName:"Dr. Israr Ahmad — English audio lectures", urName:"Bayan-ul-Quran — Dr. Israr Ahmad (Urdu audio)", urBtn:"🎧 Dr. Israr — Urdu audio tafsir", tafShort:"Tafsir", miniV:"Minimise", openV:"Expand", nowAyah:(s,a)=>`Now: ${s} — ayah ${a}`, fromAyah:a=>`from ayah ${a}`, tafSet:"Tafsir (Dr. Israr Ahmad)", txtName:"Written tafsir (Urdu, Quran.com)", tafMarkSet:"Show tafsir markers in the Quran text", lqName:"Lisan ul Quran — Ustad Amir Sohail", lecH:"Lectures", lec:n=>`Lecture ${n}`, part:n=>`Part ${n}`, lesson:n=>`Lesson ${n}`,
+  bqName:"Bayan-ul-Quran — Dr. Israr Ahmad (Urdu video)", enName:"Dr. Israr Ahmad — English audio lectures", urName:"Bayan-ul-Quran — Dr. Israr Ahmad (Urdu audio)", urBtn:"🎧 Dr. Israr — Urdu audio tafsir", tafShort:"Tafsir", tafFrom:a=>`Listen to Dr. Israr’s tafsir from ayah ${a}`, miniV:"Minimise", openV:"Expand", nowAyah:(s,a)=>`Now: ${s} — ayah ${a}`, fromAyah:a=>`from ayah ${a}`, tafSet:"Tafsir (Dr. Israr Ahmad)", txtName:"Written tafsir (Urdu, Quran.com)", tafMarkSet:"Show tafsir markers and 🎧 buttons in the Quran text", lqName:"Lisan ul Quran — Ustad Amir Sohail", lecH:"Lectures", lec:n=>`Lecture ${n}`, part:n=>`Part ${n}`, lesson:n=>`Lesson ${n}`,
   lecAyahs:(a,b)=>`Ayahs ${a}–${b}`, intro:"Introduction", closing:"Closing speech", tafseerBtn:"▶ Dr. Israr — Urdu video", enBtn:"🎧 Dr. Israr — English audio", txtBtn:"📖 Dr. Israr — written tafsir (Urdu)", startAt:t=>`Continue at ${t}`,
   cont:"Continue", startS:"Start", openYT:"Watch on YouTube", prevL:"Previous", nextL:"Next", via:s=>`Official · ${s}`,
   lqNote:"Videos from the official channel (newest first)", getApp:"Their official app", noLec:"No lecture found for this ayah",
@@ -250,6 +250,30 @@ function tafMark(s, a){
   return `<button class="tafmark" ${C.attr}="${L[0]}" aria-label="${esc(T(C.name))}"><span>${icon} ${T("tafShort")} · ${T(C.num, nf(L[0]))}</span><em>${esc(lecLabel(L[0], s, src))}</em></button>`;
 }
 function lecStrip(){ return ""; }
+/* one tap: small 🎧 after each ayah number, and the header "Tafsir" button (plays from the ayah at the top of the screen) */
+function tafIcon(s, a){
+  if (settings.tafMark === false) return "";
+  return `<button class="tafbtn" data-taf="${s}:${a}" aria-label="${esc(T("tafFrom", nf(a)))}" title="${esc(T("tafFrom", nf(a)))}">🎧</button>`;
+}
+function playTafsir(s, a){
+  const src = tafSrc();
+  if (src === "txt") { window.open(TAFSIR_TXT(s, a), "_blank", "noopener"); return; }
+  const n = lecFor(s, a, src); if (!n) { toast(esc(T("noLec"))); return; }
+  const at = ayahTime(src, s, a);
+  openLecture(src, n, at != null ? at : undefined);
+  if (src !== "bq") { const b = $("#vpanel").querySelector("[data-v=mini]"); if (b) b.click(); }   // keep the Quran visible
+}
+function topAyah(){
+  const top = ($(".bar") ? $(".bar").getBoundingClientRect().bottom : 60) + 4;
+  return [...document.querySelectorAll("#main .ayah")].find(x => x.getBoundingClientRect().bottom > top + 40);
+}
+$("#main").addEventListener("click", e => { const b = e.target.closest("[data-taf]"); if (!b) return; e.stopPropagation(); const [s, a] = b.dataset.taf.split(":").map(Number); playTafsir(s, a); }, true);
+if ($("#btnTaf")) $("#btnTaf").onclick = () => {
+  if (!CUR) return;
+  if (vCur && AUDIO_SER[vCur.series]) { const au = $("#vpAudio"); if (au) { au.paused ? au.play().catch(() => {}) : au.pause(); return; } }   // second tap: pause / resume
+  const el = topAyah(); playTafsir(CUR.n, el ? +el.dataset.a : 1);
+};
+
 function tafSettingsHTML(){
   const o = (v, k) => `<option value="${v}"${tafSrc() === v ? " selected" : ""}>${esc(T(k))}</option>`;
   return `<label for="selTaf">${T("tafSet")}</label>
@@ -304,6 +328,7 @@ function openLecture(series, n, at){
   }
   if (isAu) {
     const au = $("#vpAudio");
+    au.play().catch(() => {});
     au.addEventListener("loadedmetadata", () => { if ((at != null || start > 5) && start < au.duration - 5) au.currentTime = start; }, { once:true });
     au.addEventListener("error", () => { $("#vpAErr").hidden = false; });
     if (marks.length) au.addEventListener("timeupdate", () => tafNow(marks, au.currentTime));

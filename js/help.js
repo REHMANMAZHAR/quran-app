@@ -1,11 +1,11 @@
 "use strict";
 /* ---------- labels under every icon, "How it works" for every screen, "How to play" for every game ---------- */
 Object.assign(L.ur, {
-  capMenu:"سورتیں", capSearch:"تلاش", capPlay:"تلاوت", capHelp:"مدد", capSet:"ترتیبات", capPrev:"پچھلی", capPP:"چلائیں/روکیں", capNext:"اگلی", capRep:"دہرائیں", capSleep:"ٹائمر", capClose:"بند",
+  capMenu:"سورتیں", capSearch:"تلاش", capPlay:"تلاوت", capTaf:"تفسیر", capHelp:"مدد", capSet:"ترتیبات", capPrev:"پچھلی", capPP:"چلائیں/روکیں", capNext:"اگلی", capRep:"دہرائیں", capSleep:"ٹائمر", capClose:"بند",
   tabGames:"کھیل", gamesT:"کھیل", gamesSub:"کھیل کر الفاظ سیکھیں", howPlay:"کیسے کھیلیں", start:"شروع کریں", helpT:"یہ کیسے کام کرتا ہے", gotIt:"سمجھ گیا"
 });
 Object.assign(L.en, {
-  capMenu:"Surahs", capSearch:"Search", capPlay:"Listen", capHelp:"Help", capSet:"Settings", capPrev:"Previous", capPP:"Play/Pause", capNext:"Next", capRep:"Repeat", capSleep:"Timer", capClose:"Close",
+  capMenu:"Surahs", capSearch:"Search", capPlay:"Listen", capTaf:"Tafsir", capHelp:"Help", capSet:"Settings", capPrev:"Previous", capPP:"Play/Pause", capNext:"Next", capRep:"Repeat", capSleep:"Timer", capClose:"Close",
   tabGames:"Games", gamesT:"Games", gamesSub:"Learn words by playing", howPlay:"How to play", start:"Start", helpT:"How it works", gotIt:"Got it"
 });
 function fillCaps(){ document.querySelectorAll("[data-cap]").forEach(el => el.textContent = T(el.dataset.cap)); }

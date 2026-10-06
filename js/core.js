@@ -159,7 +159,7 @@ function render(){
     A.w.forEach((w, i) => {
       const g = glossOf(w), last = i === A.w.length - 1;
       const wh = `<span class="w" data-a="${a}" data-i="${i}" tabindex="0"><span class="ar">${esc(wordText(n, a, i, w[0]))}</span><span class="g${g.ur?" ur":""}" dir="${g.ur?"rtl":"ltr"}">${esc(g.t)}</span></span>`;
-      h += last ? `<span class="last">${wh}<span class="end" data-play="${a}" role="button" tabindex="0" aria-label="${T("listen", a)}">${ud(a)}</span></span>` : wh;
+      h += last ? `<span class="last">${wh}<span class="end" data-play="${a}" role="button" tabindex="0" aria-label="${T("listen", a)}">${ud(a)}</span>${typeof tafIcon === "function" ? tafIcon(n, a) : ""}</span>` : wh;
     });
     h += `</div>`;
     const tx = A[trKey] || (trKey === "en2" ? A.en : "");
