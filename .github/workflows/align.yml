@@ -1,0 +1,20 @@
+name: tafsir-transcribe
+on:
+  push:
+    branches: [align]
+    paths: [align/parts.txt]
+permissions:
+  contents: write
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 340
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.11" }
+      - run: pip install faster-whisper==1.0.3
+      - run: python align/transcribe.py
+      - run: |
+          git config user.name "Claude for RMK"; git config user.email qurantosoulapp@gmail.com
+          git add align/out && git commit -m "transcripts" && git pull --rebase && git push || true
