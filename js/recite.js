@@ -47,7 +47,7 @@ function hzSetup(){
 function hzStart(a1, a2){
   if (a2 < a1) [a1, a2] = [a2, a1];
   closeAll(); if (P.s && !P.audio.paused) P.audio.pause();
-  HZ.s = CUR.n; HZ.a1 = a1; HZ.a2 = a2; HZ.p = 0; HZ.on = true; HZ.heardAny = false; HZ.E = [];
+  HZ.s = CUR.n; HZ.a1 = a1; HZ.a2 = a2; HZ.p = 0; HZ.prevFinal = ""; HZ.on = true; HZ.heardAny = false; HZ.E = [];
   for (let a = a1; a <= a2; a++) CUR.ayahs[a - 1].w.forEach((w, i) => HZ.E.push({ a, i, t: w[0], st: "" }));
   document.body.classList.add("hifz", "hzon");
   document.querySelectorAll(".w.shown").forEach(x => x.classList.remove("shown"));
@@ -64,8 +64,15 @@ function hzListen(){
     let interim = "";
     for (let k = e.resultIndex; k < e.results.length; k++) {
       const res = e.results[k], txt = res[0].transcript;
-      if (res.isFinal) txt.split(/\s+/).filter(Boolean).forEach(hzToken); else interim += txt;
+      if (res.isFinal) {
+        // some Android phones repeat everything said so far in each new result: only take the new part
+        let add = txt.trim(); const prev = HZ.prevFinal || "";
+        if (prev && add.startsWith(prev)) add = add.slice(prev.length);
+        HZ.prevFinal = txt.trim();
+        add.split(/\s+/).filter(Boolean).forEach(hzToken);
+      } else interim += " " + txt;
     }
+    hzPreview(interim.split(/\s+/).filter(Boolean));            // show words the moment they are heard, before the pause
     const lv = $("#hzLive"); if (lv) lv.textContent = interim;
     if (typeof touchActive === "function") touchActive();
   };
@@ -73,10 +80,11 @@ function hzListen(){
   r.onend = () => { if (HZ.on) { try { r.start(); } catch(err) {} } };   // phones stop after a pause — keep listening
   try { r.start(); } catch(err) { toast(esc(T("hzNo")), 4000); hzStop(); }
 }
+function hzEl(x){ return document.querySelector(`#a${x.a} .w[data-i="${x.i}"]`); }
 function hzMark(k, st, heard){
-  const x = HZ.E[k]; x.st = st; if (heard) x.heard = heard;
-  const el = document.querySelector(`#a${x.a} .w[data-i="${x.i}"]`); if (!el) return;
-  el.classList.add("shown", "hz-" + st); if (heard) el.title = `${T("hzHeard")} ${heard}`;
+  const x = HZ.E[k]; x.st = st; x.pv = false; if (heard) x.heard = heard;
+  const el = hzEl(x); if (!el) return;
+  el.classList.remove("hz-ok", "hz-miss", "hz-chk"); el.classList.add("shown", "hz-" + st); if (heard) el.title = `${T("hzHeard")} ${heard}`;
 }
 function hzToken(tok){
   if (!HZ.on || HZ.p >= HZ.E.length) return;
@@ -94,8 +102,24 @@ function hzToken(tok){
   if (hzSim(HZ.E[HZ.p].t, tok) >= 0.45) { hzMark(HZ.p, "chk", tok); HZ.p++; hzFollow(); if (HZ.p >= HZ.E.length) setTimeout(hzStop, 600); }
   // otherwise: an extra word or recogniser noise — ignored
 }
-function hzFollow(){
-  const x = HZ.E[Math.min(HZ.p, HZ.E.length - 1)]; const el = document.getElementById("a" + x.a);
+/* fast preview from interim (not yet final) words: only ever marks words green, never red; the final result confirms or corrects */
+function hzPreview(toks){
+  if (!HZ.on) return;
+  HZ.E.forEach((x, k) => { if (x.pv && k >= HZ.p) { x.pv = false; const el = hzEl(x); if (el && !x.st) el.classList.remove("shown", "hz-ok"); } });
+  let q = HZ.p;
+  toks.forEach((tok, n) => {
+    if (q >= HZ.E.length) return;
+    const last = n === toks.length - 1, need = last ? 0.95 : 0.8;   // the last interim word may still be half-spoken
+    let j = -1;
+    if (hzSim(HZ.E[q].t, tok) >= need) j = q; else if (q + 1 < HZ.E.length && hzSim(HZ.E[q + 1].t, tok) >= 0.9) j = q + 1;
+    if (j < 0) return;
+    for (let k = q; k <= j; k++) if (k === j) { const x = HZ.E[k]; x.pv = true; const el = hzEl(x); if (el) el.classList.add("shown", "hz-ok"); }
+    q = j + 1;
+  });
+  HZ.pq = q; hzFollow(q);
+}
+function hzFollow(at){
+  const x = HZ.E[Math.min(at != null ? at : HZ.p, HZ.E.length - 1)]; const el = document.getElementById("a" + x.a);
   if (el) { const r = el.getBoundingClientRect(); if (r.bottom > innerHeight - 140 || r.top < 60) el.scrollIntoView({ block: "center", behavior: "smooth" }); }
 }
 function hzStop(){
