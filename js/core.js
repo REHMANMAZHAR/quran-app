@@ -17,7 +17,7 @@ const L = {
     thisAyah:" (یہی آیت)", more:n=>`مزید دکھائیں (${ud(n)} باقی)`,
     lang:"زبان", trSel:"آیت کا ترجمہ", trNone:"ترجمہ نہ دکھائیں", wbw:"ہر لفظ کے نیچے معنی", show:"دکھائیں", hide:"چھپائیں",
     glLang:"لفظی معنی کی زبان", urMissing:"اردو لفظی معنی ابھی شامل نہیں — فی الحال انگریزی دکھائی جا رہی ہے۔",
-    reciter:"قاری", speed:"تلاوت کی رفتار", slow:"آہستہ", normal:"عام", fast:"تیز", size:"عربی متن کا سائز",
+    reciter:"قاری", speed:"تلاوت کی رفتار", slow:"آہستہ", normal:"عام", fast:"تیز", size:"عربی متن کا سائز", tsize:"ترجمہ اور معانی کا سائز",
     theme:"رنگ", auto:"خودکار", light:"روشن", dark:"گہرا", sources:"ذرائع:",
     draftAbout:"گرامر نوٹس مسودہ ہیں — عالم کی نظرِ ثانی کے بعد حتمی ہوں گے۔",
     bism:"بسم اللہ", taud:"تعوذ — أعوذ بالله", ayah:n=>`آیت ${ud(n)}`, done:"سورت مکمل ہوئی", audioFail:"تلاوت لوڈ نہیں ہوئی — انٹرنیٹ چیک کریں",
@@ -39,7 +39,7 @@ const L = {
     thisAyah:" (this ayah)", more:n=>`Show more (${n} left)`,
     lang:"Language", trSel:"Ayah translation", trNone:"No translation", wbw:"Meaning under each word", show:"Show", hide:"Hide",
     glLang:"Word meaning language", urMissing:"Urdu word meanings aren't added yet — showing English for now.",
-    reciter:"Reciter", speed:"Recitation speed", slow:"Slow", normal:"Normal", fast:"Fast", size:"Arabic text size",
+    reciter:"Reciter", speed:"Recitation speed", slow:"Slow", normal:"Normal", fast:"Fast", size:"Arabic text size", tsize:"Translation & meaning text size",
     theme:"Theme", auto:"Auto", light:"Light", dark:"Dark", sources:"Sources:",
     draftAbout:"Grammar notes are a draft and will be final after scholar review.",
     bism:"Bismillah", taud:"Ta'awwudh — A'udhu billah", ayah:n=>`Ayah ${n}`, done:"Surah complete", audioFail:"Recitation didn't load — check your internet",
@@ -87,7 +87,7 @@ const DATA = {
 
 /* ---------- state ---------- */
 let META, CUR = null;
-const settings = Object.assign({ script:"uth", lang:null, tr:null, wbw:true, gl:null, size:30, theme:"auto", rec:"Alafasy_128kbps", speed:1 }, store.get("settings", {}));
+const settings = Object.assign({ script:"uth", lang:null, tr:null, wbw:true, gl:null, size:30, ts:1, theme:"auto", rec:"Alafasy_128kbps", speed:1 }, store.get("settings", {}));
 if (settings.gl === "auto") settings.gl = "ur";
 function saveSettings(){ store.set("settings", settings); applySettings(); }
 function applyLang(){
@@ -111,6 +111,7 @@ function applyLang(){
 }
 function applySettings(){
   document.documentElement.style.setProperty("--arsize", settings.size + "px");
+  document.documentElement.style.setProperty("--ts", settings.ts || 1);
   document.body.classList.toggle("nowbw", !settings.wbw);
   if (settings.theme === "auto") document.documentElement.removeAttribute("data-theme");
   else document.documentElement.setAttribute("data-theme", settings.theme);
@@ -231,7 +232,7 @@ function openWord(a, i){
   if (ur) h += `<div class="wd-mean">${esc(ur)}</div><div class="wd-sub">${esc(en)}</div>`;
   else h += `<div class="wd-mean en">${esc(en)}</div>`;
   h += `<div class="wd-sub">${esc(tl)} · ${n}:${a}:${i+1}</div>`;
-  h += `<div class="wd-actions"><button data-wordaudio="${n}:${a}:${i+1}">${T("hearWord")}</button><button data-ayahaudio="${n}:${a}">${T("hearAyah")}</button>${lecFor(n, a) ? `<button data-lec="${lecFor(n, a)}">${T("tafseerBtn")}</button>` : ""}</div>`;
+  h += `<div class="wd-actions"><button data-wordaudio="${n}:${a}:${i+1}">${T("hearWord")}</button><button data-ayahaudio="${n}:${a}">${T("hearAyah")}</button>${typeof israrButtons === "function" ? israrButtons(n, a) : ""}</div>`;
   if (segs.length > 1) h += `<div class="legend">${hasP?`<span><i style="background:var(--sage)"></i>${T("pre")}</span>`:""}<span><i style="background:var(--ink)"></i>${T("stem")}</span>${hasS?`<span><i style="background:var(--saffron)"></i>${T("suf")}</span>`:""}</div>`;
   h += `</div>`;
 
@@ -345,6 +346,8 @@ function drawDrawer(){
       <div class="seg3">${pr("speed",0.75,T("slow"))}${pr("speed",1,T("normal"))}${pr("speed",1.25,T("fast"))}</div>
       <label for="rngSize">${T("size")}</label>
       <input id="rngSize" type="range" min="22" max="44" step="1" value="${settings.size}">
+      <label for="rngTs">${T("tsize")} <b id="tsVal">${nf(Math.round((settings.ts || 1) * 100))}%</b></label>
+      <input id="rngTs" type="range" min="0.8" max="1.7" step="0.05" value="${settings.ts || 1}">
       <span class="lbl">${T("theme")}</span>
       <div class="seg3">${pr("theme","auto",T("auto"))}${pr("theme","light",T("light"))}${pr("theme","dark",T("dark"))}</div>
       <div class="about">${T("sources")}
@@ -353,6 +356,7 @@ function drawDrawer(){
     </div>`;
     $("#selTr").onchange = e => { settings.tr = e.target.value; saveSettings(); rerender(); };
     $("#rngSize").oninput = e => { settings.size = +e.target.value; saveSettings(); };
+    $("#rngTs").oninput = e => { settings.ts = +e.target.value; $("#tsVal").textContent = nf(Math.round(settings.ts * 100)) + "%"; saveSettings(); };
     $("#selRec").onchange = e => { settings.rec = e.target.value; saveSettings(); if (P.s) playFrom(P.s, P.a, true); };
   }
 }

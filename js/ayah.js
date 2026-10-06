@@ -37,7 +37,7 @@ let SIMS = null;
 async function openAyahMenu(n, a){
   if (!SIMS) DATA.similar().then(x => { SIMS = x; }).catch(() => {});
   const k = n + ":" + a, sims = (SIMS && SIMS[k]) || [];
-  const lec = lecFor(n, a), lp = P.loop;
+  const lp = P.loop;
   const btn = (act, label, extra = "") => `<button data-am="${act}" ${extra}>${label}</button>`;
   $("#sheetBody").innerHTML = `<div class="am-head"><b>${esc(surahName(n))} ${nf(n)}:${nf(a)}</b></div>
     <div class="am-grid">
@@ -45,7 +45,7 @@ async function openAyahMenu(n, a){
       ${btn("bm", (U.bm[k] ? "★ " + T("unbookmark") : "☆ " + T("bookmark")))}
       ${btn("note", "✎ " + T("note"))}
       ${btn("text", T("shareText"))}${btn("img", T("shareImg"))}${btn("range", T("shareRange"))}${btn("link", T("copyLink"))}
-      ${lec ? `<button data-lec="${lec}">${T("tafseerBtn")}</button>` : ""}
+      ${israrButtons(n, a)}
       ${btn("jal", T("tafJal"))}${btn("ik", T("tafIK"))}
       ${sims.length ? btn("sim", "≈ " + T("similarA", nf(sims.length))) : ""}
       ${lp && lp.s === n && lp.b == null ? btn("loopB", "⟲ " + T("loopB")) : btn("loopA", "⟲ " + T("loopA"))}

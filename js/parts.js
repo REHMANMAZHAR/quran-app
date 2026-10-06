@@ -1,6 +1,7 @@
 "use strict";
 /* ---------- word parts, review labels, script choice, surah tools (sections A, M, N) ---------- */
 Object.assign(L.ur, {
+  textSize:"متن کا سائز", smaller:"چھوٹا", bigger:"بڑا", textSizeNow:(a,t)=>`عربی ${a} · ترجمہ ${t}%`,
   partMean:"معنی:", baseMean:"بنیادی معنی:", reviewed:"✓ نظرِ ثانی شدہ", subj:"فاعل (کرنے والا)", obj:"مفعول / ضمیر",
   sensesH:"قرآن میں اس لفظ کے معنی", sensesNote:"خودکار مسودہ — ترجمہ شدہ معانی کو جمع کیا گیا ہے", here:"یہاں", followed:t=>`اکثر بعد میں «${t}»`,
   irabBtn:"اعراب لیب میں دیکھیں", caseN:"رفع (مرفوع)", caseA:"نصب (منصوب)", caseG:"جر (مجرور)",
@@ -8,6 +9,7 @@ Object.assign(L.ur, {
   knowSurah:p=>`آپ اس سورت کے ${ud(p)}٪ الفاظ جانتے ہیں`, uthmani:"عثمانی", indopak:"انڈو پاک", hifz:"حفظ", pageView:"صفحہ"
 });
 Object.assign(L.en, {
+  textSize:"Text size", smaller:"Smaller", bigger:"Bigger", textSizeNow:(a,t)=>`Arabic ${a} · translation ${t}%`,
   partMean:"Meaning:", baseMean:"Base meaning:", reviewed:"✓ reviewed", subj:"subject (doer)", obj:"object / pronoun",
   sensesH:"Meanings of this word in the Quran", sensesNote:"Automatic draft — grouped from the word-by-word meanings", here:"here", followed:t=>`often followed by «${t}»`,
   irabBtn:"See in I'rab Lab", caseN:"Nominative (marfūʿ)", caseA:"Accusative (manṣūb)", caseG:"Genitive (majrūr)",
@@ -111,7 +113,8 @@ function surahTools(n){
   const p = LV.V && CUR ? surahKnown(CUR) : 0, on = (k, v) => settings[k] === v ? ' aria-pressed="true"' : ' aria-pressed="false"';
   return `<div class="stools">${p ? `<div class="sknow"><span style="width:${p}%"></span><em>${T("knowSurah", nf(p))}</em></div>` : ""}
     <div class="seg3 tiny"><button data-tool="script" data-v="uth"${on("script", "uth")}>${T("uthmani")}</button><button data-tool="script" data-v="ip"${on("script", "ip")}>${T("indopak")}</button>
-    <button data-tool="hifz"${document.body.classList.contains("hifz") ? ' aria-pressed="true"' : ' aria-pressed="false"'}>${T("hifz")}</button><button data-tool="page" aria-pressed="false">${T("pageView")}</button></div></div>`;
+    <button data-tool="hifz"${document.body.classList.contains("hifz") ? ' aria-pressed="true"' : ' aria-pressed="false"'}>${T("hifz")}</button><button data-tool="page" aria-pressed="false">${T("pageView")}</button></div>
+    <div class="tsz"><span>${T("textSize")}</span><button data-tool="tsz" data-v="-1" aria-label="${T("smaller")}">A−</button><button data-tool="tsz" data-v="1" aria-label="${T("bigger")}">A+</button></div></div>`;
 }
 $("#main").addEventListener("click", async e => {
   const b = e.target.closest("[data-tool]"); if (!b) return;
@@ -119,6 +122,12 @@ $("#main").addEventListener("click", async e => {
   if (t === "script") { settings.script = b.dataset.v; saveSettings(); document.documentElement.classList.toggle("ipk", settings.script === "ip"); if (settings.script === "ip" && !IPK) { try { IPK = await DATA.indopak(); } catch(e){} } rerender(); }
   else if (t === "hifz") { document.body.classList.toggle("hifz"); document.querySelectorAll(".w.shown").forEach(x => x.classList.remove("shown")); rerender(); }
   else if (t === "page") openPageView();
+  else if (t === "tsz") {             // A− / A+ : Arabic and translation together
+    const d = +b.dataset.v;
+    settings.size = Math.min(44, Math.max(22, settings.size + d * 2));
+    settings.ts = Math.round(Math.min(1.7, Math.max(0.8, (settings.ts || 1) + d * 0.1)) * 100) / 100;
+    saveSettings(); toast(esc(T("textSizeNow", nf(settings.size), nf(Math.round(settings.ts * 100)))), 1200);
+  }
 });
 $("#sheetBody").addEventListener("click", e => {
   const l = e.target.closest("[data-sloc]"); if (l) { const [s, a, w] = l.dataset.sloc.split(":").map(Number); closeAll(); openSurah(s, a, w); return; }
