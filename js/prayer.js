@@ -124,14 +124,4 @@ document.addEventListener("click", e => {
   if (e.target.closest("[data-prcal]")) prayerICS();
 });
 setInterval(() => { if (LV.view === "duas" && DS.tab === "p") prRefresh(); }, 60000);
-/* the Duas view gets a first tab: Prayer times */
-const _renderDuasP = renderDuas;
-renderDuas = async function(){
-  await _renderDuasP();
-  const tabs = document.querySelector("#duas .dtabs"); if (!tabs) return;
-  tabs.insertAdjacentHTML("afterbegin", `<button data-dt="p" aria-pressed="${DS.tab === "p"}">${T("prT")}</button>`);
-  tabs.classList.add("seg4");
-  if (DS.tab === "p") { [...document.querySelectorAll("#duas > :not(.dtabs)")].forEach(x => x.remove()); tabs.insertAdjacentHTML("afterend", prayerHTML()); }
-};
-VIEWS.duas.render = renderDuas;
-if (DS.tab === "q" && !store.get("prSeen", 0)) { DS.tab = "p"; store.set("prSeen", 1); }
+if (DS.tab === "p") DS.tab = "q";

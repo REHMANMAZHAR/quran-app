@@ -176,5 +176,5 @@ $("#learn").addEventListener("click", e => {
 });
 $("#learn").addEventListener("keydown", e => { if ((e.key === "Enter" || e.key === " ") && e.target.dataset.act === "flip") { e.preventDefault(); LV.flip = !LV.flip; drawCard(); } });
 document.querySelector(".tabbar").addEventListener("click", e => { const b = e.target.closest("[data-v]"); if (b && b.dataset.v !== LV.view) showView(b.dataset.v); });
-function labelTabs(){ const K = { read:"tabRead", learn:"tabLearn", games:"tabGames", duas:"tabDuas", me:"tabMe" }; document.querySelectorAll(".tabbar [data-v]").forEach(b => b.querySelector("span").textContent = T(K[b.dataset.v])); }
+function labelTabs(){ const K = { home:"tabHome", read:"tabRead", learn:"tabLearn", games:"tabGames", duas:"tabDuas", me:"tabMe" }; document.querySelectorAll(".tabbar [data-v]").forEach(b => b.querySelector("span").textContent = T(K[b.dataset.v])); }
 

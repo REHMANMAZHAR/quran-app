@@ -167,7 +167,7 @@ async function renderDuas(){
         tr += (x === a && st ? duaTrim(trOf(A)) : trOf(A)) + " ";
         const o = otherTr(A); if (o) tr2 += (x === a && st ? duaTrim(o) : o) + " "; }
       return `<article class="dua"><div class="dh"><b>${esc(en ? ten : tur)}</b>${star(id)}</div><div class="who">${esc(who)} · ${esc(surahName(s))} ${nf(s)}:${nf(a)}${b !== a ? "–" + nf(b) : ""}</div>
-        <p class="dar" dir="rtl" lang="ar">${esc(ar)}</p><p class="dtr ${/[؀-ۿ]/.test(tr) ? "ur" : ""}">${esc(tr.trim())}</p>${tr2.trim() ? `<p class="dtr dtr2 ${/[؀-ۿ]/.test(tr2) ? "ur" : ""}">${esc(tr2.trim())}</p>` : ""}
+        <p class="dar" dir="rtl" lang="ar">${esc(ar)}</p><p class="dtr ${/[؀-ۿ]/.test(tr) ? "ur" : ""}">${esc(tr.trim())}</p>
         <div class="wd-actions"><button data-go2="${s}:${a}">${T("openR")}</button><button data-dplay="${s}:${a}">▶</button></div></article>`;
     }));
     body = cards.join("");
@@ -176,7 +176,7 @@ async function renderDuas(){
     body += MASNOON.filter(m => tab === "m" || DS.fav["m" + m[0]]).map(m => {
       const [id, ten, tur, ar, men, mur, src, n] = m, c = DS.cnt[id] || 0;
       return `<article class="dua"><div class="dh"><b>${esc(en ? ten : tur)}</b>${star("m" + id)}</div><p class="dar" dir="rtl" lang="ar">${esc(ar)}</p>
-        <p class="dtr ${en ? "" : "ur"}">${esc(en ? men : mur)}</p><p class="dtr dtr2 ${en ? "ur" : ""}">${esc(en ? mur : men)}</p><div class="who">${T("src")} ${esc(src)}</div>
+        <p class="dtr ${en ? "" : "ur"}">${esc(en ? men : mur)}</p><div class="who">${T("src")} ${esc(src)}</div>
         <div class="ctr"><button class="btn" data-cnt="${id}">${T("count")} · <b>${nf(c)}</b>${n > 1 ? " / " + nf(n) : ""}</button><button class="btn ghost" data-cnt0="${id}">${T("reset")}</button></div></article>`;
     }).join("") + (tab === "m" ? `<p class="draft">${T("draftDua")}</p>` : "");
   }

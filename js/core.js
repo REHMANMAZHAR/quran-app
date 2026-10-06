@@ -155,6 +155,7 @@ function render(){
   let h = "";
   h += surahTools(n) + lecStrip(n);
   if (n !== 1 && n !== 9) h += '<div class="bism">بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</div>';
+  h += `<div class="ayahs">`;
   CUR.ayahs.forEach((A, ai) => {
     const a = ai + 1;
     if (typeof tafMark === "function") h += tafMark(n, a);
@@ -169,6 +170,7 @@ function render(){
     if (trKey !== "none" && tx) h += `<p class="tr ${trKey.startsWith("en")?"en":"ur"}">${esc(tx)}</p>`;
     h += `</article>`;
   });
+  h += `</div>`;
   const src = META.sources;
   const trName = {ur:src.ur1, ur2:src.ur2, en:src.en, en2:src.en2}[trKey] || "—";
   h += `<div class="surah-foot">${T("trLabel")} ${esc(trName)}
