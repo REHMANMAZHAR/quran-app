@@ -82,17 +82,16 @@ function renderMe(){
     for (const key in U.read) { const [s, a] = key.split(":").map(Number), x = gid(s, a); if (x >= start && x < end) r++; } return [k + 1, Math.round(r / (end - start) * 100)]; });
   const ref = k => { const [s, a] = k.split(":").map(Number); return `${esc(surahName(s))} ${nf(s)}:${nf(a)}`; };
   const bms = Object.keys(U.bm).sort((x, y) => U.bm[y] - U.bm[x]), notes = Object.keys(U.notes).sort((x, y) => U.notes[y].ts - U.notes[x].ts), hls = Object.keys(U.hl);
-  $("#me").innerHTML = `<div class="lc"><div class="meter">${ringSVG(Math.min(100, Math.round(today / g * 100)))}<div><h2>${T("goalTxt", nf(today), nf(g))}</h2><p>${T("readTot", nf(totalRead))}</p>
-      <label class="rng">${T("goal")} <select id="goalSel">${[5, 10, 20, 30, 50, 100, 200].map(x => `<option${x === g ? " selected" : ""}>${x}</option>`).join("")}</select></label></div></div></div>
-    <div class="lc"><h3 style="margin-top:0">${T("khatam")}</h3>${kh}</div>
+  $("#me").innerHTML = `${progressCards()}
     <div class="lh"><h3>${T("bmH")}</h3></div>${bms.length ? `<ul class="occ">${bms.map(k => `<li><button data-go2="${k}"><div class="or">★ ${ref(k)}</div></button></li>`).join("")}</ul>` : `<p class="muted">${T("nothing")}</p>`}
     <div class="lh"><h3>${T("notesH")}</h3>${notes.length ? `<button class="btn ghost" data-me="export">${T("exportN")}</button>` : ""}</div>
     ${notes.length ? `<ul class="occ">${notes.map(k => `<li><button data-go2="${k}"><div class="otr">${esc(U.notes[k].t)}</div><div class="or">✎ ${ref(k)}</div></button></li>`).join("")}</ul>` : `<p class="muted">${T("nothing")}</p>`}
     <div class="lh"><h3>${T("hlH")}</h3></div>${hls.length ? `<div class="chips wrap">${hls.map(k => `<button class="chip hl-${U.hl[k]}" data-go2="${k}"><b>${ref(k)}</b></button>`).join("")}</div>` : `<p class="muted">${T("nothing")}</p>`}
     <div class="lh"><h3>${T("juzH")}</h3></div><div class="juzp">${juzP.map(([k, p]) => `<div><b>${nf(k)}</b><i style="height:${p}%"></i></div>`).join("")}</div>
     <div class="lh"><h3>${T("progH")}</h3></div>${started.length ? `<ul class="sprog">${started.map(([S, r]) => `<li><button data-go2="${S.n}:1"><span>${nf(S.n)}. ${esc(settings.lang === "en" ? S.tr : S.ar)}</span><span class="pb2"><i style="width:${Math.round(r / S.ayahs * 100)}%"></i></span><small>${nf(r)}/${nf(S.ayahs)}</small></button></li>`).join("")}</ul>` : `<p class="muted">${T("nothing")}</p>`}
-    <div class="wd-actions" style="margin:22px 0"><button data-me="backup">${T("backup")}</button><label class="filebtn">${T("restore")}<input type="file" id="restoreF" accept="application/json" hidden></label></div>`;
-  $("#goalSel").onchange = e => { U.goal = +e.target.value; saveU(); renderMe(); };
+    <div class="wd-actions" style="margin:22px 0"><button data-me="backup">${T("backup")}</button><label class="filebtn">${T("restore")}<input type="file" id="restoreF" accept="application/json" hidden></label></div>
+    <div class="wd-actions" style="margin:0 0 28px"><button data-reset="1" class="danger">↺ ${T("resetP")}</button></div>`;
+  bindProgress();
   $("#restoreF").onchange = async e => { try { const d = JSON.parse(await e.target.files[0].text()); if (d.user) { Object.assign(U, d.user); saveU(); } if (d.learn) { Object.assign(LS, d.learn); saveL(); } toast(esc(T("restored"))); renderMe(); } catch(err) { toast(esc(T("loadFail"))); } };
 }
 let GID = null;

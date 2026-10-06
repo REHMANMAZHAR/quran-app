@@ -155,7 +155,12 @@ function trackReading(){
   if (rio) rio.disconnect();
   rio = new IntersectionObserver(es => es.forEach(e => {
     const k = CUR.n + ":" + e.target.dataset.a;
-    if (e.isIntersecting) seenT[k] = setTimeout(() => { if (!U.read[k]) { U.read[k] = 1; const d = dayKey(); U.days[d] = (U.days[d] || 0) + 1; saveU(); } }, 1500);
+    if (e.isIntersecting) seenT[k] = setTimeout(() => {
+      const d = dayKey(); U.rd = U.rd || {}; const L = U.rd[d] = U.rd[d] || [];
+      if (!L.includes(k)) { L.push(k); if (typeof touchActive === "function") touchActive(); }
+      if (!U.read[k]) { U.read[k] = 1; U.days[d] = (U.days[d] || 0) + 1; }
+      saveU();
+    }, 1500);
     else clearTimeout(seenT[k]);
   }), { threshold: 0.6 });
   document.querySelectorAll(".ayah").forEach(el => rio.observe(el));

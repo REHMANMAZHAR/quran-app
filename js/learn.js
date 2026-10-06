@@ -54,6 +54,7 @@ function showView(v){
   document.querySelectorAll(".tabbar button").forEach(b => b.setAttribute("aria-selected", b.dataset.v === v || (v === "page" && b.dataset.v === "read") || (v === "search" && false)));
   $("#btnPlay").hidden = v !== "read" && v !== "page";
   if ($("#btnTaf")) $("#btnTaf").hidden = v !== "read";
+  if ($("#btnBack")) $("#btnBack").hidden = v === "read";
   if (VIEWS[v]) { const [a, e] = VIEWS[v].title(); $("#tAr").textContent = a; $("#tEn").textContent = e; VIEWS[v].render(); }
   else if (CUR) { const S = META.surahs[CUR.n - 1]; $("#tAr").textContent = T("surahPre") + S.ar; $("#tEn").textContent = `${S.n}. ${S.tr} · ${S.en}`; }
   scrollTo(0, 0);

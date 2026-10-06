@@ -520,3 +520,20 @@ html[dir="rtl"] .ayah.tafnow,html[lang="ur"] .ayah.tafnow{box-shadow:inset -3px 
 .tafico{width:18px;height:18px;fill:none;stroke:var(--gold);stroke-width:1.8;stroke-linejoin:round;vertical-align:-4px}
 .tafbtn{opacity:1}
 .tafbtn .tafico{width:20px;height:20px}
+
+/* close buttons */
+.dr-top{position:relative;padding-inline-end:64px}
+.drx{position:absolute;top:8px;inset-inline-end:8px}
+.sheetx{position:sticky;top:4px;float:inline-end;z-index:2;margin:-4px 4px 0 0;background:var(--surface);border-radius:50%}
+#sheetBody{padding-top:6px}
+#btnBack svg{stroke:var(--ink)}
+/* progress rings */
+.prog3 .seg3{margin-bottom:12px}
+.pr-row{display:flex;align-items:center;gap:16px}
+.rings3{width:132px;height:132px;flex:0 0 132px}
+.pr-leg{list-style:none;margin:0;padding:0;flex:1;min-width:0}
+.pr-leg li{display:grid;grid-template-columns:12px 1fr;column-gap:8px;align-items:center;margin:4px 0;line-height:1.5}
+.pr-leg i{width:10px;height:10px;border-radius:50%;grid-row:span 2}
+.pr-leg b{font-size:14px}.pr-leg span{font-size:13px;color:var(--muted);grid-column:2}
+.pr-avg{font-size:13px;margin:10px 0}
+button.danger{color:#b3261e;border-color:#e3b6b2}
