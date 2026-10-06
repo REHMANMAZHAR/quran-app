@@ -3,7 +3,7 @@
 // - Data files: served from cache instantly, refreshed in the background.
 // - Fonts: cached. Recitation audio is streamed, not cached (it would fill the phone).
 const V = "quran-v6";
-const SHELL = ["./", "index.html", "manifest.webmanifest", "icon.svg"];
+const SHELL = ["./", "index.html", "manifest.webmanifest", "icon.svg"];  // css/ and js/ are cached on first load (network first)
 self.addEventListener("install", e => e.waitUntil(caches.open(V).then(c => c.addAll(SHELL)).then(() => self.skipWaiting())));
 self.addEventListener("activate", e => e.waitUntil(
   caches.keys().then(ks => Promise.all(ks.filter(k => k !== V).map(k => caches.delete(k)))).then(() => self.clients.claim())
@@ -14,7 +14,7 @@ self.addEventListener("fetch", e => {
   if (req.method !== "GET") return;
   const url = new URL(req.url);
   if (url.origin === self.location.origin) {
-    if (req.mode === "navigate" || url.pathname.endsWith("/") || url.pathname.endsWith(".html")) {
+    if (req.mode === "navigate" || url.pathname.endsWith("/") || /\.(html|js|css)$/.test(url.pathname)) {
       e.respondWith(fetch(req).then(r => put(req, r)).catch(() => caches.match(req).then(h => h || caches.match("index.html"))));
     } else {
       e.respondWith(caches.match(req).then(hit => {
