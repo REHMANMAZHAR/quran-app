@@ -180,8 +180,8 @@ const SERIES = {
 };
 const TAFSIR_TXT = (s, a) => `https://quran.com/${s}:${a}/tafsirs/tafsir-bayan-ul-quran`, TAFSIR_PDF = "https://tanzeem.org/book_categories/bayan-ul-quran/";
 Object.assign(L.ur, {
-  bqName:"بیان القرآن — ڈاکٹر اسرار احمد (اردو ویڈیو)", enName:"ڈاکٹر اسرار احمد — انگریزی آڈیو لیکچرز", urName:"بیان القرآن — ڈاکٹر اسرار احمد (اردو آڈیو)", urBtn:"🎧 ڈاکٹر اسرار — اردو آڈیو تفسیر", tafShort:"تفسیر", tafFrom:a=>`آیت ${a} سے ڈاکٹر اسرار کی تفسیر سنیں`, miniV:"چھوٹا کریں", openV:"بڑا کریں", nowAyah:(s,a)=>`اب: ${s} — آیت ${a}`, fromAyah:a=>`آیت ${a} سے`, tafSet:"تفسیر (ڈاکٹر اسرار احمد)", txtName:"تحریری تفسیر (اردو، Quran.com)", tafMarkSet:"قرآن کے متن میں تفسیر کے نشان اور 🎧 بٹن دکھائیں", lqName:"لسان القرآن — استاد عامر سہیل", lecH:"لیکچرز", lec:n=>`لیکچر ${ud(n)}`, part:n=>`حصہ ${ud(n)}`, lesson:n=>`سبق ${ud(n)}`,
-  lecAyahs:(a,b)=>`آیات ${ud(a)}–${ud(b)}`, intro:"تعارف", closing:"اختتامی خطاب", tafseerBtn:"▶ ڈاکٹر اسرار — اردو ویڈیو", enBtn:"🎧 ڈاکٹر اسرار — انگریزی آڈیو", txtBtn:"📖 ڈاکٹر اسرار — تحریری تفسیر (اردو)", startAt:t=>`${t} سے جاری رکھیں`,
+  bqName:"بیان القرآن — ڈاکٹر اسرار احمد (اردو ویڈیو)", enName:"ڈاکٹر اسرار احمد — انگریزی آڈیو لیکچرز", urName:"بیان القرآن — ڈاکٹر اسرار احمد (اردو آڈیو)", urBtn:"ڈاکٹر اسرار — اردو آڈیو تفسیر", tafShort:"تفسیر", tafFrom:a=>`آیت ${a} سے ڈاکٹر اسرار کی تفسیر سنیں`, miniV:"چھوٹا کریں", openV:"بڑا کریں", nowAyah:(s,a)=>`اب: ${s} — آیت ${a}`, fromAyah:a=>`آیت ${a} سے`, tafSet:"تفسیر (ڈاکٹر اسرار احمد)", txtName:"تحریری تفسیر (اردو، Quran.com)", tafMarkSet:"قرآن کے متن میں تفسیر کے نشان اور بٹن دکھائیں", lqName:"لسان القرآن — استاد عامر سہیل", lecH:"لیکچرز", lec:n=>`لیکچر ${ud(n)}`, part:n=>`حصہ ${ud(n)}`, lesson:n=>`سبق ${ud(n)}`,
+  lecAyahs:(a,b)=>`آیات ${ud(a)}–${ud(b)}`, intro:"تعارف", closing:"اختتامی خطاب", tafseerBtn:"▶ ڈاکٹر اسرار — اردو ویڈیو", enBtn:"ڈاکٹر اسرار — انگریزی آڈیو", txtBtn:"📄 ڈاکٹر اسرار — تحریری تفسیر (اردو)", startAt:t=>`${t} سے جاری رکھیں`,
   cont:"جاری رکھیں", startS:"شروع کریں", openYT:"یوٹیوب پر دیکھیں", prevL:"پچھلا", nextL:"اگلا", via:s=>`آفیشل · ${s}`,
   lqNote:"آفیشل چینل کی ویڈیوز (نئی پہلے)", getApp:"ان کی آفیشل ایپ", noLec:"اس آیت کا لیکچر نہیں ملا",
   closeV:"بند", openDrBig:n=>`لیکچر ${ud(n)} drisrar.com پر کھولیں`, drHint:"اگر ویڈیو یہاں نہ چلے تو اوپر والا بٹن دبائیں — آفیشل ویب سائٹ پر کھل جائے گی۔", lastWatched:"آخری",
@@ -189,8 +189,8 @@ Object.assign(L.ur, {
   txtNote:"تحریری تفسیر Quran.com پر (بیان القرآن، اردو)۔ مکمل کتاب PDF: tanzeem.org", pdf:"PDF کتاب"
 });
 Object.assign(L.en, {
-  bqName:"Bayan-ul-Quran — Dr. Israr Ahmad (Urdu video)", enName:"Dr. Israr Ahmad — English audio lectures", urName:"Bayan-ul-Quran — Dr. Israr Ahmad (Urdu audio)", urBtn:"🎧 Dr. Israr — Urdu audio tafsir", tafShort:"Tafsir", tafFrom:a=>`Listen to Dr. Israr’s tafsir from ayah ${a}`, miniV:"Minimise", openV:"Expand", nowAyah:(s,a)=>`Now: ${s} — ayah ${a}`, fromAyah:a=>`from ayah ${a}`, tafSet:"Tafsir (Dr. Israr Ahmad)", txtName:"Written tafsir (Urdu, Quran.com)", tafMarkSet:"Show tafsir markers and 🎧 buttons in the Quran text", lqName:"Lisan ul Quran — Ustad Amir Sohail", lecH:"Lectures", lec:n=>`Lecture ${n}`, part:n=>`Part ${n}`, lesson:n=>`Lesson ${n}`,
-  lecAyahs:(a,b)=>`Ayahs ${a}–${b}`, intro:"Introduction", closing:"Closing speech", tafseerBtn:"▶ Dr. Israr — Urdu video", enBtn:"🎧 Dr. Israr — English audio", txtBtn:"📖 Dr. Israr — written tafsir (Urdu)", startAt:t=>`Continue at ${t}`,
+  bqName:"Bayan-ul-Quran — Dr. Israr Ahmad (Urdu video)", enName:"Dr. Israr Ahmad — English audio lectures", urName:"Bayan-ul-Quran — Dr. Israr Ahmad (Urdu audio)", urBtn:"Dr. Israr — Urdu audio tafsir", tafShort:"Tafsir", tafFrom:a=>`Listen to Dr. Israr’s tafsir from ayah ${a}`, miniV:"Minimise", openV:"Expand", nowAyah:(s,a)=>`Now: ${s} — ayah ${a}`, fromAyah:a=>`from ayah ${a}`, tafSet:"Tafsir (Dr. Israr Ahmad)", txtName:"Written tafsir (Urdu, Quran.com)", tafMarkSet:"Show tafsir markers and buttons in the Quran text", lqName:"Lisan ul Quran — Ustad Amir Sohail", lecH:"Lectures", lec:n=>`Lecture ${n}`, part:n=>`Part ${n}`, lesson:n=>`Lesson ${n}`,
+  lecAyahs:(a,b)=>`Ayahs ${a}–${b}`, intro:"Introduction", closing:"Closing speech", tafseerBtn:"▶ Dr. Israr — Urdu video", enBtn:"Dr. Israr — English audio", txtBtn:"📄 Dr. Israr — written tafsir (Urdu)", startAt:t=>`Continue at ${t}`,
   cont:"Continue", startS:"Start", openYT:"Watch on YouTube", prevL:"Previous", nextL:"Next", via:s=>`Official · ${s}`,
   lqNote:"Videos from the official channel (newest first)", getApp:"Their official app", noLec:"No lecture found for this ayah",
   closeV:"Close", openDrBig:n=>`Open Lecture ${n} on drisrar.com`, drHint:"If the video doesn't play here, tap the button above — it opens on the official website.", lastWatched:"last",
@@ -214,6 +214,8 @@ function lecLabel(n, s, ser = "bq"){
   return L[1] === L[3] ? `${nm(L[1])} ${L[4] === 999 && L[2] === 1 ? "" : nf(L[2]) + "–" + (L[4] === 999 ? "" : nf(L[4]))}`.trim() : `${end(L[1], L[2]) } – ${end(L[3], L[4])}`;
 }
 /* Tafsir source is one choice in Settings (default: Urdu audio). Reading view shows only a thin marker where a new part begins. */
+/* tafsir icon: open book with a speech mark (distinct from the recitation ▶) */
+const TAF_ICO = `<svg class="tafico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.5C10 5 7 4.6 3.5 5v13c3.5-.4 6.5 0 8.5 1.5 2-1.5 5-1.9 8.5-1.5V5C17 4.6 14 5 12 6.5z"/><path d="M12 6.5v13"/></svg>`;
 const TAF_SER = { ur:{ attr:"data-lecur", num:"part", name:"urName" }, bq:{ attr:"data-lec", num:"lec", name:"bqName" }, en:{ attr:"data-lecen", num:"part", name:"enName" } };
 const tafSrc = () => settings.taf || "ur";
 const TT = {};
@@ -240,20 +242,20 @@ function israrButtons(s, a){
   if (src === "txt") return `<a class="btnlink" href="${TAFSIR_TXT(s, a)}" target="_blank" rel="noopener">${T("txtBtn")}</a>`;
   const n = lecFor(s, a, src), C = TAF_SER[src];
   const at = ayahTime(src, s, a);
-  return n ? `<button ${C.attr}="${n}"${at != null ? ` data-at="${at}"` : ""}>${T(src === "ur" ? "urBtn" : src === "en" ? "enBtn" : "tafseerBtn")} · ${at != null ? T("fromAyah", nf(a)) : T(C.num, nf(n))}</button>` : "";
+  return n ? `<button ${C.attr}="${n}"${at != null ? ` data-at="${at}"` : ""}>${TAF_ICO} ${T(src === "ur" ? "urBtn" : src === "en" ? "enBtn" : "tafseerBtn")} · ${at != null ? T("fromAyah", nf(a)) : T(C.num, nf(n))}</button>` : "";
 }
 function tafMark(s, a){
   const src = tafSrc(); if (settings.tafMark === false || src === "txt") return "";
   const L = RANGES[src].find(L => L[1] && key(L[1], L[2]) <= key(s, a) && key(s, a) <= key(L[3], L[4]));
   if (!L || !(a === 1 || (L[1] === s && L[2] === a))) return "";
-  const C = TAF_SER[src], icon = src === "bq" ? "▶" : "🎧";
+  const C = TAF_SER[src], icon = TAF_ICO;
   return `<button class="tafmark" ${C.attr}="${L[0]}" aria-label="${esc(T(C.name))}"><span>${icon} ${T("tafShort")} · ${T(C.num, nf(L[0]))}</span><em>${esc(lecLabel(L[0], s, src))}</em></button>`;
 }
 function lecStrip(){ return ""; }
-/* one tap: small 🎧 after each ayah number, and the header "Tafsir" button (plays from the ayah at the top of the screen) */
+/* one tap: small tafsir icon after each ayah number, and the header "Tafsir" button (plays from the ayah at the top of the screen) */
 function tafIcon(s, a){
   if (settings.tafMark === false) return "";
-  return `<button class="tafbtn" data-taf="${s}:${a}" aria-label="${esc(T("tafFrom", nf(a)))}" title="${esc(T("tafFrom", nf(a)))}">🎧</button>`;
+  return `<button class="tafbtn" data-taf="${s}:${a}" aria-label="${esc(T("tafFrom", nf(a)))}" title="${esc(T("tafFrom", nf(a)))}">${TAF_ICO}</button>`;
 }
 function playTafsir(s, a){
   const src = tafSrc();
