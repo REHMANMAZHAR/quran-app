@@ -77,7 +77,7 @@ function load(key, path){
   }
   return cache[key];
 }
-const DV = "7";  // bump whenever data/ changes, so phones fetch fresh files instead of old cached ones
+const DV = "8";  // bump whenever data/ changes, so phones fetch fresh files instead of old cached ones
 const DATA = {
   meta: () => load("meta", `data/meta.json?v=${DV}`),
   occ:  () => load("occ", `data/occ.json?v=${DV}`),
@@ -117,7 +117,8 @@ function applySettings(){
   else document.documentElement.setAttribute("data-theme", settings.theme);
 }
 const hasUrWbw = () => !!(META && META.sources.wbw_ur);
-const glossOf = w => (settings.gl === "ur" && w[3]) ? {t:w[3], ur:true} : {t:w[1], ur:false};
+/* Urdu word-by-word (Quran.com). ~280 words have no Urdu of their own because Urdu word order merges them into the next word: show "—" */
+const glossOf = w => settings.gl === "ur" && w[3] ? {t:w[3], ur:true} : settings.gl === "ur" && hasUrWbw() ? {t:"—", ur:true} : {t:w[1], ur:false};
 
 /* ---------- reader ---------- */
 async function openSurah(n, ayah = 1, word = null){
