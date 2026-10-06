@@ -591,3 +591,14 @@ button.danger{color:#b3261e;border-color:#e3b6b2}
 :root[data-theme=dark] .tj-iqlab{color:#5fd0ff}
 .tjkey{list-style:none;padding:0;margin:8px 0}.tjkey li{display:flex;align-items:center;gap:10px;margin:6px 0;font-size:14px;line-height:1.6}.tjkey .tj{font-family:var(--ar);font-size:26px;line-height:1;min-width:40px;text-align:center}
 .tjd summary{cursor:pointer;color:var(--gold);font-size:14px;margin-top:6px}
+
+/* hifz check */
+body.hifz .w.hz-ok .ar{color:#1f9d5b !important}
+body.hifz .w.hz-miss .ar{color:#d1352b !important;text-decoration:underline wavy #d1352b}
+body.hifz .w.hz-chk .ar{color:#e08a00 !important}
+#hzBar{position:fixed;left:8px;right:8px;bottom:calc(64px + env(safe-area-inset-bottom));z-index:33;display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:14px;background:var(--surface);box-shadow:0 4px 18px rgba(0,0,0,.25);max-width:744px;margin:0 auto}
+#hzBar div{flex:1;min-width:0;line-height:1.5}#hzBar small{display:block;color:var(--muted);font-family:var(--ar);direction:rtl;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hz-dot{width:12px;height:12px;border-radius:50%;background:#d1352b;animation:hzp 1.2s infinite}
+@keyframes hzp{50%{opacity:.25}}
+.hz-range{display:flex;gap:12px;flex-wrap:wrap}.hz-range select{margin-inline-start:6px}
+.hzlist{list-style:none;padding:0}.hzlist li{display:flex;align-items:center;gap:8px;margin:6px 0;flex-wrap:wrap}.hzlist .oar{font-family:var(--ar);font-size:24px}
