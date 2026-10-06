@@ -3,9 +3,10 @@ import json, os, re, urllib.request, urllib.parse
 from faster_whisper import WhisperModel
 os.makedirs("align/out", exist_ok=True)
 model = WhisperModel(os.environ.get("WMODEL", "small"), device="cpu", compute_type="int8")
-for line in open("align/parts.txt"):
+SHARD, SHARDS = int(os.environ.get("SHARD", 0)), int(os.environ.get("SHARDS", 1))
+for idx, line in enumerate(l for l in open("align/parts.txt") if l.strip() and not l.startswith("#")):
     line = line.strip()
-    if not line or line.startswith("#"): continue
+    if idx % SHARDS != SHARD: continue
     n, fname = line.split(" ", 1)
     out = f"align/out/{int(n):03d}.json"
     if os.path.exists(out): continue

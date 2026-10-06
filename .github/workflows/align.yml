@@ -8,13 +8,19 @@ permissions:
 jobs:
   run:
     runs-on: ubuntu-latest
-    timeout-minutes: 340
+    timeout-minutes: 350
+    strategy:
+      fail-fast: false
+      max-parallel: 20
+      matrix:
+        shard: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with: { python-version: "3.11" }
       - run: pip install faster-whisper requests
-      - run: mkdir -p align/out; python align/transcribe.py > align/out/log.txt 2>&1 || true
+      - run: mkdir -p align/out; SHARD=${{ matrix.shard }} SHARDS=20 python align/transcribe.py > align/out/log-${{ matrix.shard }}.txt 2>&1 || true
       - run: |
           git config user.name "Claude for RMK"; git config user.email qurantosoulapp@gmail.com
-          mkdir -p align/out; git add align/out && git commit -m "transcripts" && git pull --rebase && git push || true
+          git add align/out && git commit -m "transcripts shard ${{ matrix.shard }} [skip ci]" || exit 0
+          for i in 1 2 3 4 5 6 7 8; do git pull --rebase -q && git push -q && break; sleep $((RANDOM % 20 + 5)); done
