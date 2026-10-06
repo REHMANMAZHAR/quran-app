@@ -87,7 +87,7 @@ const DATA = {
 
 /* ---------- state ---------- */
 let META, CUR = null;
-const settings = Object.assign({ script:"uth", lang:null, tr:null, wbw:true, gl:null, size:30, ts:1, theme:"auto", rec:"Alafasy_128kbps", speed:1 }, store.get("settings", {}));
+const settings = Object.assign({ script:"uth", lang:null, tr:null, wbw:true, gl:null, size:30, ts:1, theme:"auto", rec:"Alafasy_128kbps", speed:1, taf:"ur", tafMark:true }, store.get("settings", {}));
 if (settings.gl === "auto") settings.gl = "ur";
 function saveSettings(){ store.set("settings", settings); applySettings(); }
 function applyLang(){
@@ -154,6 +154,7 @@ function render(){
   if (n !== 1 && n !== 9) h += '<div class="bism">بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</div>';
   CUR.ayahs.forEach((A, ai) => {
     const a = ai + 1;
+    if (typeof tafMark === "function") h += tafMark(n, a);
     h += `<article class="ayah${ayahCls(n, a)}" id="a${a}" data-a="${a}"><div class="words">`;
     A.w.forEach((w, i) => {
       const g = glossOf(w), last = i === A.w.length - 1;

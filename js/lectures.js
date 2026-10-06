@@ -180,7 +180,7 @@ const SERIES = {
 };
 const TAFSIR_TXT = (s, a) => `https://quran.com/${s}:${a}/tafsirs/tafsir-bayan-ul-quran`, TAFSIR_PDF = "https://tanzeem.org/book_categories/bayan-ul-quran/";
 Object.assign(L.ur, {
-  bqName:"بیان القرآن — ڈاکٹر اسرار احمد (اردو ویڈیو)", enName:"ڈاکٹر اسرار احمد — انگریزی آڈیو لیکچرز", urName:"بیان القرآن — ڈاکٹر اسرار احمد (اردو آڈیو)", urBtn:"🎧 ڈاکٹر اسرار — اردو آڈیو تفسیر", lqName:"لسان القرآن — استاد عامر سہیل", lecH:"لیکچرز", lec:n=>`لیکچر ${ud(n)}`, part:n=>`حصہ ${ud(n)}`, lesson:n=>`سبق ${ud(n)}`,
+  bqName:"بیان القرآن — ڈاکٹر اسرار احمد (اردو ویڈیو)", enName:"ڈاکٹر اسرار احمد — انگریزی آڈیو لیکچرز", urName:"بیان القرآن — ڈاکٹر اسرار احمد (اردو آڈیو)", urBtn:"🎧 ڈاکٹر اسرار — اردو آڈیو تفسیر", tafShort:"تفسیر", tafSet:"تفسیر (ڈاکٹر اسرار احمد)", txtName:"تحریری تفسیر (اردو، Quran.com)", tafMarkSet:"قرآن کے متن میں تفسیر کے نشان دکھائیں", lqName:"لسان القرآن — استاد عامر سہیل", lecH:"لیکچرز", lec:n=>`لیکچر ${ud(n)}`, part:n=>`حصہ ${ud(n)}`, lesson:n=>`سبق ${ud(n)}`,
   lecAyahs:(a,b)=>`آیات ${ud(a)}–${ud(b)}`, intro:"تعارف", closing:"اختتامی خطاب", tafseerBtn:"▶ ڈاکٹر اسرار — اردو ویڈیو", enBtn:"🎧 ڈاکٹر اسرار — انگریزی آڈیو", txtBtn:"📖 ڈاکٹر اسرار — تحریری تفسیر (اردو)", startAt:t=>`${t} سے جاری رکھیں`,
   cont:"جاری رکھیں", startS:"شروع کریں", openYT:"یوٹیوب پر دیکھیں", prevL:"پچھلا", nextL:"اگلا", via:s=>`آفیشل · ${s}`,
   lqNote:"آفیشل چینل کی ویڈیوز (نئی پہلے)", getApp:"ان کی آفیشل ایپ", noLec:"اس آیت کا لیکچر نہیں ملا",
@@ -189,7 +189,7 @@ Object.assign(L.ur, {
   txtNote:"تحریری تفسیر Quran.com پر (بیان القرآن، اردو)۔ مکمل کتاب PDF: tanzeem.org", pdf:"PDF کتاب"
 });
 Object.assign(L.en, {
-  bqName:"Bayan-ul-Quran — Dr. Israr Ahmad (Urdu video)", enName:"Dr. Israr Ahmad — English audio lectures", urName:"Bayan-ul-Quran — Dr. Israr Ahmad (Urdu audio)", urBtn:"🎧 Dr. Israr — Urdu audio tafsir", lqName:"Lisan ul Quran — Ustad Amir Sohail", lecH:"Lectures", lec:n=>`Lecture ${n}`, part:n=>`Part ${n}`, lesson:n=>`Lesson ${n}`,
+  bqName:"Bayan-ul-Quran — Dr. Israr Ahmad (Urdu video)", enName:"Dr. Israr Ahmad — English audio lectures", urName:"Bayan-ul-Quran — Dr. Israr Ahmad (Urdu audio)", urBtn:"🎧 Dr. Israr — Urdu audio tafsir", tafShort:"Tafsir", tafSet:"Tafsir (Dr. Israr Ahmad)", txtName:"Written tafsir (Urdu, Quran.com)", tafMarkSet:"Show tafsir markers in the Quran text", lqName:"Lisan ul Quran — Ustad Amir Sohail", lecH:"Lectures", lec:n=>`Lecture ${n}`, part:n=>`Part ${n}`, lesson:n=>`Lesson ${n}`,
   lecAyahs:(a,b)=>`Ayahs ${a}–${b}`, intro:"Introduction", closing:"Closing speech", tafseerBtn:"▶ Dr. Israr — Urdu video", enBtn:"🎧 Dr. Israr — English audio", txtBtn:"📖 Dr. Israr — written tafsir (Urdu)", startAt:t=>`Continue at ${t}`,
   cont:"Continue", startS:"Start", openYT:"Watch on YouTube", prevL:"Previous", nextL:"Next", via:s=>`Official · ${s}`,
   lqNote:"Videos from the official channel (newest first)", getApp:"Their official app", noLec:"No lecture found for this ayah",
@@ -213,19 +213,33 @@ function lecLabel(n, s, ser = "bq"){
   const end = (x, a) => a === 999 ? nm(x) : `${nm(x)} ${nf(a)}`;
   return L[1] === L[3] ? `${nm(L[1])} ${L[4] === 999 && L[2] === 1 ? "" : nf(L[2]) + "–" + (L[4] === 999 ? "" : nf(L[4]))}`.trim() : `${end(L[1], L[2]) } – ${end(L[3], L[4])}`;
 }
-/* buttons for one ayah: Urdu video, English audio, written tafsir (used in the ayah menu and the word sheet) */
+/* Tafsir source is one choice in Settings (default: Urdu audio). Reading view shows only a thin marker where a new part begins. */
+const TAF_SER = { ur:{ attr:"data-lecur", num:"part", name:"urName" }, bq:{ attr:"data-lec", num:"lec", name:"bqName" }, en:{ attr:"data-lecen", num:"part", name:"enName" } };
+const tafSrc = () => settings.taf || "ur";
 function israrButtons(s, a){
-  const v = lecFor(s, a), e = lecFor(s, a, "en"), u = lecFor(s, a, "ur");
-  return `${u ? `<button data-lecur="${u}">${T("urBtn")}</button>` : ""}${v ? `<button data-lec="${v}">${T("tafseerBtn")}</button>` : ""}${e ? `<button data-lecen="${e}">${T("enBtn")}</button>` : ""}<a class="btnlink" href="${TAFSIR_TXT(s, a)}" target="_blank" rel="noopener">${T("txtBtn")}</a>`;
+  const src = tafSrc();
+  if (src === "txt") return `<a class="btnlink" href="${TAFSIR_TXT(s, a)}" target="_blank" rel="noopener">${T("txtBtn")}</a>`;
+  const n = lecFor(s, a, src), C = TAF_SER[src];
+  return n ? `<button ${C.attr}="${n}">${T(src === "ur" ? "urBtn" : src === "en" ? "enBtn" : "tafseerBtn")} · ${T(C.num, nf(n))}</button>` : "";
 }
-/* surah header: lectures covering this surah */
-function lecStrip(s){
-  const row = (ser, attr, lbl, nameK) => { const ls = lecsInSurah(s, ser); if (!ls.length) return "";
-    return `<div class="lh2">${esc(T(nameK))}</div><div class="chips">${ls.map(L =>
-      `<button class="chip" ${attr}="${L[0]}"><b>${lbl(nf(L[0]))}</b><span>${esc(lecLabel(L[0], s, ser))}</span>${VS[ser].n === L[0] ? `<i>${T("lastWatched")}</i>` : ""}</button>`).join("")}</div>`; };
-  const h = row("ur", "data-lecur", x => T("part", x), "urName") + row("bq", "data-lec", x => T("lec", x), "bqName") + row("en", "data-lecen", x => T("part", x), "enName");
-  return h ? `<div class="lecstrip">${h}<a class="txtlink" href="${TAFSIR_TXT(s, 1)}" target="_blank" rel="noopener">${T("txtBtn")} ↗</a></div>` : "";
+function tafMark(s, a){
+  const src = tafSrc(); if (settings.tafMark === false || src === "txt") return "";
+  const L = RANGES[src].find(L => L[1] && key(L[1], L[2]) <= key(s, a) && key(s, a) <= key(L[3], L[4]));
+  if (!L || !(a === 1 || (L[1] === s && L[2] === a))) return "";
+  const C = TAF_SER[src], icon = src === "bq" ? "▶" : "🎧";
+  return `<button class="tafmark" ${C.attr}="${L[0]}" aria-label="${esc(T(C.name))}"><span>${icon} ${T("tafShort")} · ${T(C.num, nf(L[0]))}</span><em>${esc(lecLabel(L[0], s, src))}</em></button>`;
 }
+function lecStrip(){ return ""; }
+function tafSettingsHTML(){
+  const o = (v, k) => `<option value="${v}"${tafSrc() === v ? " selected" : ""}>${esc(T(k))}</option>`;
+  return `<label for="selTaf">${T("tafSet")}</label>
+    <select id="selTaf">${o("ur", "urName")}${o("bq", "bqName")}${o("en", "enName")}${o("txt", "txtName")}</select>
+    <label class="chk"><input type="checkbox" id="chkTafMark"${settings.tafMark === false ? "" : " checked"}> ${T("tafMarkSet")}</label>`;
+}
+document.addEventListener("change", e => {
+  if (e.target.id === "selTaf") { settings.taf = e.target.value; saveSettings(); if (CUR) rerender(); }
+  else if (e.target.id === "chkTafMark") { settings.tafMark = e.target.checked; saveSettings(); if (CUR) rerender(); }
+});
 /* player panel */
 let YTP = null, ytReady = null, vCur = null, vTimer = 0;
 function loadYT(){
@@ -298,7 +312,7 @@ function stopMedia(){
 function closeVideo(){
   stopMedia();
   $("#vpanel").classList.remove("on"); $("#vpanel").innerHTML = ""; $("#scrim").classList.remove("on"); vCur = null;
-  if (LV.view === "learn") learnHome(); else if (CUR) { const st = document.querySelector(".lecstrip"); if (st) st.outerHTML = lecStrip(CUR.n); }
+  if (LV.view === "learn") learnHome();
 }
 $("#vpanel").addEventListener("click", e => {
   const b = e.target.closest("[data-v]"); if (!b || !vCur) return;
@@ -316,11 +330,10 @@ $("#main").addEventListener("click", lecClick);
 $("#sheetBody").addEventListener("click", e => { const c = e.target.closest("[data-lec],[data-lecen],[data-lecur]"); if (c) { closeAll(); lecClick(e); } });
 /* Learn tab card */
 function lecturesCard(){
-  const un = VS.ur.n || 5, ut = VS.ur.t[un] || 0, bn = VS.bq.n || 5, en = VS.en.n || 1, et = VS.en.t[en] || 0, li = VS.lq.i || 0, lt = VS.lq.t[li] || 0;
+  const src = tafSrc() === "txt" ? "ur" : tafSrc(), C = TAF_SER[src], n = VS[src].n || (src === "en" ? 1 : 5), t = VS[src].t[n] || 0;
+  const li = VS.lq.i || 0, lt = VS.lq.t[li] || 0;
   return `<div class="lh"><h3>${T("lecH")}</h3></div><div class="games">
-    <button class="game" data-lecs="ur"><b>${esc(T("urName"))}</b><small>${T("part", nf(un))} · ${esc(lecLabel(un, 0, "ur"))}</small><small>${ut ? T("startAt", mmss(ut)) : (VS.ur.n ? T("cont") : T("startS"))}</small></button>
-    <button class="game" data-lecs="bq"><b>${esc(T("bqName"))}</b><small>${T("lec", nf(bn))} · ${esc(lecLabel(bn))}</small><small>${VS.bq.n ? T("cont") : T("startS")}</small></button>
-    <button class="game" data-lecs="en"><b>${esc(T("enName"))}</b><small>${T("part", nf(en))} · ${esc(lecLabel(en, 0, "en"))}</small><small>${et ? T("startAt", mmss(et)) : (VS.en.n ? T("cont") : T("startS"))}</small></button>
+    <button class="game" data-lecs="${src}"><b>${esc(T(C.name))}</b><small>${T(C.num, nf(n))} · ${esc(lecLabel(n, 0, src))}</small><small>${t ? T("startAt", mmss(t)) : (VS[src].n ? T("cont") : T("startS"))}</small></button>
     <button class="game" data-lecs="lq"><b>${esc(T("lqName"))}</b><small>${T("lesson", nf(li + 1))}</small><small>${lt ? T("startAt", mmss(lt)) : (VS.lq.i ? T("cont") : T("startS"))}</small></button></div>`;
 }
 $("#learn").addEventListener("click", e => { const c = e.target.closest("[data-lecs]"); if (!c) return; const s = c.dataset.lecs;

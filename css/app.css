@@ -490,3 +490,9 @@ body.playing .toast{bottom:calc(env(safe-area-inset-bottom,0px) + var(--tabh) + 
 .wd-actions .btnlink{border:1px solid var(--line);border-radius:18px;padding:4px 14px;font-size:14px;color:var(--ink);text-decoration:none;display:inline-flex;align-items:center}
 .lecstrip .lh2+.chips+.lh2{margin-top:6px}
 .lecstrip .txtlink{display:inline-block;margin-top:6px;font-size:13px;color:var(--gold);font-weight:700}
+
+/* tafsir marker: one thin line where a new part begins */
+.tafmark{display:flex;align-items:center;gap:8px;width:calc(100% - 8px);margin:6px 4px;padding:3px 10px;border:0;border-top:1px dashed var(--line);background:none;color:var(--gold);font-size:12.5px;line-height:1.6;cursor:pointer;text-align:start}
+.tafmark span{font-weight:700;white-space:nowrap}
+.tafmark em{font-style:normal;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.set .chk{display:flex;align-items:center;gap:8px;font-size:14px;margin-top:6px}
