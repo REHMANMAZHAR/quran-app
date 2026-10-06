@@ -21,6 +21,7 @@
   const last = store.get("last", null);
   await openSurah(last ? last.s : 1, last ? last.a : 1);
   if (last && (last.s !== 1 || last.a !== 1)) toast(esc(T("resume", settings.lang === "en" ? META.surahs[last.s-1].tr : META.surahs[last.s-1].ar, last.a)));
+  firstReadHelp();
   registerSW();
 })();
 function registerSW(){ if (!window.EMBED && "serviceWorker" in navigator && location.protocol === "https:") navigator.serviceWorker.register("sw.js").catch(() => {}); }

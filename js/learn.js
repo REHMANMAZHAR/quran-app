@@ -7,7 +7,7 @@ Object.assign(L.ur, {
   known:"سیکھے گئے", due:"آج دہرائی", streak:"دن مسلسل", review:n=>`${ud(n)} الفاظ دہرائیں`, startNew:"نئے الفاظ سیکھیں",
   decksH:"الفاظ کے سیٹ", decksS:"سب سے زیادہ آنے والے الفاظ پہلے", deck:n=>`سیٹ ${ud(n)}`, gamesH:"کھیل",
   matchT:"الفاظ ملائیں", matchS:"عربی لفظ کو اس کے معنی سے ملائیں", soonT:"جلد آ رہا ہے", soonS:"کوئز، آیت جوڑیں، سنیں اور چنیں، مادہ تلاش",
-  best:t=>`بہترین: ${t}`, tapReveal:"معنی دیکھنے کے لیے کارڈ دبائیں", again:"دوبارہ", good:"یاد ہے", easy:"آسان",
+  best:t=>`بہترین: ${t}`, tapReveal:"معنی دیکھنے کے لیے کارڈ دبائیں", again:"یاد نہیں تھا", good:"یاد تھا", easy:"بہت آسان", gradeHint:"آپ کو یہ لفظ کتنا یاد تھا؟ ہم اسے صحیح وقت پر دوبارہ دکھائیں گے۔", gAgain:"آج ہی دوبارہ دکھائیں", gIn:d=>d===1?"کل دوبارہ":`${ud(d)} دن بعد دوبارہ`, studyH:"سیکھنے کے اوزار",
   inQ:n=>`قرآن میں ${ud(n)} بار`, hearIt:"آیت میں سنیں", back:"واپس", sessDone:"شاباش!", sessP:(n,p)=>`${ud(n)} کارڈ مکمل۔ اب آپ قرآن کے ${ud(p)}٪ الفاظ پہچانتے ہیں۔`,
   noDue:"آج دہرانے کو کچھ نہیں — نئے الفاظ سیکھیں۔", matchDone:"سب جوڑے مل گئے!", time:"وقت", playAgain:"دوبارہ کھیلیں", newBest:"نیا ریکارڈ!",
   enNote:"معنی فی الحال انگریزی میں ہیں — اردو معنی جلد شامل ہوں گے۔"
@@ -19,7 +19,7 @@ Object.assign(L.en, {
   known:"Learned", due:"Due today", streak:"Day streak", review:n=>`Review ${n} words`, startNew:"Learn new words",
   decksH:"Word decks", decksS:"Most frequent words first", deck:n=>`Deck ${n}`, gamesH:"Games",
   matchT:"Word Match", matchS:"Match each Arabic word to its meaning", soonT:"Coming soon", soonS:"Quiz, Ayah Builder, Listen & Tap, Root Hunt",
-  best:t=>`Best: ${t}`, tapReveal:"Tap the card to see the meaning", again:"Again", good:"Good", easy:"Easy",
+  best:t=>`Best: ${t}`, tapReveal:"Tap the card to see the meaning", again:"Didn't know", good:"Knew it", easy:"Very easy", gradeHint:"How well did you know this word? We'll show it again at the right time.", gAgain:"Show again today", gIn:d=>d===1?"Again tomorrow":`Again in ${d} days`, studyH:"Study tools",
   inQ:n=>`${n} times in the Quran`, hearIt:"Hear it in the ayah", back:"Back", sessDone:"Well done!", sessP:(n,p)=>`${n} cards done. You now recognise ${p}% of the Quran's words.`,
   noDue:"Nothing due today — learn some new words.", matchDone:"All pairs matched!", time:"Time", playAgain:"Play again", newBest:"New best!",
   enNote:""
@@ -84,7 +84,7 @@ async function learnHome(){
       ${T("enNote") ? `<p style="color:var(--muted);font-size:12.5px;margin:10px 0 0">${T("enNote")}</p>` : ""}</div>
     ${wotdHTML()}
     ${questHTML()}
-    <div class="lh"><h3>${T("gamesH")}</h3></div>
+    <div class="lh"><h3>${T("studyH")}</h3></div>
     ${gamesGridHTML()}
     ${lecturesCard()}
     <div class="lh"><h3>${T("decksH")}</h3><small>${T("decksS")}</small></div>
@@ -116,9 +116,9 @@ function drawCard(){
   el.innerHTML = `<div class="fc-top"><button class="iconbtn" data-act="home" aria-label="${T("back")}"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
       <div class="prog"><i style="width:${pct}%"></i></div><small>${LV.i + 1}/${LV.q.length}</small></div>
     <div class="card" data-act="flip" role="button" tabindex="0">${LV.flip ? back : front}</div>
-    ${LV.flip ? `<div class="grades"><button class="g0" data-g="0">${T("again")}<small>&lt;1 day</small></button>
-      <button class="g1" data-g="1">${T("good")}<small>${IV[Math.min(box(w[0]) + 1, 6)] || 1} d</small></button>
-      <button class="g2" data-g="2">${T("easy")}<small>${IV[Math.min(box(w[0]) + 2, 6)]} d</small></button></div>` : ""}`;
+    ${LV.flip ? `<p class="ghint">${T("gradeHint")}</p><div class="grades"><button class="g0" data-g="0">✗ ${T("again")}<small>${T("gAgain")}</small></button>
+      <button class="g1" data-g="1">✓ ${T("good")}<small>${T("gIn", IV[Math.min(box(w[0]) + 1, 6)] || 1)}</small></button>
+      <button class="g2" data-g="2">★ ${T("easy")}<small>${T("gIn", IV[Math.min(box(w[0]) + 2, 6)])}</small></button></div>` : ""}`;
 }
 function grade(g){
   const r = LV.q[LV.i], t = today(), c = LS.c[r] || [0, t, 0];
@@ -167,12 +167,12 @@ $("#learn").addEventListener("click", e => {
   if (b.dataset.g != null) return grade(+b.dataset.g);
   if (b.dataset.m) { const [side, r] = b.dataset.m.split(":"); return tapTile(side, +r, b); }
   const a = b.dataset.act;
-  if (a === "home") learnHome();
+  if (a === "home") goHome();
   else if (a === "review") startCards(dueList());
   else if (a === "match") startMatch();
   else if (a === "flip") { LV.flip = !LV.flip; drawCard(); }
 });
 $("#learn").addEventListener("keydown", e => { if ((e.key === "Enter" || e.key === " ") && e.target.dataset.act === "flip") { e.preventDefault(); LV.flip = !LV.flip; drawCard(); } });
 document.querySelector(".tabbar").addEventListener("click", e => { const b = e.target.closest("[data-v]"); if (b && b.dataset.v !== LV.view) showView(b.dataset.v); });
-function labelTabs(){ const K = { read:"tabRead", learn:"tabLearn", duas:"tabDuas", me:"tabMe" }; document.querySelectorAll(".tabbar [data-v]").forEach(b => b.querySelector("span").textContent = T(K[b.dataset.v])); }
+function labelTabs(){ const K = { read:"tabRead", learn:"tabLearn", games:"tabGames", duas:"tabDuas", me:"tabMe" }; document.querySelectorAll(".tabbar [data-v]").forEach(b => b.querySelector("span").textContent = T(K[b.dataset.v])); }
 

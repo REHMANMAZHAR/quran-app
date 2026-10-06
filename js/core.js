@@ -20,7 +20,7 @@ const L = {
     reciter:"قاری", speed:"تلاوت کی رفتار", slow:"آہستہ", normal:"عام", fast:"تیز", size:"عربی متن کا سائز",
     theme:"رنگ", auto:"خودکار", light:"روشن", dark:"گہرا", sources:"ذرائع:",
     draftAbout:"گرامر نوٹس مسودہ ہیں — عالم کی نظرِ ثانی کے بعد حتمی ہوں گے۔",
-    bism:"بسم اللہ", ayah:n=>`آیت ${ud(n)}`, done:"سورت مکمل ہوئی", audioFail:"تلاوت لوڈ نہیں ہوئی — انٹرنیٹ چیک کریں",
+    bism:"بسم اللہ", taud:"تعوذ — أعوذ بالله", ayah:n=>`آیت ${ud(n)}`, done:"سورت مکمل ہوئی", audioFail:"تلاوت لوڈ نہیں ہوئی — انٹرنیٹ چیک کریں",
     rep1:"ہر آیت ایک بار", repN:n=>`ہر آیت ${ud(n)} بار`, repInf:"یہ آیت مسلسل دہرائی جائے گی",
     wordNA:"اس لفظ کی آواز دستیاب نہیں", resume:(n,a)=>`آپ نے یہاں چھوڑا تھا: سورۃ ${n}، آیت ${ud(a)}`,
     listen:a=>`آیت ${ud(a)} سنیں`, ayahs:n=>`${ud(n)} آیات`, num:ud
@@ -42,7 +42,7 @@ const L = {
     reciter:"Reciter", speed:"Recitation speed", slow:"Slow", normal:"Normal", fast:"Fast", size:"Arabic text size",
     theme:"Theme", auto:"Auto", light:"Light", dark:"Dark", sources:"Sources:",
     draftAbout:"Grammar notes are a draft and will be final after scholar review.",
-    bism:"Bismillah", ayah:n=>`Ayah ${n}`, done:"Surah complete", audioFail:"Recitation didn't load — check your internet",
+    bism:"Bismillah", taud:"Ta'awwudh — A'udhu billah", ayah:n=>`Ayah ${n}`, done:"Surah complete", audioFail:"Recitation didn't load — check your internet",
     rep1:"Each ayah once", repN:n=>`Each ayah ${n} times`, repInf:"This ayah will repeat continuously",
     wordNA:"Audio for this word isn't available", resume:(n,a)=>`You stopped here: ${n}, ayah ${a}`,
     listen:a=>`Play ayah ${a}`, ayahs:n=>`${n} ayahs`, num:n=>String(n)
@@ -103,8 +103,9 @@ function applyLang(){
   document.querySelector('[data-tab="settings"]').textContent = T("tabSet");
   $("#search").placeholder = T("search"); $("#search").setAttribute("aria-label", T("search"));
   const A = "M6 6v12l8.5-6zM16 6h2v12h-2z", B = "M18 6v12l-8.5-6zM6 6h2v12H6z";
-  $("#pPrev").innerHTML = `<svg viewBox="0 0 24 24"><path d="${ur ? A : B}"/></svg>`;
-  $("#pNext").innerHTML = `<svg viewBox="0 0 24 24"><path d="${ur ? B : A}"/></svg>`;
+  $("#pPrev").innerHTML = `<svg viewBox="0 0 24 24"><path d="${ur ? A : B}"/></svg><span class="cap" data-cap="capPrev"></span>`;
+  $("#pNext").innerHTML = `<svg viewBox="0 0 24 24"><path d="${ur ? B : A}"/></svg><span class="cap" data-cap="capNext"></span>`;
+  if (typeof fillCaps === "function") fillCaps();
   labelTabs();
   if (typeof LV !== "undefined" && LV.view !== "read") showView(LV.view);
 }
@@ -352,7 +353,7 @@ function drawDrawer(){
     </div>`;
     $("#selTr").onchange = e => { settings.tr = e.target.value; saveSettings(); rerender(); };
     $("#rngSize").oninput = e => { settings.size = +e.target.value; saveSettings(); };
-    $("#selRec").onchange = e => { settings.rec = e.target.value; saveSettings(); if (P.s) playFrom(P.s, P.a); };
+    $("#selRec").onchange = e => { settings.rec = e.target.value; saveSettings(); if (P.s) playFrom(P.s, P.a, true); };
   }
 }
 $("#drBody").addEventListener("click", e => {
@@ -376,32 +377,35 @@ const REPS = [1, 3, 5, 0];
 const recName = () => META.reciters.find(x => x[0] === settings.rec) || META.reciters[0];
 const ICON_PLAY = '<path d="M8 5.5v13l11-6.5z"/>', ICON_PAUSE = '<path d="M7 5h4v14H7zM13 5h4v14h-4z"/>';
 
-async function playFrom(s, a){
+async function playFrom(s, a, noTaud){
   if (!META.reciters.some(r => r[0] === settings.rec)) settings.rec = META.reciters[0][0];
   if (!CUR || CUR.n !== s) await openSurah(s, a);
   P.s = s; P.a = a; P.count = 0; P.T = null;
   document.body.classList.add("playing");
   $("#player").classList.add("on");
   P.bism = (a === 1 && s !== 1 && s !== 9);
+  /* Etiquette of recitation: begin with the ta'awwudh (أَعُوذُ بِاللَّهِ مِنَ الشَّيْطَانِ الرَّجِيمِ) whenever recitation starts,
+     then the basmalah at the start of every surah except At-Tawbah (Al-Fatiha's first ayah is the basmalah itself). */
+  P.taud = !noTaud; P.taudAlt = false;
   startAudio();  // start audio immediately, inside the tap, so phones allow it
   const rec = settings.rec;
   DATA.timing(rec).then(T => { if (settings.rec === rec) P.T = T; }).catch(() => {});
 }
 function startAudio(){
   const s = P.s, a = P.a;
-  P.audio.src = P.bism ? `${AUDIO}${settings.rec}/001001.mp3` : `${AUDIO}${settings.rec}/${p3(s)}${p3(a)}.mp3`;
+  P.audio.src = P.taud ? `${AUDIO}${P.taudAlt ? "Alafasy_128kbps" : settings.rec}/audhubillah.mp3` : P.bism ? `${AUDIO}${settings.rec}/001001.mp3` : `${AUDIO}${settings.rec}/${p3(s)}${p3(a)}.mp3`;
   P.audio.playbackRate = settings.speed;
   P.audio.play().catch(() => {});
-  if (!P.bism && a < CUR.ayahs.length) P.pre.src = `${AUDIO}${settings.rec}/${p3(s)}${p3(a+1)}.mp3`;
+  if (!P.bism && !P.taud && a < CUR.ayahs.length) P.pre.src = `${AUDIO}${settings.rec}/${p3(s)}${p3(a+1)}.mp3`;
   P.liveKey = null;
   updateBar();
   markAyah();
 }
 function updateBar(){
   const S = META.surahs[P.s-1], r = recName();
-  $("#pTitle").textContent = `${settings.lang === "en" ? S.tr : S.ar} · ${P.bism ? T("bism") : T("ayah", P.a)}`;
+  $("#pTitle").textContent = `${settings.lang === "en" ? S.tr : S.ar} · ${P.taud ? T("taud") : P.bism ? T("bism") : T("ayah", P.a)}`;
   $("#pRec").textContent = settings.lang === "en" ? r[2] : r[1];
-  $("#pRep").textContent = P.rep ? "×" + T("num", P.rep) : "∞";
+  $("#pRep").innerHTML = `<b>${P.rep ? "×" + T("num", P.rep) : "∞"}</b><span class="cap">${T("capRep")}</span>`;
   $("#pRep").setAttribute("aria-pressed", P.rep !== 1);
   if ("mediaSession" in navigator && window.MediaMetadata) {
     navigator.mediaSession.metadata = new MediaMetadata({ title: `${S.tr} ${P.s}:${P.a}`, artist: r[2], album: "Quran" });
@@ -410,7 +414,7 @@ function updateBar(){
 function markAyah(){
   document.querySelectorAll(".ayah.playing").forEach(x => x.classList.remove("playing"));
   const el = document.getElementById("a" + P.a);
-  if (!el || P.bism) return;
+  if (!el || P.bism || P.taud) return;
   el.classList.add("playing");
   if (Date.now() - P.userScroll > 4000) {
     const r = el.getBoundingClientRect();
@@ -434,7 +438,7 @@ function setLive(w0, w1){
 function tick(){
   P.raf = 0;
   if (P.audio.paused) return;
-  if (!P.bism && P.T && P.T[P.s-1]) {
+  if (!P.bism && !P.taud && P.T && P.T[P.s-1]) {
     const seg = P.T[P.s-1][P.a-1] || [], t = P.audio.currentTime * 1000;
     let hit = -1;
     for (let k = 0; k < seg.length; k += 4) { if (t >= seg[k+2]) hit = k; else break; }
@@ -445,6 +449,7 @@ function tick(){
 P.audio.addEventListener("play", () => { $("#pIcon").innerHTML = ICON_PAUSE; if (!P.raf) P.raf = requestAnimationFrame(tick); });
 P.audio.addEventListener("pause", () => { $("#pIcon").innerHTML = ICON_PLAY; });
 P.audio.addEventListener("ended", () => {
+  if (P.taud) { P.taud = false; startAudio(); return; }
   if (P.bism) { P.bism = false; startAudio(); return; }
   P.count++;
   if (P.rep === 0 || P.count < P.rep) { startAudio(); return; }
@@ -454,7 +459,10 @@ P.audio.addEventListener("ended", () => {
   if (P.a < CUR.ayahs.length) { P.a++; startAudio(); }
   else { setLive(-1, -1); $("#pIcon").innerHTML = ICON_PLAY; toast(T("done")); }
 });
-P.audio.addEventListener("error", () => { if (P.s && P.audio.getAttribute("src")) toast(T("audioFail")); });
+P.audio.addEventListener("error", () => {
+  if (P.taud) { if (!P.taudAlt && settings.rec !== "Alafasy_128kbps") { P.taudAlt = true; } else { P.taud = false; } startAudio(); return; }  // reciter has no ta'awwudh file: use Alafasy's, else go on
+  if (P.s && P.audio.getAttribute("src")) toast(T("audioFail"));
+});
 function stopPlayer(){
   P.audio.pause(); P.audio.removeAttribute("src"); P.s = 0;
   document.body.classList.remove("playing"); $("#player").classList.remove("on");

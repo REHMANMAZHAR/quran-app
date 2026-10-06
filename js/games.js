@@ -170,14 +170,25 @@ function wotdHTML(){
   return `<div class="lc wotd"><small>${T("wotd")}</small><div class="qa" style="font-size:44px">${esc(w[1])}</div><div class="mean">${esc(w[5])}</div><div class="cnt">${T("inQ", nf(w[4]))} · ${esc(w[2])}</div>
     <div class="wd-actions"><button data-hear="${w[7]}:${w[8]}:${w[9]}">${T("hearIt")}</button>${LS.c[w[0]] ? "" : `<button data-q="addw" data-r="${w[0]}">${T("addCards")}</button>`}</div></div>`;
 }
-function gamesGridHTML(){
-  const bm = LS.best.match, g = (id, t, s, extra = "") => `<button class="game" data-q="${id}"><b>${T(t)}</b><small>${T(s)}</small>${extra}</button>`;
-  return `<div class="games">${g("salah", "salahMode", "salahS")}<button class="game" data-act="match"><b>${T("matchT")}</b><small>${T("matchS")}</small>${bm ? `<small>${T("best", fmtT(bm))}</small>` : ""}</button>
-    ${g("quiz", "quizT", "quizS")}${g("listen", "listenT", "listenS")}${g("builder", "builderT", "builderS")}${g("roothunt", "rootHT", "rootHS")}${g("speed", "speedT", "speedS")}
-    ${g("pass", "passT", "passS")}${g("week", "weekT", "weekS", LS.week[weekNo()] != null ? `<small>${T("bestWeek", nf(LS.week[weekNo()]))}</small>` : "")}
-    ${g("course", "courseT", "courseS")}${g("irab", "irabT", "irabS")}${g("roots", "rootsT", "rootsS")}</div>
+function gamesGridHTML(){   /* study tools on the Learn tab */
+  const g = (id, t, s) => `<button class="game" data-q="${id}"><b>${T(t)}</b><small>${T(s)}</small></button>`;
+  return `<div class="games">${g("salah", "salahMode", "salahS")}${g("course", "courseT", "courseS")}${g("irab", "irabT", "irabS")}${g("roots", "rootsT", "rootsS")}</div>`;
+}
+/* ---- Games tab ---- */
+const GAME_LIST = [["match","matchT","matchS"],["quiz","quizT","quizS"],["listen","listenT","listenS"],["builder","builderT","builderS"],["roothunt","rootHT","rootHS"],
+  ["speed","speedT","speedS"],["fix","fixT","fixS"],["pass","passT","passS"],["week","weekT","weekS"]];
+VIEWS.games = { el:"#learn", title:() => [T("gamesT"), T("gamesSub")], render: gamesHome };
+function goHome(){ if (LV.view === "games") gamesHome(); else learnHome(); }
+async function gamesHome(){
+  if (!LV.V) { try { LV.V = await DATA.vocab(); } catch(e) { return; } }
+  const bm = LS.best.match, wk = LS.week[weekNo()];
+  $("#learn").innerHTML = `<div class="lc xpbar"><b>${T("level", nf(Math.floor(LS.xp / 100) + 1))}</b><span class="pb2"><i style="width:${LS.xp % 100}%"></i></span><small>${T("xp", nf(LS.xp))}</small></div>
+    <div class="games">${GAME_LIST.map(([id, t, s]) => `<div class="game"><button class="gplay" data-q="${id}"><b>${T(t)}</b><small>${T(s)}</small>
+      ${id === "match" && bm ? `<small class="gbest">${T("best", fmtT(bm))}</small>` : ""}${id === "week" && wk != null ? `<small class="gbest">${T("bestWeek", nf(wk))}</small>` : ""}</button>
+      <button class="ghow" data-intro="${id}">? ${T("howPlay")}</button></div>`).join("")}</div>
     <div class="lh"><h3>${T("badgesH")}</h3></div><div class="badges">${BADGES.map(b => `<span class="${LS.badges[b[0]] ? "on" : ""}">🏅 ${esc(settings.lang === "en" ? b[1] : b[2])}</span>`).join("")}</div>`;
 }
+GAMES.match = () => startMatch();
 /* ---- Root explorer ---- */
 let RQ = "";
 function openRoots(){
@@ -214,11 +225,11 @@ $("#learn").addEventListener("click", async e => {
   const g3 = e.target.closest("[data-go3]"); if (g3) { const [s, a, w] = g3.dataset.go3.split(":").map(Number); return openSurah(s, a, w); }
   const q = e.target.closest("[data-q]"); if (!q) return;
   const k = q.dataset.q;
-  if (GAMES[k]) { G = null; return GAMES[k](); }
+  if (GAMES[k]) { G = null; LS.intro = LS.intro || {}; if (!LS.intro[k] && GAME_HELP[k]) return gameIntro(k); return GAMES[k](); }
   if (k === "hear" && G && G.qs) { const a = G.qs[G.i].audio; if (a) playWord(...a); }
   else if (k === "next") nextQ();
   else if (k === "go") drawQ();
-  else if (k === "again" && G) { const kind = G.kind, unit = G.unit; G = null; if (unit != null) openUnit(unit); else if (GAMES[kind]) GAMES[kind](); else learnHome(); }
+  else if (k === "again" && G) { const kind = G.kind, unit = G.unit; G = null; if (unit != null) openUnit(unit); else if (GAMES[kind]) GAMES[kind](); else goHome(); }
   else if (k === "shareW") shareWeek();
   else if (/^pass\d$/.test(k)) { const n = +k.slice(4), src = pool(); runQuiz(shuf(src).slice(0, n * 5).map(w => mcq(w, "w2m", src)), { players: n, turn: 0, scores: Array(n).fill(0), kind:"pass" }); }
   else if (k === "hcheck") { const H = G.hunt; H.checked = true; let ok = 0; H.tiles.forEach(w => { if (H.right.has(w[0]) === H.sel.has(w[0])) ok++; }); addXP(ok === H.tiles.length ? 15 : 5); drawHunt(); }
