@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#16353F">
-<title>قرآن — لفظ بہ لفظ</title>
+<meta name="theme-color" content="#13242A">
+<title>QuranToSoul — قرآن لفظ بہ لفظ</title>
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -202,6 +202,108 @@ body.playing main{padding-bottom:180px}
 body.playing .toast{bottom:calc(env(safe-area-inset-bottom,0px) + 76px)}
 .wd-actions{display:flex;justify-content:center;gap:8px;margin:6px 0 2px}
 .wd-actions button{border:1px solid var(--line);border-radius:18px;padding:0 14px;font-size:14px}
+/* ---------- QuranToSoul brand + v2 layout ---------- */
+[hidden]{display:none!important}
+:root{ --tabh:58px; --gold:#B8913A; --teal:#1F5C66; --night:#13242A; }
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){ --gold:#D4AF5A; --teal:#9CC9C0; } }
+:root[data-theme="dark"]{ --gold:#D4AF5A; --teal:#9CC9C0; }
+.bar{background:color-mix(in srgb, var(--surface) 88%, transparent);-webkit-backdrop-filter:saturate(1.4) blur(10px);backdrop-filter:saturate(1.4) blur(10px)}
+.brandmark{width:30px;height:30px;flex:none}
+.end{border-color:var(--gold);color:var(--gold)}
+.player{bottom:calc(var(--tabh) + env(safe-area-inset-bottom,0px));padding-bottom:6px}
+main{padding-bottom:calc(var(--tabh) + 120px)}
+body.playing main{padding-bottom:calc(var(--tabh) + 180px)}
+.toast{bottom:calc(env(safe-area-inset-bottom,0px) + var(--tabh) + 12px)}
+body.playing .toast{bottom:calc(env(safe-area-inset-bottom,0px) + var(--tabh) + 72px)}
+
+/* bottom tabs */
+.tabbar{position:fixed;left:0;right:0;bottom:0;z-index:26;display:flex;justify-content:center;gap:4px;
+  background:var(--surface);border-top:1px solid var(--line);padding:4px 8px calc(env(safe-area-inset-bottom,0px) + 4px);height:calc(var(--tabh) + env(safe-area-inset-bottom,0px))}
+.tabbar button{flex:1;max-width:180px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;border-radius:12px;
+  font-family:var(--en);font-size:12.5px;line-height:1.2;color:var(--muted)}
+html[lang="ur"] .tabbar button{font-family:var(--ur);font-size:12px;line-height:1.6}
+.tabbar svg{width:23px;height:23px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.tabbar button[aria-selected="true"]{color:var(--teal)}
+.tabbar button[aria-selected="true"] svg{stroke-width:2.2}
+
+/* learn */
+#learn{max-width:760px;margin:0 auto;padding:12px 14px calc(var(--tabh) + 40px)}
+.lc{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:16px;margin-bottom:14px}
+.meter{display:grid;grid-template-columns:auto 1fr;gap:16px;align-items:center}
+.ring{width:108px;height:108px;position:relative}
+.ring svg{width:100%;height:100%;transform:rotate(-90deg)}
+.ring .pct{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--en);font-size:26px;font-weight:600;color:var(--ink);direction:ltr}
+.meter h2{margin:0;font-size:17px;line-height:1.5;font-weight:600}
+.meter p{margin:4px 0 0;color:var(--muted);font-size:14px;line-height:1.6}
+html[lang="ur"] .meter h2,html[lang="ur"] .meter p{line-height:2.1}
+.stats{display:flex;gap:10px;margin-top:12px}
+.stat{flex:1;border-radius:12px;background:var(--bg);padding:8px 10px;text-align:center}
+.stat b{display:block;font-family:var(--en);font-size:20px;line-height:1.3;direction:ltr}
+.stat span{font-size:12.5px;color:var(--muted);line-height:1.6}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;border-radius:14px;padding:8px 18px;font-weight:600;
+  background:var(--night);color:#F3EDE0;min-height:44px}
+:root[data-theme="dark"] .btn{background:var(--gold);color:#13242A}
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]) .btn{background:var(--gold);color:#13242A} }
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.btn.wide{width:100%}
+.lh{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin:22px 4px 8px}
+.lh h3{margin:0;color:var(--ink);font-size:16px}
+.lh small{color:var(--muted);font-size:13px}
+.decks{display:grid;grid-template-columns:repeat(auto-fill,minmax(92px,1fr));gap:8px}
+.deck{border:1px solid var(--line);background:var(--surface);border-radius:14px;padding:8px 6px 6px;text-align:center;line-height:1.3}
+.deck .dn{font-family:var(--en);font-size:12px;color:var(--muted);direction:ltr}
+.deck .da{font-family:var(--arstudy);font-size:21px;line-height:1.9;direction:rtl;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.deck .bar2{height:4px;border-radius:2px;background:var(--line);margin-top:4px;overflow:hidden}
+.deck .bar2 i{display:block;height:100%;background:var(--teal)}
+.deck.done{border-color:var(--teal)}
+.games{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.game{border:1px solid var(--line);background:var(--surface);border-radius:16px;padding:14px;text-align:start;line-height:1.4}
+.game b{display:block;font-size:15.5px}
+.game small{color:var(--muted);font-size:12.5px;display:block;margin-top:4px;line-height:1.5}
+.game.soon{opacity:.55;cursor:default}
+html[lang="ur"] .game b{line-height:2}
+html[lang="ur"] .game small{line-height:1.9}
+
+/* flashcard */
+.fc-top{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.fc-top .prog{flex:1;height:6px;border-radius:3px;background:var(--line);overflow:hidden}
+.fc-top .prog i{display:block;height:100%;background:var(--gold);transition:width .25s}
+.fc-top small{font-family:var(--en);color:var(--muted);font-size:13px;direction:ltr}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:22px;min-height:340px;padding:22px 18px;text-align:center;
+  display:flex;flex-direction:column;justify-content:center;align-items:center;cursor:pointer;box-shadow:0 1px 0 var(--line)}
+.card .big{font-family:var(--arstudy);font-size:62px;line-height:1.8;direction:rtl}
+.card .typ{font-family:var(--en);color:var(--muted);font-size:13.5px;direction:ltr;line-height:1.4}
+.card .tap{margin-top:18px;color:var(--muted);font-size:13px}
+.card .mean{font-family:var(--en);font-size:24px;line-height:1.35;direction:ltr;margin-top:6px}
+.card .also{font-family:var(--en);color:var(--muted);font-size:14.5px;direction:ltr;margin-top:6px;line-height:1.4}
+.card .rt{font-family:var(--arstudy);font-size:26px;letter-spacing:.3em;color:var(--teal);direction:rtl;margin-top:10px;line-height:1.8}
+.card .cnt{font-size:13px;color:var(--muted);margin-top:2px;line-height:1.6}
+.card .ex{margin-top:14px;padding-top:12px;border-top:1px dashed var(--line);width:100%}
+.card .ex .ew{font-family:var(--ar);font-size:30px;line-height:2;direction:rtl}
+.card .ex .eg{font-family:var(--en);font-size:14px;color:var(--muted);direction:ltr;line-height:1.4}
+.card .hear{margin-top:10px;border:1px solid var(--line);border-radius:18px;padding:2px 14px;font-size:14px}
+.grades{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
+.grades button{border-radius:14px;padding:8px 4px;font-weight:600;line-height:1.3;border:1.5px solid var(--line);background:var(--surface);min-height:52px}
+.grades button small{display:block;font-weight:400;font-size:11.5px;color:var(--muted);font-family:var(--en);direction:ltr}
+.grades .g0{border-color:#C0563F;color:#C0563F}
+.grades .g2{border-color:var(--teal);color:var(--teal)}
+.done-box{text-align:center;padding:30px 10px}
+.done-box .big{font-family:var(--en);font-size:46px;font-weight:600;color:var(--gold);line-height:1.2;direction:ltr}
+.done-box p{color:var(--muted);line-height:1.7}
+
+/* word match */
+.mt{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.mt .col{display:flex;flex-direction:column;gap:8px}
+.tile{border:1.5px solid var(--line);background:var(--surface);border-radius:14px;min-height:62px;padding:6px 8px;line-height:1.3;transition:opacity .25s,transform .15s}
+.tile.ar{font-family:var(--arstudy);font-size:26px;direction:rtl;line-height:1.8}
+.tile.en{font-family:var(--en);font-size:15px;direction:ltr}
+.tile.sel{border-color:var(--gold);background:var(--hit)}
+.tile.ok{border-color:var(--teal);opacity:.25;pointer-events:none}
+.tile.bad{animation:shake .3s}
+@keyframes shake{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.mt-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;font-family:var(--en);direction:ltr}
+.mt-top b{font-size:22px}
+@media (prefers-reduced-motion:reduce){.tile,.fc-top .prog i{transition:none}.tile.bad{animation:none}}
 </style>
 <script>
 /* Move to qurantosoul.com: the old GitHub Pages link forwards there and carries the
@@ -227,12 +329,22 @@ body.playing .toast{bottom:calc(env(safe-area-inset-bottom,0px) + 76px)}
 <body>
 <header class="bar">
   <button class="iconbtn" id="btnMenu" aria-label="سورتوں کی فہرست"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+  <svg class="brandmark" viewBox="0 0 200 200" aria-hidden="true"><polygon points="100.0,8.0 126.8,35.3 165.1,34.9 164.7,73.2 192.0,100.0 164.7,126.8 165.1,165.1 126.8,164.7 100.0,192.0 73.2,164.7 34.9,165.1 35.3,126.8 8.0,100.0 35.3,73.2 34.9,34.9 73.2,35.3" fill="#1F3B40" stroke="#D4AF5A" stroke-width="5" stroke-linejoin="round"/>
+<circle cx="100" cy="100" r="56" fill="none" stroke="#D4AF5A" stroke-width="2" opacity=".7"/>
+<path d="M100 66 C106 75 110.5 81 110.5 87.5 A10.5 10.5 0 0 1 89.5 87.5 C89.5 81 94 75 100 66 Z" fill="#F0D79A"/>
+<path d="M98 140 Q80 128 60 132 L60 106 Q80 102 98 114 Z" fill="#F3EDE0"/><path d="M102 140 Q120 128 140 132 L140 106 Q120 102 102 114 Z" fill="#F3EDE0"/>
+<path d="M100 116 L100 142" stroke="#D4AF5A" stroke-width="3" stroke-linecap="round"/></svg>
   <button class="title" id="btnTitle" aria-label="سورت بدلیں"><b id="tAr">القرآن</b><small id="tEn"></small></button>
   <button class="iconbtn" id="btnPlay" aria-label="تلاوت سنیں"><svg viewBox="0 0 24 24"><path d="M8 5.5v13l11-6.5z" style="fill:var(--ink);stroke:none"/></svg></button>
   <button class="iconbtn" id="btnSettings" aria-label="ترتیبات"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1 7 17M17 7l2.1-2.1"/></svg></button>
 </header>
 
 <main id="main"><div class="loading">…</div></main>
+<section id="learn" hidden aria-live="polite"></section>
+<nav class="tabbar" aria-label="QuranToSoul">
+  <button data-v="read" aria-selected="true"><svg viewBox="0 0 24 24"><path d="M12 6.5C10 5 7 4.5 3.5 5v13c3.5-.5 6.5 0 8.5 1.5 2-1.5 5-2 8.5-1.5V5C17 4.5 14 5 12 6.5zM12 6.5v13"/></svg><span></span></button>
+  <button data-v="learn" aria-selected="false"><svg viewBox="0 0 24 24"><path d="M12 4 2.5 9 12 14l9.5-5zM6 11v4.5c1.5 1.5 3.7 2.5 6 2.5s4.5-1 6-2.5V11M21.5 9v5"/></svg><span></span></button>
+</nav>
 
 <div class="scrim" id="scrim"></div>
 <section class="sheet" id="sheet" role="dialog" aria-modal="true" aria-label="لفظ کی تفصیل"><div class="grab"></div><div id="sheetBody"></div></section>
@@ -265,7 +377,7 @@ const UD = "۰۱۲۳۴۵۶۷۸۹";
 const ud = n => String(n).replace(/\d/g, d => UD[d]);
 const L = {
   ur: {
-    title:"قرآن — لفظ بہ لفظ", menu:"سورتوں کی فہرست", change:"سورت بدلیں", play:"تلاوت سنیں", settings:"ترتیبات",
+    title:"QuranToSoul — قرآن لفظ بہ لفظ", menu:"سورتوں کی فہرست", change:"سورت بدلیں", play:"تلاوت سنیں", settings:"ترتیبات",
     loading:"لوڈ ہو رہا ہے…", loadFail:"ڈیٹا لوڈ نہیں ہوا۔ انٹرنیٹ چیک کر کے دوبارہ کھولیں۔",
     wordDetail:"لفظ کی تفصیل", panel:"فہرست اور ترتیبات", tabS:"سورتیں", tabJ:"پارے", tabSet:"ترتیبات",
     search:"سورت تلاش کریں: نام یا نمبر", recitation:"تلاوت", prev:"پچھلی آیت", playPause:"چلائیں / روکیں", next:"اگلی آیت",
@@ -287,7 +399,7 @@ const L = {
     listen:a=>`آیت ${ud(a)} سنیں`, ayahs:n=>`${ud(n)} آیات`, num:ud
   },
   en: {
-    title:"Quran — Word by Word", menu:"Surah list", change:"Change surah", play:"Play recitation", settings:"Settings",
+    title:"QuranToSoul — Quran word by word", menu:"Surah list", change:"Change surah", play:"Play recitation", settings:"Settings",
     loading:"Loading…", loadFail:"Couldn't load the data. Check your internet connection and reopen.",
     wordDetail:"Word details", panel:"List and settings", tabS:"Surahs", tabJ:"Juz", tabSet:"Settings",
     search:"Find a surah: name or number", recitation:"Recitation", prev:"Previous ayah", playPause:"Play / pause", next:"Next ayah",
@@ -366,6 +478,8 @@ function applyLang(){
   const A = "M6 6v12l8.5-6zM16 6h2v12h-2z", B = "M18 6v12l-8.5-6zM6 6h2v12H6z";
   $("#pPrev").innerHTML = `<svg viewBox="0 0 24 24"><path d="${ur ? A : B}"/></svg>`;
   $("#pNext").innerHTML = `<svg viewBox="0 0 24 24"><path d="${ur ? B : A}"/></svg>`;
+  labelTabs();
+  if (typeof LV !== "undefined" && LV.view === "learn") showView("learn");
 }
 function applySettings(){
   document.documentElement.style.setProperty("--arsize", settings.size + "px");
@@ -379,6 +493,7 @@ const glossOf = w => (settings.gl === "ur" && w[3]) ? {t:w[3], ur:true} : {t:w[1
 /* ---------- reader ---------- */
 async function openSurah(n, ayah = 1, word = null){
   closeAll();
+  if (LV.view !== "read") showView("read");
   if (P.s && P.s !== n) stopPlayer();
   const S = META.surahs[n-1];
   $("#tAr").textContent = T("surahPre") + S.ar;
@@ -749,13 +864,189 @@ function pickLanguage(){
     const d = document.createElement("div");
     d.className = "langpick";
     d.setAttribute("role", "dialog"); d.setAttribute("aria-label", "Choose language / زبان منتخب کریں");
-    d.innerHTML = `<div class="box"><div class="mark">ٱقْرَأْ</div><p>Choose your language<br><span lang="ur" style="font-family:var(--ur);line-height:2.2">اپنی زبان منتخب کریں</span></p>
+    d.innerHTML = `<div class="box"><svg style="width:96px;height:96px" viewBox="0 0 200 200" aria-hidden="true"><polygon points="100.0,8.0 126.8,35.3 165.1,34.9 164.7,73.2 192.0,100.0 164.7,126.8 165.1,165.1 126.8,164.7 100.0,192.0 73.2,164.7 34.9,165.1 35.3,126.8 8.0,100.0 35.3,73.2 34.9,34.9 73.2,35.3" fill="#1F3B40" stroke="#D4AF5A" stroke-width="5" stroke-linejoin="round"/>
+<circle cx="100" cy="100" r="56" fill="none" stroke="#D4AF5A" stroke-width="2" opacity=".7"/>
+<path d="M100 66 C106 75 110.5 81 110.5 87.5 A10.5 10.5 0 0 1 89.5 87.5 C89.5 81 94 75 100 66 Z" fill="#F0D79A"/>
+<path d="M98 140 Q80 128 60 132 L60 106 Q80 102 98 114 Z" fill="#F3EDE0"/><path d="M102 140 Q120 128 140 132 L140 106 Q120 102 102 114 Z" fill="#F3EDE0"/>
+<path d="M100 116 L100 142" stroke="#D4AF5A" stroke-width="3" stroke-linecap="round"/></svg><div class="mark" style="font-family:var(--en);font-size:30px;line-height:1.4;color:var(--ink)">Quran<span style="color:var(--gold)">To</span>Soul</div><p>Choose your language<br><span lang="ur" style="font-family:var(--ur);line-height:2.2">اپنی زبان منتخب کریں</span></p>
       <button class="ur" data-l="ur" lang="ur">اردو</button><button class="en" data-l="en" lang="en">English</button></div>`;
     d.addEventListener("click", e => { const b = e.target.closest("[data-l]"); if (b) { d.remove(); res(b.dataset.l); } });
     document.body.appendChild(d);
     d.querySelector("button").focus();
   });
 }
+
+/* ---------- Learn: flashcards, Word Match, "% understood" meter ---------- */
+Object.assign(L.ur, {
+  tabRead:"پڑھیں", tabLearn:"سیکھیں", learnT:"سیکھیں", learnSub:"قرآن کے الفاظ",
+  meterH:p=>`آپ قرآن کے ${ud(p)}٪ الفاظ پہچانتے ہیں`, meterP:(k,n)=>`${ud(k)} الفاظ سیکھ لیے — اگلے ${ud(n)} الفاظ سے اور اضافہ ہوگا`,
+  meterStart:"پہلے ۱۲۵ الفاظ قرآن کے ۶۱٫۷٪ الفاظ ہیں۔ شروع کریں!",
+  known:"سیکھے گئے", due:"آج دہرائی", streak:"دن مسلسل", review:n=>`${ud(n)} الفاظ دہرائیں`, startNew:"نئے الفاظ سیکھیں",
+  decksH:"الفاظ کے سیٹ", decksS:"سب سے زیادہ آنے والے الفاظ پہلے", deck:n=>`سیٹ ${ud(n)}`, gamesH:"کھیل",
+  matchT:"الفاظ ملائیں", matchS:"عربی لفظ کو اس کے معنی سے ملائیں", soonT:"جلد آ رہا ہے", soonS:"کوئز، آیت جوڑیں، سنیں اور چنیں، مادہ تلاش",
+  best:t=>`بہترین: ${t}`, tapReveal:"معنی دیکھنے کے لیے کارڈ دبائیں", again:"دوبارہ", good:"یاد ہے", easy:"آسان",
+  inQ:n=>`قرآن میں ${ud(n)} بار`, hearIt:"آیت میں سنیں", back:"واپس", sessDone:"شاباش!", sessP:(n,p)=>`${ud(n)} کارڈ مکمل۔ اب آپ قرآن کے ${ud(p)}٪ الفاظ پہچانتے ہیں۔`,
+  noDue:"آج دہرانے کو کچھ نہیں — نئے الفاظ سیکھیں۔", matchDone:"سب جوڑے مل گئے!", time:"وقت", playAgain:"دوبارہ کھیلیں", newBest:"نیا ریکارڈ!",
+  enNote:"معنی فی الحال انگریزی میں ہیں — اردو معنی جلد شامل ہوں گے۔"
+});
+Object.assign(L.en, {
+  tabRead:"Read", tabLearn:"Learn", learnT:"Learn", learnSub:"Words of the Quran",
+  meterH:p=>`You recognise ${p}% of the Quran's words`, meterP:(k,n)=>`${k} words learned — the next ${n} add even more`,
+  meterStart:"The top 125 words make up 61.7% of all words in the Quran. Start here!",
+  known:"Learned", due:"Due today", streak:"Day streak", review:n=>`Review ${n} words`, startNew:"Learn new words",
+  decksH:"Word decks", decksS:"Most frequent words first", deck:n=>`Deck ${n}`, gamesH:"Games",
+  matchT:"Word Match", matchS:"Match each Arabic word to its meaning", soonT:"Coming soon", soonS:"Quiz, Ayah Builder, Listen & Tap, Root Hunt",
+  best:t=>`Best: ${t}`, tapReveal:"Tap the card to see the meaning", again:"Again", good:"Good", easy:"Easy",
+  inQ:n=>`${n} times in the Quran`, hearIt:"Hear it in the ayah", back:"Back", sessDone:"Well done!", sessP:(n,p)=>`${n} cards done. You now recognise ${p}% of the Quran's words.`,
+  noDue:"Nothing due today — learn some new words.", matchDone:"All pairs matched!", time:"Time", playAgain:"Play again", newBest:"New best!",
+  enNote:""
+});
+DATA.vocab = () => load("vocab", `data/learn/vocab.json?v=${DV}`);
+const LV = { view:"read", V:null, q:[], i:0, done:0, flip:false, m:null };
+const IV = [0, 1, 3, 7, 14, 30, 60];             // days until next review, by box
+const today = () => Math.floor((Date.now() - new Date().getTimezoneOffset() * 6e4) / 864e5);
+const LS = Object.assign({ c:{}, st:{ last:0, days:0 }, best:{} }, store.get("learn", {}));
+const saveL = () => store.set("learn", LS);
+const box = r => (LS.c[r] || [0])[0];
+const isKnown = r => box(r) >= 2;
+const decks = () => { const d = []; for (let i = 0; i < 125; i += 5) d.push([i, i + 5]); for (let i = 125; i < 1000; i += 25) d.push([i, i + 25]); return d; };
+const nf = n => settings.lang === "en" ? String(n) : ud(n);
+function coverage(){
+  const W = LV.V.words; let k = 0, c = 0;
+  for (const w of W) if (isKnown(w[0])) { k++; c += w[4]; }
+  return { known: k, pct: Math.round(c / LV.V.total * 1000) / 10 };
+}
+const dueList = () => LV.V.words.filter(w => LS.c[w[0]] && LS.c[w[0]][1] <= today()).map(w => w[0]);
+const fmtT = ms => { const s = Math.round(ms / 100) / 10; return (s < 60 ? s.toFixed(1) + "s" : Math.floor(s / 60) + ":" + String(Math.round(s % 60)).padStart(2, "0")); };
+const shortM = m => m.split(/ \/ |; /)[0].replace(/\s*\([^)]*\)/g, "").trim();
+const shuffle = a => { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+const WR = r => LV.V.words[r - 1];
+
+function showView(v){
+  LV.view = v;
+  $("#main").hidden = v !== "read"; $("#learn").hidden = v !== "learn";
+  document.querySelectorAll(".tabbar button").forEach(b => b.setAttribute("aria-selected", b.dataset.v === v));
+  $("#btnPlay").hidden = v !== "read";
+  if (v === "learn") { $("#tAr").textContent = T("learnT"); $("#tEn").textContent = T("learnSub"); learnHome(); }
+  else if (CUR) { const S = META.surahs[CUR.n - 1]; $("#tAr").textContent = T("surahPre") + S.ar; $("#tEn").textContent = `${S.n}. ${S.tr} · ${S.en}`; }
+  scrollTo(0, 0);
+}
+function ringSVG(p){
+  const r = 46, C = 2 * Math.PI * r, off = C * (1 - Math.min(p, 100) / 100);
+  return `<div class="ring"><svg viewBox="0 0 108 108"><circle cx="54" cy="54" r="${r}" fill="none" stroke="var(--line)" stroke-width="9"/>
+    <circle cx="54" cy="54" r="${r}" fill="none" stroke="var(--gold)" stroke-width="9" stroke-linecap="round" stroke-dasharray="${C}" stroke-dashoffset="${off}"/></svg>
+    <div class="pct">${p}%</div></div>`;
+}
+async function learnHome(){
+  const el = $("#learn");
+  if (!LV.V) { el.innerHTML = `<div class="loading">${T("loading")}</div>`; try { LV.V = await DATA.vocab(); } catch(e) { el.innerHTML = `<div class="loading">${T("loadFail")}</div>`; return; } }
+  const cv = coverage(), due = dueList().length, D = decks();
+  const nextDeck = D.findIndex(([a, b]) => LV.V.words.slice(a, b).some(w => !LS.c[w[0]]));
+  const streak = LS.st.last >= today() - 1 ? LS.st.days : 0;
+  const deckHTML = D.map(([a, b], i) => {
+    const ws = LV.V.words.slice(a, b), k = ws.filter(w => isKnown(w[0])).length;
+    return `<button class="deck${k === ws.length ? " done" : ""}" data-deck="${i}"><div class="dn">${a + 1}–${b}</div><div class="da">${esc(ws[0][1])}</div>
+      <div class="bar2"><i style="width:${Math.round(k / ws.length * 100)}%"></i></div></button>`;
+  }).join("");
+  const bm = LS.best.match;
+  el.innerHTML = `<div class="lc"><div class="meter">${ringSVG(cv.pct)}<div><h2>${T("meterH", nf(cv.pct))}</h2>
+      <p>${cv.known ? T("meterP", nf(cv.known), nf(25)) : T("meterStart")}</p></div></div>
+      <div class="stats"><div class="stat"><b>${cv.known}</b><span>${T("known")}</span></div><div class="stat"><b>${due}</b><span>${T("due")}</span></div>
+      <div class="stat"><b>${streak}</b><span>${T("streak")}</span></div></div>
+      <div style="display:grid;gap:8px;margin-top:14px">${due ? `<button class="btn wide" data-act="review">${T("review", nf(due))}</button>` : ""}
+      ${nextDeck >= 0 ? `<button class="btn ${due ? "ghost " : ""}wide" data-deck="${nextDeck}">${T("startNew")} · ${T("deck", nf(nextDeck + 1))}</button>` : ""}</div>
+      ${T("enNote") ? `<p style="color:var(--muted);font-size:12.5px;margin:10px 0 0">${T("enNote")}</p>` : ""}</div>
+    <div class="lh"><h3>${T("gamesH")}</h3></div>
+    <div class="games"><button class="game" data-act="match"><b>${T("matchT")}</b><small>${T("matchS")}</small>${bm ? `<small>${T("best", fmtT(bm))}</small>` : ""}</button>
+      <div class="game soon"><b>${T("soonT")}</b><small>${T("soonS")}</small></div></div>
+    <div class="lh"><h3>${T("decksH")}</h3><small>${T("decksS")}</small></div>
+    <div class="decks">${deckHTML}</div>`;
+}
+/* flashcards */
+function startCards(ranks){
+  if (!ranks.length) { toast(esc(T("noDue"))); return; }
+  LV.q = ranks.slice(); LV.i = 0; LV.done = 0; LV.flip = false; drawCard();
+}
+function deckRanks(i){
+  const [a, b] = decks()[i], t = today();
+  return LV.V.words.slice(a, b).filter(w => !LS.c[w[0]] || LS.c[w[0]][1] <= t).map(w => w[0]);
+}
+function drawCard(){
+  const el = $("#learn");
+  if (LV.i >= LV.q.length) {
+    const cv = coverage();
+    el.innerHTML = `<div class="lc done-box"><div class="big">${cv.pct}%</div><h2>${T("sessDone")}</h2><p>${T("sessP", nf(LV.done), nf(cv.pct))}</p>
+      <button class="btn" data-act="home">${T("back")}</button></div>`;
+    return;
+  }
+  const w = WR(LV.q[LV.i]), pct = Math.round(LV.i / LV.q.length * 100);
+  const front = `<div class="big">${esc(w[1])}</div><div class="typ">${esc(w[3])}</div><div class="tap">${T("tapReveal")}</div>`;
+  const back = `<div class="big" style="font-size:46px">${esc(w[1])}</div><div class="mean">${esc(w[5])}</div>${w[6] ? `<div class="also">${esc(w[6])}</div>` : ""}
+    ${w[2] ? `<div class="rt">${esc(w[2])}</div>` : ""}<div class="cnt">${T("inQ", nf(w[4]))}</div>
+    <div class="ex"><div class="ew">${esc(w[10])}</div><div class="eg">${esc(w[11])} · ${w[7]}:${w[8]}</div>
+    <button class="hear" data-hear="${w[7]}:${w[8]}:${w[9]}">${T("hearIt")}</button></div>`;
+  el.innerHTML = `<div class="fc-top"><button class="iconbtn" data-act="home" aria-label="${T("back")}"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+      <div class="prog"><i style="width:${pct}%"></i></div><small>${LV.i + 1}/${LV.q.length}</small></div>
+    <div class="card" data-act="flip" role="button" tabindex="0">${LV.flip ? back : front}</div>
+    ${LV.flip ? `<div class="grades"><button class="g0" data-g="0">${T("again")}<small>&lt;1 day</small></button>
+      <button class="g1" data-g="1">${T("good")}<small>${IV[Math.min(box(w[0]) + 1, 6)] || 1} d</small></button>
+      <button class="g2" data-g="2">${T("easy")}<small>${IV[Math.min(box(w[0]) + 2, 6)]} d</small></button></div>` : ""}`;
+}
+function grade(g){
+  const r = LV.q[LV.i], t = today(), c = LS.c[r] || [0, t, 0];
+  if (g === 0) { c[0] = 0; c[1] = t; LV.q.splice(Math.min(LV.i + 4, LV.q.length), 0, r); }
+  else { c[0] = Math.min((c[2] ? c[0] : 0) + g, 6); c[1] = t + IV[c[0]]; LV.done++; }
+  c[2] = (c[2] || 0) + 1; LS.c[r] = c;
+  if (LS.st.last !== t) { LS.st.days = LS.st.last === t - 1 ? LS.st.days + 1 : 1; LS.st.last = t; }
+  saveL(); LV.i++; LV.flip = false; drawCard();
+}
+/* Word Match */
+function startMatch(){
+  const W = LV.V.words, seen = W.filter(w => LS.c[w[0]]);
+  let pool = seen.length >= 6 ? seen : W.slice(0, 30);
+  const pick = [], used = new Set();
+  for (const w of shuffle(pool.slice())) { const m = shortM(w[5]).toLowerCase(); if (!used.has(m) && m) { used.add(m); pick.push(w); } if (pick.length === 6) break; }
+  LV.m = { words: pick, left: shuffle(pick.map(w => w[0])), right: shuffle(pick.map(w => w[0])), sel: null, ok: new Set(), t0: Date.now(), pen: 0 };
+  drawMatch();
+}
+function drawMatch(){
+  const M = LV.m, el = $("#learn");
+  if (M.ok.size === M.words.length) {
+    const ms = Date.now() - M.t0 + M.pen, nb = !LS.best.match || ms < LS.best.match;
+    if (nb) { LS.best.match = ms; saveL(); }
+    el.innerHTML = `<div class="lc done-box"><div class="big">${fmtT(ms)}</div><h2>${T("matchDone")}</h2>${nb ? `<p>${T("newBest")}</p>` : `<p>${T("best", fmtT(LS.best.match))}</p>`}
+      <div style="display:flex;gap:8px;justify-content:center"><button class="btn" data-act="match">${T("playAgain")}</button><button class="btn ghost" data-act="home">${T("back")}</button></div></div>`;
+    return;
+  }
+  const tile = (r, side) => { const w = WR(r), cls = (M.ok.has(r) ? " ok" : "") + (M.sel && M.sel[0] === side && M.sel[1] === r ? " sel" : "");
+    return `<button class="tile ${side === "a" ? "ar" : "en"}${cls}" data-m="${side}:${r}">${esc(side === "a" ? w[1] : shortM(w[5]))}</button>`; };
+  el.innerHTML = `<div class="mt-top"><button class="iconbtn" data-act="home" aria-label="${T("back")}"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+      <span>${T("time")} <b id="mtT">0.0s</b></span><span>${M.ok.size}/${M.words.length}</span></div>
+    <div class="mt" dir="ltr"><div class="col">${M.right.map(r => tile(r, "e")).join("")}</div><div class="col">${M.left.map(r => tile(r, "a")).join("")}</div></div>`;
+}
+setInterval(() => { const t = $("#mtT"); if (t && LV.m && LV.m.ok.size < LV.m.words.length) t.textContent = fmtT(Date.now() - LV.m.t0 + LV.m.pen); }, 200);
+function tapTile(side, r, btn){
+  const M = LV.m;
+  if (!M.sel || M.sel[0] === side) { M.sel = [side, r]; drawMatch(); return; }
+  if (M.sel[1] === r) { M.ok.add(r); M.sel = null; drawMatch(); return; }
+  M.pen += 3000; M.sel = null; btn.classList.add("bad"); setTimeout(drawMatch, 300);
+}
+$("#learn").addEventListener("click", e => {
+  const b = e.target.closest("[data-act],[data-deck],[data-g],[data-m],[data-hear]");
+  if (!b) return;
+  if (b.dataset.hear) { const [s, a, w] = b.dataset.hear.split(":").map(Number); playWord(s, a, w); return; }
+  if (b.dataset.deck != null) return startCards(deckRanks(+b.dataset.deck));
+  if (b.dataset.g != null) return grade(+b.dataset.g);
+  if (b.dataset.m) { const [side, r] = b.dataset.m.split(":"); return tapTile(side, +r, b); }
+  const a = b.dataset.act;
+  if (a === "home") learnHome();
+  else if (a === "review") startCards(dueList());
+  else if (a === "match") startMatch();
+  else if (a === "flip") { LV.flip = !LV.flip; drawCard(); }
+});
+$("#learn").addEventListener("keydown", e => { if ((e.key === "Enter" || e.key === " ") && e.target.dataset.act === "flip") { e.preventDefault(); LV.flip = !LV.flip; drawCard(); } });
+document.querySelector(".tabbar").addEventListener("click", e => { const b = e.target.closest("[data-v]"); if (b && b.dataset.v !== LV.view) showView(b.dataset.v); });
+function labelTabs(){ document.querySelectorAll(".tabbar [data-v]").forEach(b => b.querySelector("span").textContent = T(b.dataset.v === "read" ? "tabRead" : "tabLearn")); }
 
 /* ---------- start ---------- */
 (async function(){
