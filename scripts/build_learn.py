@@ -160,3 +160,42 @@ os.makedirs(ROOTDIR+'/data/learn',exist_ok=True)
 json.dump({'total':total,'fields':['rank','head','root','type','count','meaning','also','s','a','w','word','gloss'],'words':out},
           open(ROOTDIR+'/data/learn/vocab.json','w',encoding='utf8'),ensure_ascii=False,separators=(',',':'))
 print('learn vocab:',len(out),'words; top 125 cover',round(sum(x[4] for x in out[:125])/total*100,1),'%')
+
+# ---- Meaning Explorer: senses per base word (draft, clustered from the word-by-word meanings) ----
+from collections import Counter as _C
+senses={}
+rowby={(r['lem'],r['root']):r for r in rows}
+for (lem,root),L in occ.items():
+    r=rowby.get((lem,' '.join(root)))
+    if not r or len(L)<2: continue
+    grp={}
+    for k,p,tg,bare in L:
+        g=lemma_gloss(gloss[f"{k[0]}:{k[1]}:{k[2]}"],p)
+        if not g: continue
+        key_=' '.join(re.sub(r'(?<=\w{3})(s|es)$','',w) for w in g.lower().split())
+        e=grp.setdefault(key_,{'g':_C(),'n':0,'locs':[],'clue':_C()})
+        e['g'][g]+=1; e['n']+=1
+        if len(e['locs'])<3: e['locs'].append(f"{k[0]}:{k[1]}:{k[2]}")
+        nx=words.get((k[0],k[1],k[2]+1))
+        if nx and nx[0][1]=='P': e['clue'][nx[0][0]]+=1
+    if len(grp)<2: continue
+    tot=sum(e['n'] for e in grp.values())
+    S=[[e['g'].most_common(1)[0][0],e['n'],e['locs'],(e['clue'].most_common(1)[0][0] if e['clue'] and e['clue'].most_common(1)[0][1]>=max(2,e['n']*0.5) else '')]
+       for e in sorted(grp.values(),key=lambda e:-e['n']) if e['n']>=max(1,tot*0.02)][:8]
+    if len(S)>=2: senses[r['head']+'|'+''.join(root)]=S
+json.dump(senses,open(ROOTDIR+'/data/learn/senses.json','w',encoding='utf8'),ensure_ascii=False,separators=(',',':'))
+print('senses:',len(senses),'base words with 2+ meanings')
+
+# ---- root-family list: use the reviewed bank meaning for every base word in meta.json ----
+mp=ROOTDIR+'/data/meta.json'; M=json.load(open(mp,encoding='utf8'))
+bank={}
+for r in rows: bank.setdefault((r['head'],r['root'].replace(' ','')),[]).append(r)
+n=0
+for Lm in M['lemmas']:
+    rt=M['roots'][Lm[2]][0].replace(' ','') if Lm[2]>=0 else ''
+    c=bank.get((Lm[0],rt))
+    if c:
+        best=min(c,key=lambda r:abs(r['count']-Lm[3]))
+        if best['main'] and Lm[4]!=best['main']: Lm[4]=best['main']; n+=1
+json.dump(M,open(mp,'w',encoding='utf8'),ensure_ascii=False,separators=(',',':'))
+print('meta lemma meanings set from reviewed bank:',n)
