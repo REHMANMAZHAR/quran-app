@@ -55,7 +55,7 @@ drawDrawer = function(){
   _drawDrawer();
   if (tab !== "settings") return;
   const set = document.querySelector("#drBody .set"); if (!set) return;
-  set.insertAdjacentHTML("beforeend", `${typeof tafSettingsHTML === "function" ? tafSettingsHTML() : ""}<span class="lbl">${T("offH")}</span>
+  set.insertAdjacentHTML("beforeend", `${typeof tajSettingsHTML === "function" ? tajSettingsHTML() : ""}${typeof tafSettingsHTML === "function" ? tafSettingsHTML() : ""}<span class="lbl">${T("offH")}</span>
     <div class="wd-actions" style="flex-direction:column;align-items:stretch"><button data-x="pack">${T("offPack")}</button>${CUR ? `<button data-x="audio">${T("dlAudio")} · ${esc(surahName(CUR.n))}</button>` : ""}</div>
     <span class="lbl">${T("scholarH")}</span><div style="font-size:13px;line-height:1.8">${T("scholarTxt")}</div>
     <div class="wd-actions" style="margin-top:10px"><button data-x="fb">✉ ${T("feedback")}</button></div>`);

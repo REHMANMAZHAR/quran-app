@@ -87,7 +87,7 @@ const DATA = {
 
 /* ---------- state ---------- */
 let META, CUR = null;
-const settings = Object.assign({ script:"uth", lang:null, tr:null, wbw:true, gl:null, size:30, ts:1, theme:"auto", rec:"Alafasy_128kbps", speed:1, taf:"ur", tafMark:true }, store.get("settings", {}));
+const settings = Object.assign({ script:"uth", lang:null, tr:null, wbw:true, gl:null, size:30, ts:1, theme:"auto", rec:"Alafasy_128kbps", speed:1, taf:"ur", tafMark:true, tajweed:false }, store.get("settings", {}));
 if (settings.gl === "auto") settings.gl = "ur";
 function saveSettings(){ store.set("settings", settings); applySettings(); }
 function applyLang(){
@@ -158,7 +158,7 @@ function render(){
     h += `<article class="ayah${ayahCls(n, a)}" id="a${a}" data-a="${a}"><div class="words">`;
     A.w.forEach((w, i) => {
       const g = glossOf(w), last = i === A.w.length - 1;
-      const wh = `<span class="w" data-a="${a}" data-i="${i}" tabindex="0"><span class="ar">${esc(wordText(n, a, i, w[0]))}</span><span class="g${g.ur?" ur":""}" dir="${g.ur?"rtl":"ltr"}">${esc(g.t)}</span></span>`;
+      const wh = `<span class="w" data-a="${a}" data-i="${i}" tabindex="0"><span class="ar">${typeof tajWord === "function" ? tajWord(n, a, i, wordText(n, a, i, w[0]), w[0]) : esc(wordText(n, a, i, w[0]))}</span><span class="g${g.ur?" ur":""}" dir="${g.ur?"rtl":"ltr"}">${esc(g.t)}</span></span>`;
       h += last ? `<span class="last">${wh}<span class="end" data-play="${a}" role="button" tabindex="0" aria-label="${T("listen", a)}">${ud(a)}</span>${typeof tafIcon === "function" ? tafIcon(n, a) : ""}</span>` : wh;
     });
     h += `</div>`;
