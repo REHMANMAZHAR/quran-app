@@ -537,3 +537,15 @@ html[dir="rtl"] .ayah.tafnow,html[lang="ur"] .ayah.tafnow{box-shadow:inset -3px 
 .pr-leg b{font-size:14px}.pr-leg span{font-size:13px;color:var(--muted);grid-column:2}
 .pr-avg{font-size:13px;margin:10px 0}
 button.danger{color:#b3261e;border-color:#e3b6b2}
+
+/* learning path */
+.pl h4{margin:14px 4px 6px;font-size:15px;color:var(--gold)}
+.node.test b::before{content:"★ "}
+.qctx{font-size:calc(var(--arsize) * .85);line-height:2.1}
+.qctx mark{background:rgba(212,175,90,.28);color:inherit;border-radius:6px;padding:0 4px}
+.qref{font-size:12px;color:var(--muted);margin:2px 0 6px}
+.pl{border:1px solid var(--line);border-radius:14px;margin:8px 0;padding:0 10px;background:var(--surface)}
+.pl summary{display:flex;align-items:center;justify-content:space-between;cursor:pointer;list-style:none;padding:4px 0}
+.pl summary::-webkit-details-marker{display:none}
+.pl summary h4{margin:8px 0}.pl summary span{font-size:13px;color:var(--muted)}
+.pl[open] summary{border-bottom:1px solid var(--line);margin-bottom:8px}
