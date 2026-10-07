@@ -37,3 +37,25 @@ for k, x in d.items():
         for it in x["items"]: it[:] = it[:9] + [wur(it[0], it[1], it[2])]
 json.dump(d, open(f"{ROOT}/data/learn/drills.json", "w"), ensure_ascii=False, separators=(",", ":"))
 print("vocab without lemma match:", miss, "| sample:", [(w[1], w[5], w[12], w[13]) for w in v["words"][:8]])
+
+# ---- Roman Urdu: the same meanings in Latin letters (token dictionary data-raw/ur-roman.json, reviewed by hand) ----
+RO = json.load(open(f"{ROOT}/data-raw/ur-roman.json"))
+PUN = {"،": ",", "۔": ".", "؛": ";", "؟": "?"}
+def roman(t):
+    if not t: return ""
+    out = re.sub(r"[^\s/،۔()\-–—,:؛\"'“”؟]+", lambda m: RO.get(m.group(0), m.group(0)), t)
+    for a, b in PUN.items(): out = out.replace(a, b)
+    return out
+v = json.load(open(f"{ROOT}/data/learn/vocab.json"))
+v["fields"] = v["fields"][:15] + ["meaning_ro", "type_ro", "gloss_ro"]
+for w in v["words"]: w[:] = w[:15] + [roman(w[12]), roman(w[13]), roman(w[14])]
+json.dump(v, open(f"{ROOT}/data/learn/vocab.json", "w"), ensure_ascii=False, separators=(",", ":"))
+d = json.load(open(f"{ROOT}/data/learn/drills.json"))
+for k, x in d.items():
+    if isinstance(x, dict) and "items" in x:
+        for it in x["items"]: it[:] = it[:10] + [roman(it[9])]
+json.dump(d, open(f"{ROOT}/data/learn/drills.json", "w"), ensure_ascii=False, separators=(",", ":"))
+Wd = json.load(open(f"{ROOT}/data/words.json")); Wd["lemRo"] = [roman(m) for m in Wd["lemUr"]]
+json.dump(Wd, open(f"{ROOT}/data/words.json", "w"), ensure_ascii=False, separators=(",", ":"))
+left = sorted({t for w in v["words"] for t in re.findall(r"[؀-ۿ]+", w[15])})
+print("roman sample:", [(w[1], w[15], w[16]) for w in v["words"][:10]], "| Urdu letters left:", left[:20])

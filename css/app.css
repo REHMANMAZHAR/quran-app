@@ -1097,3 +1097,8 @@ body:not(.notr) #main .endbox{margin-top:calc(var(--arsize) * .38)}
 #main .endbox{margin:0 1px}
 .ll-sw{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:4px 0 12px;padding:8px 12px;border:1.5px solid var(--line);border-radius:12px;background:var(--surface)}
 .ll-sw span{font-weight:700;font-size:14px}
+/* Learn in English with Urdu meanings: Urdu words get the Urdu font and their own direction */
+html[lang="en"] #learn{font-family:var(--en),var(--ur)}
+#learn .mean,#learn .tile,#learn .fb,#learn .qm,#learn .opts button,#learn .lg,#learn .also,#learn .typ{unicode-bidi:plaintext}
+html[lang="en"] body.lm-ur #learn .mean,html[lang="en"] body.lm-ur #learn .tile.en,html[lang="en"] body.lm-ur #learn .opts button,html[lang="en"] body.lm-ur #learn .qm,html[lang="en"] body.lm-ur #learn .fb{line-height:1.9}
+.ll-sm{margin-top:-6px}.ll-sw .rtb-seg button{padding:6px 10px}

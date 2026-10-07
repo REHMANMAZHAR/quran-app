@@ -20,7 +20,7 @@ displaySheet = function(){
   _displaySheetK();
   const body = $("#sheetBody"), dark = isDark(), arcs = dark ? ["white", "cream", "mint", "sky", "rose"] : ["black", "navy", "green", "maroon", "brown"];
   const sw = (attr, v, cls, label, on) => `<button data-${attr}="${v}" class="acc ${cls}" aria-pressed="${on}" aria-label="${esc(label)}"><i${v && ARC[v] ? ` style="background:${ARC[v]}"` : ""}></i><small>${esc(label)}</small></button>`;
-  const nb = (v, l) => `<button data-num="${v}" aria-pressed="${(settings.num || "ur") === v}">${l}</button>`;
+  const nb = (v, l) => `<button data-num="${v}" aria-pressed="${(settings.num || "en") === v}">${l}</button>`;
   const html = `<section class="ds"><b>${T("arcH")}</b><div class="ds-acc">${sw("arc", "", "arc-def", T("dflt"), !settings.arc || !arcs.includes(settings.arc))}${arcs.map(v => sw("arc", v, "", T("c_" + v), settings.arc === v)).join("")}</div></section>
     ${settings.pstyle === "table" ? `<section class="ds"><b>${T("tbcH")}</b><div class="ds-acc">${TBC.map(v => sw("tbc", v, "tbc-" + v, T("t_" + v), (settings.tbc || "blue") === v)).join("")}</div></section>` : ""}
     <section class="ds"><b>${T("numH")}</b><div class="rtb-seg wide">${nb("ar", "١٢٣")}${nb("ur", "۱۲۳")}${nb("en", "123")}</div></section>

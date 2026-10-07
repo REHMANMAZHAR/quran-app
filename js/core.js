@@ -1,9 +1,9 @@
 "use strict";
 const $ = s => document.querySelector(s);
 const UD = "۰۱۲۳۴۵۶۷۸۹";
-const ud = n => String(n).replace(/\d/g, d => UD[d]);
+const ud = n => typeof settings !== "undefined" && settings.digits === "ur" ? String(n).replace(/\d/g, d => UD[d]) : String(n);   // numbers are 1 2 3 everywhere unless Urdu digits are chosen
 /* ayah numbers: Arabic ١٢٣, Urdu ۱۲۳ or 1 2 3 (Display → Ayah numbers) */
-const ayNum = n => settings.num === "en" ? String(n) : settings.num === "ar" ? String(n).replace(/\d/g, d => "٠١٢٣٤٥٦٧٨٩"[d]) : ud(n);
+const ayNum = n => settings.num === "en" ? String(n) : settings.num === "ar" ? String(n).replace(/\d/g, d => "٠١٢٣٤٥٦٧٨٩"[d]) : settings.num === "ur" ? String(n).replace(/\d/g, d => UD[d]) : String(n);
 const L = {
   ur: {
     title:"QuranToSoul — قرآن لفظ بہ لفظ", menu:"سورتوں کی فہرست", change:"سورت بدلیں", play:"تلاوت سنیں", settings:"ترتیبات",
@@ -79,7 +79,7 @@ function load(key, path){
   }
   return cache[key];
 }
-const DV = "9";  // bump whenever data/ changes, so phones fetch fresh files instead of old cached ones
+const DV = "10";  // bump whenever data/ changes, so phones fetch fresh files instead of old cached ones
 const DATA = {
   meta: () => load("meta", `data/meta.json?v=${DV}`),
   occ:  () => load("occ", `data/occ.json?v=${DV}`),
