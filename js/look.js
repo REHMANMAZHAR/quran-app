@@ -39,3 +39,33 @@ $("#mushaf").addEventListener("click", e => {
   const b = e.target.closest("[data-pgam]"); if (!b) return;
   e.stopPropagation(); const [s, a] = b.dataset.pgam.split(":").map(Number); openAyahMenu(s, a);
 }, true);
+/* ayah number with the tafsir book stacked under it, so the end of an ayah takes little room */
+const _renderK = render;
+render = function(){
+  _renderK();
+  document.querySelectorAll("#main .last").forEach(l => {
+    const e = l.querySelector(":scope > .end"); if (!e) return;
+    const t = l.querySelector(":scope > .tafbtn"), box = document.createElement("span"); box.className = "endbox";
+    e.before(box); box.appendChild(e); if (t) box.appendChild(t);
+  });
+};
+/* page view: a tafsir book after every ayah number */
+$("#mushaf").addEventListener("click", e => {
+  const b = e.target.closest("[data-taf]"); if (!b) return;
+  e.stopPropagation(); const [s, a] = b.dataset.taf.split(":").map(Number); playTafsir(s, a);
+}, true);
+new MutationObserver(() => {
+  document.querySelectorAll("#mushaf .end[data-pgam]:not([data-tf])").forEach(e => {
+    e.dataset.tf = 1; const [s, a] = e.dataset.pgam.split(":"); if (settings.tafMark === false) return;
+    e.insertAdjacentHTML("afterend", `<button class="tafbtn pg-taf" data-taf="${s}:${a}" aria-label="${esc(T("tafFrom", nf(+a)))}">${TAF_ICO}</button>`);
+  });
+}).observe($("#mushaf"), { childList: true, subtree: true });
+/* share the app */
+Object.assign(L.ur, { capShare:"شیئر", shareApp:"QuranToSoul — مفت، بغیر اشتہارات کے قرآن: لفظ بہ لفظ اردو و انگریزی ترجمہ، تفسیر، تلاوت اور عربی سیکھیں", linkCopied:"لنک کاپی ہو گیا" });
+Object.assign(L.en, { capShare:"Share", shareApp:"QuranToSoul — free, ad-free Quran: word-by-word Urdu and English, tafsir, recitation and Arabic lessons", linkCopied:"Link copied" });
+async function shareApp(){
+  const url = "https://qurantosoul.com/", text = T("shareApp");
+  if (navigator.share) { try { await navigator.share({ title: "QuranToSoul", text, url }); return; } catch(e) { if (e && e.name === "AbortError") return; } }
+  try { await navigator.clipboard.writeText(text + "\n" + url); toast(esc(T("linkCopied"))); } catch(e) { prompt("", url); }
+}
+$("#btnShare").onclick = shareApp;

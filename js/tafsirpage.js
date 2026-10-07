@@ -14,7 +14,7 @@ function renderTafsir(){
     body = `<div class="tf-quick">${cur ? `<button class="hm-card" data-tfp="${k}:${cur}"><span><small>${T("tfCont")}</small><b>${T(C.num, nf(cur))} · ${esc(lecLabel(cur, 0, k))}</b>${t ? `<span>${T("tfMin", mmss(t))}</span>` : ""}</span><span class="hm-go">▶</span></button>` : ""}
       ${here ? `<button class="hm-card" data-tfhere="1"><span><small>${T("tfHere")}</small><b>${esc(surahName(last.s))} ${nf(last.s)}:${nf(last.a)}</b><span>${T(C.num, nf(here))}</span></span><span class="hm-go">▶</span></button>` : ""}</div>
       <h4 class="tf-h">${T("tfParts")}</h4>
-      <ul class="tf-list">${R.map(L2 => `<li><button data-tfp="${k}:${L2[0]}"${L2[0] === cur ? ' class="on"' : ""}><span class="pk-n">${nf(L2[0])}</span><span>${esc(lecLabel(L2[0], 0, k))}</span></button></li>`).join("")}</ul>`;
+      <ul class="tf-list">${R.map(L2 => `<li><button data-tfp="${k}:${L2[0]}:0"${L2[0] === cur ? ' class="on"' : ""}><span class="pk-n">${nf(L2[0])}</span><span>${esc(lecLabel(L2[0], 0, k))}</span></button></li>`).join("")}</ul>`;
   } else if (k === "txt") {
     body = `<p class="ds-note">${T("tfTxtTxt")}</p><h4 class="tf-h">${T("tfSurahs")}</h4><div class="pk-grid tf-grid">${META.surahs.map(S => `<a class="pk-c" href="${TAFSIR_TXT(S.n, 1)}" target="_blank" rel="noopener"><span class="pk-n">${nf(S.n)}</span><span class="pk-ar">${esc(S.ar)}</span><small>${esc(S.tr)}</small></a>`).join("")}</div>`;
   } else {
@@ -26,6 +26,6 @@ function renderTafsir(){
 VIEWS.tafsir = { el: "#tafsirv", title: () => [T("tfT"), T("tfSub")], render: renderTafsir };
 $("#tafsirv").addEventListener("click", e => {
   const k = e.target.closest("[data-tfk]"); if (k) { TF.kind = k.dataset.tfk; if (["ur", "bq", "en", "txt"].includes(TF.kind)) { settings.taf = TF.kind; saveSettings(); } renderTafsir(); return; }
-  const p = e.target.closest("[data-tfp]"); if (p) { const [s, n] = p.dataset.tfp.split(":"); openLecture(s, +n); return; }
+  const p = e.target.closest("[data-tfp]"); if (p) { const [s, n, z] = p.dataset.tfp.split(":"); openLecture(s, +n, z === "0" ? 0 : undefined); return; }
   if (e.target.closest("[data-tfhere]")) { const l = store.get("last", { s: 1, a: 1 }); playTafsir(l.s, l.a); }
 });

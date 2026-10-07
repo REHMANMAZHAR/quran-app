@@ -89,6 +89,7 @@ $("#btnMenu").insertAdjacentHTML("afterend", `<button class="hpill" id="hSurah">
 $("#btnPlay").insertAdjacentHTML("afterend", `
   <button class="iconbtn rdv" id="btnDisp" aria-label="Display">${ICO.display}<span class="cap" data-cap="dispT"></span></button>
   <button class="iconbtn rdv" id="btnHifz" aria-label="Hifz">${ICO.hifz}<span class="cap" data-cap="hifzT"></span></button>
+  <button class="iconbtn rdv" id="btnShare" aria-label="Share"><svg viewBox="0 0 24 24"><circle cx="17.5" cy="5.5" r="2.5"/><circle cx="6.5" cy="12" r="2.5"/><circle cx="17.5" cy="18.5" r="2.5"/><path d="m8.7 10.8 6.6-4M8.7 13.2l6.6 4"/></svg><span class="cap" data-cap="capShare"></span></button>
   <button class="hpill" id="hPara"><small></small><b></b><i>▾</i></button>`);
 function capLabels(){ document.querySelectorAll(".bar [data-cap]").forEach(c => { c.textContent = T(c.dataset.cap); }); }
 capLabels();
@@ -125,7 +126,8 @@ showView = function(v){
   const rd = v === "read";
   document.body.classList.toggle("rd", rd);
   document.body.dataset.view = v;
-  $("#btnBack").hidden = v === "home" || rd;
+  $("#btnBack").hidden = v === "home";
+  $("#btnShare").classList.toggle("rdv", v !== "home");
   $("#btnHelp").hidden = $("#btnSettings").hidden = v !== "home";
   $("#btnTaf").hidden = !(rd || v === "page");
   document.querySelectorAll(".tabbar button").forEach(b => b.setAttribute("aria-selected", b.dataset.v === v || (b.dataset.v === "read" && v === "page")));

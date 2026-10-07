@@ -91,8 +91,11 @@ const _openLectureF = openLecture;
 openLecture = function(series, n, at){
   const from = LV.view, r = _openLectureF(series, n, at);
   if (AUDIO_SER[series] && from !== "read") {
-    const R = RANGES[series].find(L => L[0] === n);
-    if (R && R[1]) { showView("read"); openSurah(R[1], R[2]); }
+    /* open the Quran exactly where the audio starts: the part's first ayah, or the ayah being explained at the resume point */
+    const R = RANGES[series].find(L => L[0] === n), marks = partMarks(series, n), t0 = at != null ? at : (VS[series].t[n] || 0);
+    let s0 = R && R[1], a0 = R && R[2];
+    if (marks.length) { let m = marks[0]; for (const x of marks) { if (x[2] <= t0 + 1) m = x; else break; } if (t0 > 1 || !s0) { s0 = m[0]; a0 = m[1]; } }
+    if (s0) { showView("read"); P.userScroll = 0; openSurah(s0, a0).then(() => { tafCur = ""; tafFollow(s0, a0); }); }
     const b = $("#vpanel").querySelector("[data-v=mini]"); if (b) b.click();
   }
   return r;

@@ -935,7 +935,7 @@ html[lang="ur"] .hpill small{font-family:var(--ur);font-size:10px;line-height:1.
 .bar .rdv{display:none}
 body.rd .bar .hpill{display:flex}
 body.rd .bar .rdv{display:flex}
-body.rd .bar > .brandmark,body.rd .bar > #btnTitle,body.rd .bar > #btnBack,body.rd .bar > #btnHelp,body.rd .bar > #btnSettings{display:none!important}
+body.rd .bar > .brandmark,body.rd .bar > #btnTitle,body.rd .bar > #btnHelp,body.rd .bar > #btnSettings{display:none!important}
 body.rd .bar{justify-content:space-between;gap:0;padding:4px 6px}
 body.rd .bar .iconbtn{min-width:40px;padding:2px 2px;flex:1 1 0}
 body.rd .bar .iconbtn svg{width:25px;height:25px}
@@ -982,7 +982,7 @@ html[data-theme="dark"],body.dark{--tb-ar:#1B3247;--tb-g:#101C27;--tb-l:#2E4D69;
 .tbl #main .ayahs{display:flex;flex-wrap:wrap;direction:rtl;border:2px solid var(--tb-b);border-bottom-width:1px;padding:0;background:var(--tb-g);line-height:normal;text-align:initial}
 .tbl #main .ayahs::after{content:"";flex:100 0 0}
 .tbl #main .ayah,.tbl #main .ayah .words{display:contents}
-.tbl #main .ayahs .tafmark,.tbl #main .ayah .tr,.tbl #main .tafbtn{display:none!important}
+.tbl #main .ayahs .tafmark,.tbl #main .ayah .tr{display:none!important}
 .tbl #main .ayah .w,.tbl #main .ayah .last{flex:1 0 auto;display:flex;flex-direction:column;margin:0;padding:0;border:0;border-radius:0;border-inline-start:1px solid var(--tb-l);border-bottom:1.5px solid var(--tb-b);background:var(--tb-g);min-width:0}
 .tbl #main .ayah .last{position:relative}
 .tbl #main .ayah .last .w{border:0;flex:1}
@@ -1008,12 +1008,6 @@ html[data-theme="dark"],body.dark{--tb-ar:#1B3247;--tb-g:#101C27;--tb-l:#2E4D69;
 .tabbar button[aria-selected="true"]{background:color-mix(in srgb,var(--ic) 16%,var(--surface));color:var(--ink)}
 .tabbar button[aria-selected="true"] span{color:var(--ic);font-weight:800}
 .tabbar button[aria-selected="true"] svg{stroke-width:2.5}
-#btnTaf svg{stroke:#B03A48!important}
-#btnPlay svg path{fill:#1E8E5A!important}
-#btnDisp svg{stroke:#2F6FD0!important}
-#btnHifz svg{stroke:#D9534F!important}
-#btnHelp svg{stroke:#7A4FC4!important}
-#btnSettings svg{stroke:#C9962B!important}
 #btnBack svg{stroke:var(--ink)!important;stroke-width:2.4}
 .hpill{border-color:var(--gold);background:color-mix(in srgb,var(--gold) 10%,var(--surface))}
 .hpill i{color:var(--gold)}
@@ -1047,3 +1041,45 @@ html[data-tbc="grey"]:not([data-theme="dark"]){--tb-ar:#E7EAEE;--tb-l:#AEB7C2;--
 .tbl #main .ayah .w{align-items:stretch}
 .tbl #main .ayah.playing .w .ar,.tbl #main .ayah.tafnow .w .ar{border-radius:0}
 .tbl #main .w.live .ar{border-radius:0}
+
+/* ===== v33: filled colour icons (like the Dashboard), compact ayah ends, share, ✕ in the reader ===== */
+.tabbar button svg{box-sizing:border-box;width:34px!important;height:34px!important;padding:6px;border-radius:50%;background:var(--ic);stroke:#fff!important;stroke-width:2.1!important;box-shadow:0 2px 5px color-mix(in srgb,var(--ic) 40%,transparent)}
+.tabbar button[aria-selected="true"]{background:none}
+.tabbar button[aria-selected="true"] svg{box-shadow:0 0 0 2px var(--surface),0 0 0 4px var(--ic)}
+.tabbar button span{font-size:11.5px}
+.bar .iconbtn svg{box-sizing:border-box;width:32px!important;height:32px!important;padding:6px;border-radius:50%;stroke:#fff!important;stroke-width:2.1;fill:none}
+#btnTaf svg{background:#B03A48}
+#btnPlay svg{background:#1E8E5A}#btnPlay svg path{fill:#fff!important}
+#btnDisp svg{background:#2F6FD0}
+#btnHifz svg{background:#D9534F}
+#btnShare svg{background:#7A4FC4}
+#btnHelp svg{background:#1F8FA8}
+#btnSettings svg{background:#C9962B}
+#btnBack svg{background:none;stroke:var(--ink)!important;padding:4px;stroke-width:2.6}
+body.rd .bar #btnBack{display:flex!important;flex:0 0 34px;min-width:34px}
+body.rd .bar #btnBack .cap{display:none}
+body.rd .bar .iconbtn{min-width:38px}
+body.rd .bar .iconbtn svg{width:30px!important;height:30px!important;padding:5.5px}
+body.rd .bar .cap{font-size:9px}
+html[lang="ur"] body.rd .bar .cap{font-size:9px}
+body.rd .bar .hpill{padding:2px 7px 3px}
+body.rd .bar #hSurah b{font-size:17px}
+/* ayah end: small number with the tafsir book under it */
+.endbox{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;vertical-align:middle;margin:0 3px}
+#main .endbox .end{width:1.85em;height:1.85em;min-width:0;margin:0;font-size:calc(var(--arsize) * .4);line-height:1;display:grid;place-items:center;border-width:1.5px}
+#main .endbox .tafbtn{width:20px;height:16px;margin:0;padding:0;opacity:.9;vertical-align:baseline}
+#main .endbox .tafbtn .tafico{width:15px;height:15px;stroke-width:2}
+.nowbw.notr #main .endbox,.nowbw.notr .endbox{line-height:1}
+.notr .ayah .last{align-items:center}
+/* printed table: number and book together in the corner of the last cell */
+.tbl #main .ayah .last .endbox{position:absolute;top:3px;inset-inline-end:2px;margin:0;gap:0}
+.tbl #main .ayah .last .endbox .end{position:static;width:1.6em;height:1.6em;font-size:12px}
+.tbl #main .ayah .last .endbox .tafbtn{display:grid!important}
+.tbl #main .ayah .last .w .ar{padding-inline-end:calc(8px + 1.4em)}
+/* page view */
+#mushaf .pg-taf{width:22px;height:22px;margin:0 1px;vertical-align:middle;opacity:.85}
+#mushaf .pg-taf .tafico{width:16px;height:16px}
+body:not(.notr) #main .ayah .last{align-items:flex-start}
+body:not(.notr) #main .endbox{margin-top:calc(var(--arsize) * .38)}
+.bar .iconbtn svg *{stroke:#fff}
+#btnBack svg *{stroke:var(--ink)!important}
