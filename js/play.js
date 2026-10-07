@@ -18,7 +18,7 @@ Object.assign(L.en, {
 });
 /* sleep timer: cycles off → 15 → 30 → 60 min → end of surah */
 const SLEEP = { mode: 0, t: 0, timer: 0 }, SLEEP_OPTS = [0, 15, 30, 60, "end"];
-function sleepAtEnd(){ if (SLEEP.mode === "end" && P.a >= CUR.ayahs.length) { P.audio.pause(); SLEEP.mode = 0; labelSleep(); return true; } return false; }
+function sleepAtEnd(){ if (SLEEP.mode === "end" && P.a >= META.surahs[P.s - 1].ayahs) { P.audio.pause(); SLEEP.mode = 0; labelSleep(); return true; } return false; }
 function labelSleep(){ const b = $("#pSleep"); if (!b) return; b.innerHTML = `<b>${SLEEP.mode === 0 ? "☾" : SLEEP.mode === "end" ? "☾∎" : "☾" + nf(SLEEP.mode)}</b><span class="cap">${T("capSleep")}</span>`; b.setAttribute("aria-pressed", SLEEP.mode !== 0); }
 (function addSleepBtn(){
   const b = document.createElement("button"); b.className = "rep"; b.id = "pSleep"; b.setAttribute("aria-label", "Sleep timer"); b.setAttribute("aria-pressed", "false");

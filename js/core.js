@@ -2,6 +2,8 @@
 const $ = s => document.querySelector(s);
 const UD = "۰۱۲۳۴۵۶۷۸۹";
 const ud = n => String(n).replace(/\d/g, d => UD[d]);
+/* ayah numbers: Arabic ١٢٣, Urdu ۱۲۳ or 1 2 3 (Display → Ayah numbers) */
+const ayNum = n => settings.num === "en" ? String(n) : settings.num === "ar" ? String(n).replace(/\d/g, d => "٠١٢٣٤٥٦٧٨٩"[d]) : ud(n);
 const L = {
   ur: {
     title:"QuranToSoul — قرآن لفظ بہ لفظ", menu:"سورتوں کی فہرست", change:"سورت بدلیں", play:"تلاوت سنیں", settings:"ترتیبات",
@@ -163,7 +165,7 @@ function render(){
     A.w.forEach((w, i) => {
       const g = glossOf(w), last = i === A.w.length - 1;
       const wh = `<span class="w" data-a="${a}" data-i="${i}" tabindex="0"><span class="ar">${typeof tajWord === "function" ? tajWord(n, a, i, wordText(n, a, i, w[0]), w[0]) : esc(wordText(n, a, i, w[0]))}</span><span class="g${g.ur?" ur":""}" dir="${g.ur?"rtl":"ltr"}">${esc(g.t)}</span></span>`;
-      h += last ? `<span class="last">${wh}<span class="end" data-play="${a}" role="button" tabindex="0" aria-label="${T("listen", a)}">${ud(a)}</span>${typeof tafIcon === "function" ? tafIcon(n, a) : ""}</span>` : wh;
+      h += last ? `<span class="last">${wh}<span class="end" data-play="${a}" role="button" tabindex="0" aria-label="${T("listen", a)}">${ayNum(a)}</span>${typeof tafIcon === "function" ? tafIcon(n, a) : ""}</span>` : wh;
     });
     h += `</div>`;
     const tx = A[trKey] || (trKey === "en2" ? A.en : "");
@@ -189,7 +191,7 @@ function observeAyahs(){
     const vis = entries.filter(e => e.isIntersecting).map(e => +e.target.dataset.a);
     if (!vis.length || !CUR) return;
     clearTimeout(saveT);
-    const n = CUR.n, a = Math.min(...vis);
+    const blk = entries.find(e => e.isIntersecting).target.closest(".sblk"), n = blk ? +blk.dataset.s : CUR.n, a = Math.min(...entries.filter(e => e.isIntersecting && (!blk || e.target.closest(".sblk") === blk)).map(e => +e.target.dataset.a));
     saveT = setTimeout(() => store.set("last", {s:n, a}), 400);
   }, {rootMargin:"-70px 0px -60% 0px"});
   document.querySelectorAll(".ayah").forEach(el => io.observe(el));
@@ -416,7 +418,8 @@ function startAudio(){
   let nx = null;
   if (P.taud) nx = P.bism ? audioUrl(s, a, false, true) : audioUrl(s, a);
   else if (P.bism) nx = audioUrl(s, a);
-  else if (P.rep === 1 && a < CUR.ayahs.length) nx = audioUrl(s, a + 1);
+  else if (P.rep === 1 && a < META.surahs[s - 1].ayahs) nx = audioUrl(s, a + 1);
+  else if (P.rep === 1 && s < 114 && !(P.loop && P.loop.s === s)) nx = audioUrl(s + 1, 1, false, s + 1 !== 9);
   if (nx && P.pre.getAttribute("src") !== nx) { P.pre.pause(); P.pre.src = nx; P.pre.load(); }
   P.liveKey = null;
   updateBar();
@@ -432,9 +435,11 @@ function updateBar(){
     navigator.mediaSession.metadata = new MediaMetadata({ title: `${S.tr} ${P.s}:${P.a}`, artist: r[2], album: "Quran" });
   }
 }
+/* the ayah element of surah s (the reader can hold several surahs one after another) */
+function ayEl(s, a){ return document.querySelector(`#main .sblk[data-s="${s}"] .ayah[data-a="${a}"]`) || (CUR && CUR.n === s ? document.getElementById("a" + a) : null); }
 function markAyah(){
   document.querySelectorAll(".ayah.playing").forEach(x => x.classList.remove("playing"));
-  const el = document.getElementById("a" + P.a);
+  const el = ayEl(P.s, P.a);
   if (!el || P.bism || P.taud) return;
   el.classList.add("playing");
   if (Date.now() - P.userScroll > 4000) {
@@ -448,7 +453,7 @@ function setLive(w0, w1){
   P.liveKey = key;
   document.querySelectorAll(".w.live").forEach(x => x.classList.remove("live"));
   if (w0 < 0) return;
-  const el = document.getElementById("a" + P.a); if (!el) return;
+  const el = ayEl(P.s, P.a); if (!el) return;
   for (let i = w0; i < w1; i++) { const w = el.querySelector(`.w[data-i="${i}"]`); if (w) w.classList.add("live"); }
   const first = el.querySelector(`.w[data-i="${w0}"]`);
   if (first && Date.now() - P.userScroll > 4000) {
@@ -478,7 +483,8 @@ onA("ended", () => {
   P.count = 0;
   if (P.loop && P.loop.s === P.s && P.loop.b != null && P.a >= P.loop.b) { P.a = P.loop.a; startAudio(); return; }
   if (typeof sleepAtEnd === "function" && sleepAtEnd()) return;
-  if (P.a < CUR.ayahs.length) { P.a++; if (settings.gap) setTimeout(() => { if (P.s) startAudio(); }, settings.gap * 1000); else startAudio(); }
+  if (P.a < META.surahs[P.s - 1].ayahs) { P.a++; if (settings.gap) setTimeout(() => { if (P.s) startAudio(); }, settings.gap * 1000); else startAudio(); }
+  else if (P.s < 114) { P.s++; P.a = 1; P.bism = P.s !== 9; if (typeof flowEnsure === "function") flowEnsure(P.s); startAudio(); }   // the Quran continues into the next surah
   else { setLive(-1, -1); $("#pIcon").innerHTML = ICON_PLAY; toast(T("done")); }
 });
 onA("error", () => {
@@ -493,7 +499,7 @@ function stopPlayer(){
 }
 function step(d){
   if (!P.s) return;
-  P.a = Math.min(Math.max(1, P.a + d), CUR.ayahs.length);
+  P.a = Math.min(Math.max(1, P.a + d), META.surahs[P.s - 1].ayahs);
   P.bism = false; P.count = 0; startAudio();
 }
 $("#pPlay").onclick = () => { if (P.audio.paused) P.audio.play().catch(() => {}); else P.audio.pause(); };

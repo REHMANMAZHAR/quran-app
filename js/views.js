@@ -212,7 +212,7 @@ async function renderPage(){
   for (let x = from; x <= to; x++) {
     const [s, a] = idToSA(x), d = await DATA.surah(s), A = d.ayahs[a - 1];
     if (s !== curS) { if (a === 1) h += `<div class="pg-sh">${esc(META.surahs[s - 1].ar)}</div>${s !== 1 && s !== 9 ? '<div class="bism">بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</div>' : ""}`; curS = s; }
-    h += `<span class="pg-a" data-go2="${s}:${a}">${A.w.map((w, i) => esc(wordText(s, a, i, w[0]))).join(" ")} <span class="end">${ud(a)}</span></span> `;
+    h += `<span class="pg-a" data-go2="${s}:${a}">${A.w.map((w, i) => esc(wordText(s, a, i, w[0]))).join(" ")} <span class="end" data-pgam="${s}:${a}" role="button" tabindex="0">${ayNum(a)}</span></span> `;
   }
   $("#tAr").textContent = T("pageT", nf(PG.n));
   el.innerHTML = `<div class="pg-text" dir="rtl" lang="ar">${h}</div>

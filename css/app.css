@@ -947,7 +947,6 @@ body.rd .bar #hPara{margin-inline-start:4px;min-width:46px}
 html[dir="rtl"] #btnBack{order:-1;margin-inline-start:0;margin-inline-end:auto}
 html[dir="rtl"] .bar{flex-direction:row}
 /* the top bar stays while reading; only the bottom bar hides */
-body.bars-off .bar{transform:none}
 /* ✕ physically top right on sheets, drawer and picker */
 .sheetx{float:right!important;margin:-4px 0 0 4px!important}
 html[dir="rtl"] .drx{inset-inline-end:auto;right:8px}
@@ -1001,3 +1000,50 @@ html[data-theme="dark"],body.dark{--tb-ar:#1B3247;--tb-g:#101C27;--tb-l:#2E4D69;
 .pv-x{flex-direction:column;width:auto;min-width:46px;height:auto}
 .pv-body{flex:1;min-height:0}
 .pv-body iframe{width:100%;height:100%;border:0;background:#fff}
+
+/* ===== v32: colourful icons, continuous Quran, stronger recitation highlight, colour choices ===== */
+.tabbar button{--ic:var(--ink)}
+.tabbar button svg{stroke:var(--ic)!important;stroke-width:2.2}
+.tabbar button span{color:var(--ink)}
+.tabbar button[aria-selected="true"]{background:color-mix(in srgb,var(--ic) 16%,var(--surface));color:var(--ink)}
+.tabbar button[aria-selected="true"] span{color:var(--ic);font-weight:800}
+.tabbar button[aria-selected="true"] svg{stroke-width:2.5}
+#btnTaf svg{stroke:#B03A48!important}
+#btnPlay svg path{fill:#1E8E5A!important}
+#btnDisp svg{stroke:#2F6FD0!important}
+#btnHifz svg{stroke:#D9534F!important}
+#btnHelp svg{stroke:#7A4FC4!important}
+#btnSettings svg{stroke:#C9962B!important}
+#btnBack svg{stroke:var(--ink)!important;stroke-width:2.4}
+.hpill{border-color:var(--gold);background:color-mix(in srgb,var(--gold) 10%,var(--surface))}
+.hpill i{color:var(--gold)}
+/* continuous Quran */
+#main{overflow-anchor:none}
+.sblk .surah-foot .nav{display:none}
+.sblk .surah-foot{margin-bottom:6px}
+.sb-title{display:flex;flex-direction:column;align-items:center;margin:22px 0 4px;padding:8px 10px 6px;border:1.5px solid var(--gold);border-radius:14px;background:color-mix(in srgb,var(--gold) 9%,var(--surface));text-align:center}
+.sblk:first-child .sb-title{margin-top:8px}
+.sb-title b{font-family:var(--ar);font-weight:400;font-size:24px;line-height:1.6;color:var(--ink)}
+.sb-title small{font-size:12px;color:var(--muted)}
+html[lang="ur"] .sb-title small{font-family:var(--ur);line-height:1.8}
+.tbl .sblk + .sblk .tb-head{margin-top:22px}
+/* recitation: the ayah being recited is tinted, the word being recited is marked strongly — in every page style */
+.ayah.playing .w .ar{background:color-mix(in srgb,var(--gold) 16%,transparent);border-radius:6px}
+.ayah.playing{box-shadow:none}
+.w.live .ar,#main .w.live .ar{background:var(--gold)!important;color:#111!important;border-radius:6px}
+.w.live .g{color:var(--gold);font-weight:700}
+.ayah.tafnow .w .ar{background:color-mix(in srgb,#B03A48 14%,transparent);border-radius:6px}
+/* Quran text colour */
+html[data-arc] body:not(.hifz) #main .w .ar,html[data-arc] #mushaf .pg-text,html[data-arc] #main .bism{color:var(--arc)}
+.ds-acc .arc-def i{background:linear-gradient(135deg,var(--ink) 50%,var(--surface) 50%)}
+/* printed table colours */
+html[data-tbc="green"]:not([data-theme="dark"]){--tb-ar:#DDF0E4;--tb-l:#8CC4A2;--tb-b:#2F7A50}
+html[data-tbc="rose"]:not([data-theme="dark"]){--tb-ar:#F7E0E3;--tb-l:#D7A0A8;--tb-b:#8E3B48}
+html[data-tbc="sand"]:not([data-theme="dark"]){--tb-ar:#F4EAD3;--tb-l:#D3BC8A;--tb-b:#8A6A2C}
+html[data-tbc="grey"]:not([data-theme="dark"]){--tb-ar:#E7EAEE;--tb-l:#AEB7C2;--tb-b:#4A5866}
+.tbc-blue i{background:#DCEBF7;border:2px solid #2F5F8F}.tbc-green i{background:#DDF0E4;border:2px solid #2F7A50}.tbc-rose i{background:#F7E0E3;border:2px solid #8E3B48}
+.tbc-sand i{background:#F4EAD3;border:2px solid #8A6A2C}.tbc-grey i{background:#E7EAEE;border:2px solid #4A5866}
+#mushaf .end[data-pgam]{cursor:pointer}
+.tbl #main .ayah .w{align-items:stretch}
+.tbl #main .ayah.playing .w .ar,.tbl #main .ayah.tafnow .w .ar{border-radius:0}
+.tbl #main .w.live .ar{border-radius:0}

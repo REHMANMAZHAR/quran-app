@@ -33,9 +33,9 @@ document.addEventListener("click", async e => {
   for (const [s, a1, a2] of R) {
     const d = await DATA.surah(s), S = META.surahs[s - 1];
     let h = `<section class="sura"><h2><span>${esc(S.ar)}</span><small>${S.n}. ${esc(S.tr)} · ${esc(S.en)}</small></h2>${a1 === 1 && s !== 1 && s !== 9 ? `<p class="bism">بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</p>` : ""}`;
-    if (PDFS.style === "ar") h += `<p class="flow">${d.ayahs.slice(a1 - 1, a2).map((A, k) => A.w.map((w, i) => esc(wordText(s, a1 + k, i, w[0]))).join(" ") + ` <span class="n">${ud(a1 + k)}</span>`).join(" ")}</p>`;
-    else if (PDFS.style === "tr") h += d.ayahs.slice(a1 - 1, a2).map((A, k) => `<div class="ay"><p class="ar">${A.w.map((w, i) => esc(wordText(s, a1 + k, i, w[0]))).join(" ")} <span class="n">${ud(a1 + k)}</span></p><p class="tr${ur ? " ur" : ""}">${esc(A[settings.tr] || A.ur || A.en)}</p></div>`).join("");
-    else h += `<div class="grid">${d.ayahs.slice(a1 - 1, a2).map((A, k) => A.w.map((w, i) => `<div class="c"><b>${esc(wordText(s, a1 + k, i, w[0]))}${i === A.w.length - 1 ? ` <span class="n">${ud(a1 + k)}</span>` : ""}</b><small${ur ? ' class="ur"' : ""}>${esc(ur ? (w[3] || w[1]) : w[1])}</small></div>`).join("")).join("")}<div class="fill"></div></div>`;
+    if (PDFS.style === "ar") h += `<p class="flow">${d.ayahs.slice(a1 - 1, a2).map((A, k) => A.w.map((w, i) => esc(wordText(s, a1 + k, i, w[0]))).join(" ") + ` <span class="n">${ayNum(a1 + k)}</span>`).join(" ")}</p>`;
+    else if (PDFS.style === "tr") h += d.ayahs.slice(a1 - 1, a2).map((A, k) => `<div class="ay"><p class="ar">${A.w.map((w, i) => esc(wordText(s, a1 + k, i, w[0]))).join(" ")} <span class="n">${ayNum(a1 + k)}</span></p><p class="tr${ur ? " ur" : ""}">${esc(A[settings.tr] || A.ur || A.en)}</p></div>`).join("");
+    else h += `<div class="grid">${d.ayahs.slice(a1 - 1, a2).map((A, k) => A.w.map((w, i) => `<div class="c"><b>${esc(wordText(s, a1 + k, i, w[0]))}${i === A.w.length - 1 ? ` <span class="n">${ayNum(a1 + k)}</span>` : ""}</b><small${ur ? ' class="ur"' : ""}>${esc(ur ? (w[3] || w[1]) : w[1])}</small></div>`).join("")).join("")}<div class="fill"></div></div>`;
     parts.push(h + "</section>");
   }
   const title = PDFS.kind === "s" ? `${META.surahs[PDFS.s - 1].tr}` : PDFS.kind === "p" ? `Para ${PDFS.p}` : "The Holy Quran";

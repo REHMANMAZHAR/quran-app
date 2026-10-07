@@ -234,7 +234,8 @@ function tafNow(marks, t){
   document.querySelectorAll(".vp-ayahs button").forEach(b => b.classList.toggle("on", b.dataset.sa === k));
   const on = document.querySelector(".vp-ayahs button.on"); if (on) on.scrollIntoView({ block:"nearest", inline:"center" });
   document.querySelectorAll(".ayah.tafnow").forEach(x => x.classList.remove("tafnow"));
-  if (CUR && CUR.n === m[0]) { const a = document.getElementById("a" + m[1]); if (a) a.classList.add("tafnow"); }
+  if (typeof tafFollow === "function") tafFollow(m[0], m[1]);
+  else if (CUR && CUR.n === m[0]) { const a = document.getElementById("a" + m[1]); if (a) a.classList.add("tafnow"); }
 }
 const ayahTime = (src, s, a) => { const t = TT[src] && TT[src][s + ":" + a]; return t && t[0] === lecFor(s, a, src) ? t[1] : null; };
 function israrButtons(s, a){

@@ -154,7 +154,7 @@ let rio = null; const seenT = {};
 function trackReading(){
   if (rio) rio.disconnect();
   rio = new IntersectionObserver(es => es.forEach(e => {
-    const k = CUR.n + ":" + e.target.dataset.a;
+    const sb = e.target.closest(".sblk"), k = (sb ? sb.dataset.s : CUR.n) + ":" + e.target.dataset.a;
     if (e.isIntersecting) seenT[k] = setTimeout(() => {
       const d = dayKey(); U.rd = U.rd || {}; const L = U.rd[d] = U.rd[d] || [];
       if (!L.includes(k)) { L.push(k); if (typeof touchActive === "function") touchActive(); }

@@ -7,20 +7,20 @@ Object.assign(L.en, { tabRead:"Quran", tabQuran:"Quran", navPrayer:"Prayer", cus
 const SVG = p => `<svg viewBox="0 0 24 24">${p}</svg>`;
 /* every place you can go: [label key, icon colour, icon paths] */
 const NAV = {
-  home:     ["tabHome", "#13242A", `<path d="M3.5 11 12 4l8.5 7"/><path d="M5.5 9.5V20h4.5v-5.5h4V20h4.5V9.5"/>`],
-  read:     ["tabQuran", "#13242A", `<path d="M12 6.5C10 5 7 4.5 3.5 5v13c3.5-.5 6.5 0 8.5 1.5 2-1.5 5-2 8.5-1.5V5C17 4.5 14 5 12 6.5zM12 6.5v13"/>`],
-  search:   ["capSearch", "#3E5C76", `<circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/>`],
-  tafsir:   ["tlTafsir", "#8E2F3C", `<path d="M12 6.5C10 5 7 4.6 3.5 5v13c3.5-.4 6.5 0 8.5 1.5 2-1.5 5-1.9 8.5-1.5V5C17 4.6 14 5 12 6.5z"/><path d="M12 6.5v13M6.5 9.5h3M6.5 12.5h3M14.5 9.5h3M14.5 12.5h3"/>`],
-  duas:     ["tabDuas", "#5B4B8A", `<path d="M7 21v-6.5C5.2 13.6 4 11.6 4 9.3V5.5c0-.8 1.2-.8 1.2 0V9M7 9V3.8c0-.8 1.3-.8 1.3 0V9M17 21v-6.5c1.8-.9 3-2.9 3-5.2V5.5c0-.8-1.2-.8-1.2 0V9M17 9V3.8c0-.8-1.3-.8-1.3 0V9"/>`],
-  me:       ["tabMe", "#B8913A", `<path d="M6 3.5h12v17l-6-4-6 4z"/>`],
-  prayer:   ["navPrayer", "#1F6E8C", `<path d="M12 3c-2 2.2-3 3.6-3 5h6c0-1.4-1-2.8-3-5zM6 21V12l6-4 6 4v9M4 21h16M10 21v-4a2 2 0 0 1 4 0v4"/>`],
-  azkar:    ["tlAzkar", "#1E7A5A", `<path d="M12 3.5c-2.2 2.8-2.2 5.2 0 8 2.2-2.8 2.2-5.2 0-8z"/><path d="M5 20.5h14M7 20.5c0-4 2.2-6.5 5-6.5s5 2.5 5 6.5"/><circle cx="12" cy="17.5" r="1"/>`],
-  learn:    ["tabLearn", "#2A5C9A", `<path d="M12 4 2.5 9 12 14l9.5-5zM6 11v4.5c1.5 1.5 3.7 2.5 6 2.5s4.5-1 6-2.5V11M21.5 9v5"/>`],
-  games:    ["tabGames", "#A0522D", `<path d="M7 8h10a4 4 0 0 1 4 4.5l-.6 4a2.4 2.4 0 0 1-4.3 1.1L14.6 16H9.4l-1.5 1.6a2.4 2.4 0 0 1-4.3-1.1l-.6-4A4 4 0 0 1 7 8zM8 11v3M6.5 12.5h3M15.5 11.6h.01M17.5 13.4h.01"/>`],
-  hifz:     ["tlHifz", "#C0562F", `<rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21"/>`],
-  qibla:    ["tlQibla", "#333F48", `<circle cx="12" cy="12" r="9"/><path d="m12 5 3 8h-6z"/><rect x="10" y="14.5" width="4" height="3.5" rx=".5"/>`],
-  pdf:      ["tlPdf", "#2A5C9A", `<path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4M9 13h6M9 16.5h6M12 9.5v4"/>`],
-  reminders:["tlRem", "#B8913A", `<path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15z"/><path d="M10 20.5a2 2 0 0 0 4 0"/>`]
+  home:     ["tabHome", "#E07A1F", `<path d="M3.5 11 12 4l8.5 7"/><path d="M5.5 9.5V20h4.5v-5.5h4V20h4.5V9.5"/>`],
+  read:     ["tabQuran", "#1E8E5A", `<path d="M12 6.5C10 5 7 4.5 3.5 5v13c3.5-.5 6.5 0 8.5 1.5 2-1.5 5-2 8.5-1.5V5C17 4.5 14 5 12 6.5zM12 6.5v13"/>`],
+  search:   ["capSearch", "#2F6FD0", `<circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/>`],
+  tafsir:   ["tlTafsir", "#B03A48", `<path d="M12 6.5C10 5 7 4.6 3.5 5v13c3.5-.4 6.5 0 8.5 1.5 2-1.5 5-1.9 8.5-1.5V5C17 4.6 14 5 12 6.5z"/><path d="M12 6.5v13M6.5 9.5h3M6.5 12.5h3M14.5 9.5h3M14.5 12.5h3"/>`],
+  duas:     ["tabDuas", "#7A4FC4", `<path d="M7 21v-6.5C5.2 13.6 4 11.6 4 9.3V5.5c0-.8 1.2-.8 1.2 0V9M7 9V3.8c0-.8 1.3-.8 1.3 0V9M17 21v-6.5c1.8-.9 3-2.9 3-5.2V5.5c0-.8-1.2-.8-1.2 0V9M17 9V3.8c0-.8-1.3-.8-1.3 0V9"/>`],
+  me:       ["tabMe", "#C9962B", `<path d="M6 3.5h12v17l-6-4-6 4z"/>`],
+  prayer:   ["navPrayer", "#1F8FA8", `<path d="M12 3c-2 2.2-3 3.6-3 5h6c0-1.4-1-2.8-3-5zM6 21V12l6-4 6 4v9M4 21h16M10 21v-4a2 2 0 0 1 4 0v4"/>`],
+  azkar:    ["tlAzkar", "#2E9E6B", `<path d="M12 3.5c-2.2 2.8-2.2 5.2 0 8 2.2-2.8 2.2-5.2 0-8z"/><path d="M5 20.5h14M7 20.5c0-4 2.2-6.5 5-6.5s5 2.5 5 6.5"/><circle cx="12" cy="17.5" r="1"/>`],
+  learn:    ["tabLearn", "#3D6CC0", `<path d="M12 4 2.5 9 12 14l9.5-5zM6 11v4.5c1.5 1.5 3.7 2.5 6 2.5s4.5-1 6-2.5V11M21.5 9v5"/>`],
+  games:    ["tabGames", "#D0632F", `<path d="M7 8h10a4 4 0 0 1 4 4.5l-.6 4a2.4 2.4 0 0 1-4.3 1.1L14.6 16H9.4l-1.5 1.6a2.4 2.4 0 0 1-4.3-1.1l-.6-4A4 4 0 0 1 7 8zM8 11v3M6.5 12.5h3M15.5 11.6h.01M17.5 13.4h.01"/>`],
+  hifz:     ["tlHifz", "#D9534F", `<rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21"/>`],
+  qibla:    ["tlQibla", "#5D6E7E", `<circle cx="12" cy="12" r="9"/><path d="m12 5 3 8h-6z"/><rect x="10" y="14.5" width="4" height="3.5" rx=".5"/>`],
+  pdf:      ["tlPdf", "#2A6FB0", `<path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4M9 13h6M9 16.5h6M12 9.5v4"/>`],
+  reminders:["tlRem", "#D4A017", `<path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15z"/><path d="M10 20.5a2 2 0 0 0 4 0"/>`]
 };
 const NAV_PICK = 4, ACTIONS = { hifz: 1, qibla: 1, pdf: 1 };
 if (!Array.isArray(settings.nav)) settings.nav = ["search", "tafsir", "duas", "me"];
@@ -37,7 +37,7 @@ function goNav(k){
 labelTabs = function(){
   const bar = document.querySelector(".tabbar"); if (!bar) return;
   const cur = typeof LV !== "undefined" ? LV.view : "home";
-  bar.innerHTML = barItems().map(k => `<button data-v="${k}" aria-selected="${k === cur || (k === "read" && cur === "page")}">${SVG(NAV[k][2])}<span>${T(NAV[k][0])}</span></button>`).join("");
+  bar.innerHTML = barItems().map(k => `<button data-v="${k}" style="--ic:${NAV[k][1]}" aria-selected="${k === cur || (k === "read" && cur === "page")}">${SVG(NAV[k][2])}<span>${T(NAV[k][0])}</span></button>`).join("");
 };
 document.querySelector(".tabbar").addEventListener("click", e => {
   const b = e.target.closest("[data-v]"); if (!b) return;
@@ -89,7 +89,6 @@ $("#btnMenu").insertAdjacentHTML("afterend", `<button class="hpill" id="hSurah">
 $("#btnPlay").insertAdjacentHTML("afterend", `
   <button class="iconbtn rdv" id="btnDisp" aria-label="Display">${ICO.display}<span class="cap" data-cap="dispT"></span></button>
   <button class="iconbtn rdv" id="btnHifz" aria-label="Hifz">${ICO.hifz}<span class="cap" data-cap="hifzT"></span></button>
-  <button class="iconbtn rdv" id="btnPage" aria-label="Page">${ICO.page}<span class="cap" data-cap="pageT"></span></button>
   <button class="hpill" id="hPara"><small></small><b></b><i>▾</i></button>`);
 function capLabels(){ document.querySelectorAll(".bar [data-cap]").forEach(c => { c.textContent = T(c.dataset.cap); }); }
 capLabels();
@@ -105,7 +104,6 @@ $("#hSurah").onclick = () => openPicker("s");
 $("#hPara").onclick = () => openPicker("p");
 $("#btnDisp").onclick = () => { displaySheet(); openSheet(); };
 $("#btnHifz").onclick = () => { hifzSheet(); openSheet(); };
-$("#btnPage").onclick = () => openPageView();
 let pillT; addEventListener("scroll", () => { if (LV.view !== "read") return; clearTimeout(pillT); pillT = setTimeout(updPills, 150); }, { passive: true });
 const _openSurahS = openSurah;
 openSurah = async function(...a){ const r = await _openSurahS(...a); updPills(); return r; };
@@ -129,6 +127,7 @@ showView = function(v){
   document.body.dataset.view = v;
   $("#btnBack").hidden = v === "home" || rd;
   $("#btnHelp").hidden = $("#btnSettings").hidden = v !== "home";
+  $("#btnTaf").hidden = !(rd || v === "page");
   document.querySelectorAll(".tabbar button").forEach(b => b.setAttribute("aria-selected", b.dataset.v === v || (b.dataset.v === "read" && v === "page")));
   if (rd) updPills();
 };
