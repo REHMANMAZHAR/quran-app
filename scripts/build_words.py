@@ -27,14 +27,25 @@ if __name__ == "__main__":
             for w in A["w"]:
                 st = w[5]
                 if st is None or st < 0: continue
-                if w[3]: ur[st][w[3].strip()] += 1
+                if w[3]:
+                    m = w[3].strip()
+                    for _ in range(3):   # lemma meaning without the ayah's joining words ("and", "so", "those who")
+                        m2 = re.sub(r"^(اور|پس|پھر|تو|سو|جنہوں نے|جن لوگوں نے|جو لوگ|جو کہ|جو|کہ)\s+", "", m)
+                        if m2 == m or not m2: break
+                        m = m2
+                    ur[st][m] += 1
                 tl = w[2] or ""
                 dash = tl.split("-")
                 parts = {tl} | set(dash) | set(re.split(r"[-']", tl))
                 for p in parts:
                     k = skel(p)
                     if len(k) >= 2: sk[k][st] += 1
-    lemUr = [(c.most_common(1)[0][0] if c else "") for c in ur]
+    def pick(c):
+        if not c: return ""
+        top = c.most_common(6); t = top[0][1]
+        ok = [m for m, k in top if k >= max(2, t * 0.3)] or [top[0][0]]
+        return min(ok, key=len)   # the plainest common meaning, e.g. "ظلم کیا" rather than "جنہوں نے ظلم کیا"
+    lemUr = [pick(c) for c in ur]
     index = {k: [li for li, _ in v.most_common(6)] for k, v in sk.items()}
     json.dump({"lemUr": lemUr, "sk": index}, open(f"{ROOT}/data/words.json", "w"), ensure_ascii=False, separators=(",", ":"))
     print(len(index), "skeletons;", sum(1 for x in lemUr if x), "lemmas with Urdu")

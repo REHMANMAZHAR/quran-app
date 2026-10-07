@@ -1095,3 +1095,5 @@ body:not(.notr) #main .endbox{margin-top:calc(var(--arsize) * .38)}
 .w .g .g-taf .tafico{width:15px;height:15px}
 .tbl #main .w .g .g-taf{display:inline-grid!important}
 #main .endbox{margin:0 1px}
+.ll-sw{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:4px 0 12px;padding:8px 12px;border:1.5px solid var(--line);border-radius:12px;background:var(--surface)}
+.ll-sw span{font-weight:700;font-size:14px}

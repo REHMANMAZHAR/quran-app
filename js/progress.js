@@ -116,7 +116,7 @@ async function reviewQuiz(per){
     byS[s].forEach(a => {
       const A = d.ayahs[a - 1]; if (!A) return;
       const tr = settings.lang === "en" ? (A.en2 || A.en) : (A.ur || A.ur2); if (tr) ayahs.push({ s: +s, a, tr, ar: A.w.map(w => w[0]).join(" ") });
-      A.w.forEach((w, i) => { const lm = META.lemmas[w[5]]; if (lm && lm[4] && /^(N|V|ADJ|PN)/.test(lm[1]) && lm[3] < 2000) words.push([1e5 + w[5], w[0], "", lm[1], lm[3], lm[4], "", +s, a, i + 1]); });
+      A.w.forEach((w, i) => { const lm = META.lemmas[w[5]]; if (lm && lm[4] && /^(N|V|ADJ|PN)/.test(lm[1]) && lm[3] < 2000) words.push([1e5 + w[5], w[0], "", lm[1], lm[3], (settings.llang !== "en" && typeof LEMUR !== "undefined" && LEMUR && LEMUR[w[5]]) || lm[4], "", +s, a, i + 1]); });
     });
   }
   const uniq = Object.values(Object.fromEntries(words.map(w => [w[0], w])));
