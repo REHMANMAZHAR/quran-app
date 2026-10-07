@@ -83,7 +83,7 @@ function prayerICS(){
   const L2 = prLoc(), names = L.en.prNames, pad = n => String(n).padStart(2, "0"), lines = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//QuranToSoul//Prayer times//EN", "CALSCALE:GREGORIAN"];
   for (let k = 0; k < 30; k++) {
     const day = new Date(); day.setDate(day.getDate() + k); const t = prayerTimes(day, L2.lat, L2.lng, L2.tz);
-    [0, 2, 3, 4, 5].forEach(i => {
+    [0, 2, 3, 4, 5].filter(i => !PS.alarm || PS.alarm[i]).forEach(i => {
       const utc = new Date(Date.UTC(day.getFullYear(), day.getMonth(), day.getDate(), 0, t[i] - Math.round(L2.tz * 60)));
       const st = `${utc.getUTCFullYear()}${pad(utc.getUTCMonth() + 1)}${pad(utc.getUTCDate())}T${pad(utc.getUTCHours())}${pad(utc.getUTCMinutes())}00Z`;
       const en = new Date(utc.getTime() + 15 * 6e4), et = `${en.getUTCFullYear()}${pad(en.getUTCMonth() + 1)}${pad(en.getUTCDate())}T${pad(en.getUTCHours())}${pad(en.getUTCMinutes())}00Z`;
@@ -100,7 +100,7 @@ let prLast = "";
 setInterval(() => {
   if (!PS.notif || !("Notification" in window) || Notification.permission !== "granted") return;
   const { t } = todayTimes(), now = Math.floor(((nowMin() % 1440) + 1440) % 1440), names = T("prNames");
-  [0, 2, 3, 4, 5].forEach(i => { const at = t[i] - (PS.before || 0), key = dayKey() + i;
+  [0, 2, 3, 4, 5].filter(i => !PS.alarm || PS.alarm[i]).forEach(i => { const at = t[i] - (PS.before || 0), key = dayKey() + i;
     if (now >= at && now < at + 2 && prLast !== key) { prLast = key;
       try { navigator.serviceWorker && navigator.serviceWorker.ready.then(r => r.showNotification("QuranToSoul", { body: T("prTime", names[i]), icon: "icon.svg", tag: "prayer" })); } catch(e) { new Notification("QuranToSoul", { body: T("prTime", names[i]) }); }
       toast(esc(T("prTime", names[i])), 6000); } });

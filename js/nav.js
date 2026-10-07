@@ -55,51 +55,6 @@ $("#sheetBody").addEventListener("click", async e => {
   if (settings.script === "ip" && !IPK) { try { IPK = await DATA.indopak(); } catch(err){} }
   displaySheet(); if (CUR) rerender();
 });
-/* ---------- Home: big colourful quick actions ---------- */
-const QA = [
-  ["read", "qaRead", "#1E7A5A", `<path d="M12 7C10 5.6 7 5.2 4 5.6v9.2c3-.4 6 0 8 1.4 2-1.4 5-1.8 8-1.4V5.6c-3-.4-6 0-8 1.4zM12 7v9.2M5 21l7-4.3 7 4.3"/>`],
-  ["prayer", "qaPrayer", "#2A5C9A", `<circle cx="12" cy="13" r="7.5"/><path d="M12 9v4.2l2.8 1.8M9.5 3h5"/>`],
-  ["dua", "qaDua", "#B8913A", `<path d="M7 21v-6.5C5.2 13.6 4 11.6 4 9.3V5.5c0-.8 1.2-.8 1.2 0V9M7 9V3.8c0-.8 1.3-.8 1.3 0V9M17 21v-6.5c1.8-.9 3-2.9 3-5.2V5.5c0-.8-1.2-.8-1.2 0V9M17 9V3.8c0-.8-1.3-.8-1.3 0V9"/>`],
-  ["tafsir", "qaTafsir", "#8E2F3C", `<path d="M12 6.5C10 5 7 4.6 3.5 5v13c3.5-.4 6.5 0 8.5 1.5 2-1.5 5-1.9 8.5-1.5V5C17 4.6 14 5 12 6.5z"/><path d="M12 6.5v13M6.5 9.5h3M6.5 12.5h3M14.5 9.5h3M14.5 12.5h3"/>`],
-  ["learn", "qaLearn", "#6A4C9C", `<path d="M12 4 2.5 9 12 14l9.5-5zM6 11v4.5c1.5 1.5 3.7 2.5 6 2.5s4.5-1 6-2.5V11"/>`],
-  ["hifz", "qaHifz", "#C0562F", `<rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21"/>`],
-  ["tasbih", "qaTasbih", "#1A8A8F", `<circle cx="12" cy="5" r="1.6"/><circle cx="16.5" cy="7" r="1.6"/><circle cx="18.5" cy="11.5" r="1.6"/><circle cx="16.5" cy="16" r="1.6"/><circle cx="7.5" cy="7" r="1.6"/><circle cx="5.5" cy="11.5" r="1.6"/><circle cx="7.5" cy="16" r="1.6"/><path d="M12 18v3.5M10.5 21.5h3"/>`],
-  ["qibla", "qaQibla", "#333F48", `<circle cx="12" cy="12" r="9"/><path d="m12 5 3 8h-6z"/><rect x="10" y="14.5" width="4" height="3.5" rx=".5"/>`]
-];
-function quickHTML(){
-  return `<nav class="qa-grid" aria-label="Quick actions">${QA.map(([id, k, c, svg]) => `<button class="qa" data-qa="${id}"><span class="qa-ic" style="--c:${c}"><svg viewBox="0 0 24 24">${svg}</svg></span><span class="qa-t">${T(k)}</span></button>`).join("")}</nav>`;
-}
-const _renderHomeN = renderHome;
-renderHome = function(){ _renderHomeN(); const pr = $("#home .hm-pr"); if (pr) pr.insertAdjacentHTML("afterend", quickHTML()); };
-VIEWS.home.render = renderHome;
-$("#home").addEventListener("click", e => {
-  const b = e.target.closest("[data-qa]"); if (!b) return;
-  const v = b.dataset.qa, last = store.get("last", { s: 1, a: 1 });
-  if (v === "read") { showView("read"); openSurah(last.s, last.a); }
-  else if (v === "prayer") { const p = document.getElementById("hmPrayer"); if (p) p.scrollIntoView({ behavior: "smooth" }); }
-  else if (v === "dua") showView("duas");
-  else if (v === "tafsir") { showView("read"); openSurah(last.s, last.a).then(() => typeof playTafsir === "function" && playTafsir(last.s, last.a)); }
-  else if (v === "learn") showView("learn");
-  else if (v === "hifz") { showView("read"); openSurah(last.s, last.a).then(() => typeof hzSetup === "function" && hzSetup()); }
-  else if (v === "tasbih") tasbihSheet();
-  else if (v === "qibla") qiblaSheet();
-});
-/* ---------- Tasbeeh counter ---------- */
-const TB = Object.assign({ n: 0, target: 33, total: 0 }, store.get("tasbih", {}));
-function tasbihSheet(){
-  $("#sheetBody").innerHTML = `<h3 class="ds-h">${T("qaTasbih")}</h3>
-    <button class="tb-btn" data-tb="tap" aria-label="${T("tsTap")}"><b>${nf(TB.n)}</b><small>/ ${nf(TB.target)}</small></button>
-    <p class="muted" style="text-align:center;margin:6px 0 12px">${T("tsTap")}</p>
-    <div class="rtb-seg wide">${[33, 34, 100, 1000].map(t => `<button data-tbt="${t}" aria-pressed="${TB.target === t}">${nf(t)}</button>`).join("")}</div>
-    <div style="display:flex;justify-content:center;margin-top:12px"><button class="btn ghost" data-tb="reset">${T("tsReset")}</button></div>`;
-  openSheet();
-}
-document.addEventListener("click", e => {
-  const t = e.target.closest("#sheetBody [data-tb]");
-  if (t) { if (t.dataset.tb === "tap") { TB.n++; TB.total++; if (navigator.vibrate) navigator.vibrate(TB.n % TB.target === 0 ? [80, 60, 80] : 12); if (TB.n % TB.target === 0) toast("✓ " + nf(TB.n)); } else TB.n = 0;
-    store.set("tasbih", TB); const b = document.querySelector("#sheetBody .tb-btn b"); if (b) b.textContent = nf(TB.n); return; }
-  const g = e.target.closest("#sheetBody [data-tbt]"); if (g) { TB.target = +g.dataset.tbt; store.set("tasbih", TB); tasbihSheet(); }
-});
 /* ---------- Qibla ---------- */
 function qiblaBearing(lat, lng){
   const K = [21.4225, 39.8262], f1 = rad(lat), f2 = rad(K[0]), dl = rad(K[1] - lng);
@@ -129,3 +84,11 @@ document.addEventListener("click", async e => {
   addEventListener("deviceorientationabsolute", qbHandler); addEventListener("deviceorientation", qbHandler);
   setTimeout(() => { if (!got) toast(esc(T("qbNoSensor")), 4000); }, 2500);
 });
+
+/* ✕ on a page opened from the dashboard returns to the dashboard */
+$("#btnBack").onclick = () => { if (typeof G !== "undefined" && G && !G.done && LV.view === "learn") G = null; showView(SUBPAGES[LV.view] ? "home" : "read"); };
+/* header "Tafsir": pause/resume if a tafsir is playing, otherwise open the Tafsir page */
+$("#btnTaf").onclick = () => {
+  if (vCur && AUDIO_SER[vCur.series]) { const au = $("#vpAudio"); if (au) { au.paused ? au.play().catch(() => {}) : au.pause(); return; } }
+  showView("tafsir");
+};

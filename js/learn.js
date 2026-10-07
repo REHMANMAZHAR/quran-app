@@ -51,7 +51,7 @@ function showView(v){
   LV.view = v;
   $("#main").hidden = v !== "read";
   document.querySelectorAll("section.view").forEach(el => el.hidden = !(VIEWS[v] && el.matches(VIEWS[v].el)));
-  document.querySelectorAll(".tabbar button").forEach(b => b.setAttribute("aria-selected", b.dataset.v === v || (v === "page" && b.dataset.v === "read") || (v === "search" && false)));
+  document.querySelectorAll(".tabbar button").forEach(b => b.setAttribute("aria-selected", b.dataset.v === v || (b.dataset.v === "home" && ["prayer", "tafsir", "azkar", "reminders"].includes(v)) || (v === "page" && b.dataset.v === "read") || (v === "search" && false)));
   $("#btnPlay").hidden = v !== "read" && v !== "page";
   if ($("#btnTaf")) $("#btnTaf").hidden = v !== "read";
   if ($("#btnBack")) $("#btnBack").hidden = v === "read";
