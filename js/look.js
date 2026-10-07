@@ -43,12 +43,24 @@ $("#mushaf").addEventListener("click", e => {
 const _renderK = render;
 render = function(){
   _renderK();
+  /* ayah number: right after the last word (inside its Arabic band in the printed table, else a small mark);
+     tafsir book: with the translation — end of the sentence translation, else under the last word's meaning, else under the number */
+  const tbl = settings.pstyle === "table";
   document.querySelectorAll("#main .last").forEach(l => {
     const e = l.querySelector(":scope > .end"); if (!e) return;
-    const t = l.querySelector(":scope > .tafbtn"), box = document.createElement("span"); box.className = "endbox";
-    e.before(box); box.appendChild(e); if (t) box.appendChild(t);
+    const t = l.querySelector(":scope > .tafbtn"), w = l.querySelector(".w"), ay = l.closest(".ayah"), tr = ay && ay.querySelector(".tr");
+    let box = null;
+    if (tbl && w) w.querySelector(".ar").appendChild(e);
+    else { box = document.createElement("span"); box.className = "endbox"; e.before(box); box.appendChild(e); }
+    if (!t) return;
+    if (tr && !tbl && settings.showTr !== false) { tr.appendChild(t); t.classList.add("tr-taf"); }
+    else if (settings.wbw && w && w.querySelector(".g")) { w.querySelector(".g").appendChild(t); t.classList.add("g-taf"); }
+    else if (box) box.appendChild(t);
+    else e.after(t);
   });
 };
+/* a tap on the ayah number or tafsir book is not a tap on the word */
+$("#main").addEventListener("pointerdown", e => { if (e.target.closest(".end,.tafbtn")) e.stopPropagation(); }, true);
 /* page view: a tafsir book after every ayah number */
 $("#mushaf").addEventListener("click", e => {
   const b = e.target.closest("[data-taf]"); if (!b) return;
