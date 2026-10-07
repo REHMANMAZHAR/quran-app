@@ -21,8 +21,7 @@ document.addEventListener("click", async e => {
   if (k) { PDFS.kind = k.dataset.pdfKind; store.set("pdf", PDFS); pdfSheet(); return; }
   if (st) { PDFS.style = st.dataset.pdfStyle; store.set("pdf", PDFS); pdfSheet(); return; }
   if (!e.target.closest("[data-pdfgo]")) return;
-  const w = window.open("", "_blank"); if (!w) { toast(esc(T("pdfBlocked")), 4000); return; }
-  w.document.write(`<p style="font:16px sans-serif;padding:20px">${T("pdfWait")}</p>`);
+  closeAll(); const ov = pdfOverlay(); ov.querySelector(".pv-body").innerHTML = `<div class="loading" style="padding:40px">${T("pdfWait")}</div>`;
   if (settings.script === "ip" && !IPK) { try { IPK = await DATA.indopak(); } catch(err){} }
   // ranges: [surah, fromAyah, toAyah]
   let R = [];
@@ -36,12 +35,11 @@ document.addEventListener("click", async e => {
     let h = `<section class="sura"><h2><span>${esc(S.ar)}</span><small>${S.n}. ${esc(S.tr)} · ${esc(S.en)}</small></h2>${a1 === 1 && s !== 1 && s !== 9 ? `<p class="bism">بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</p>` : ""}`;
     if (PDFS.style === "ar") h += `<p class="flow">${d.ayahs.slice(a1 - 1, a2).map((A, k) => A.w.map((w, i) => esc(wordText(s, a1 + k, i, w[0]))).join(" ") + ` <span class="n">${ud(a1 + k)}</span>`).join(" ")}</p>`;
     else if (PDFS.style === "tr") h += d.ayahs.slice(a1 - 1, a2).map((A, k) => `<div class="ay"><p class="ar">${A.w.map((w, i) => esc(wordText(s, a1 + k, i, w[0]))).join(" ")} <span class="n">${ud(a1 + k)}</span></p><p class="tr${ur ? " ur" : ""}">${esc(A[settings.tr] || A.ur || A.en)}</p></div>`).join("");
-    else h += `<div class="grid">${d.ayahs.slice(a1 - 1, a2).map((A, k) => A.w.map((w, i) => `<div class="c"><b>${esc(wordText(s, a1 + k, i, w[0]))}${i === A.w.length - 1 ? ` <span class="n">${ud(a1 + k)}</span>` : ""}</b><small${ur ? ' class="ur"' : ""}>${esc(ur ? (w[3] || w[1]) : w[1])}</small></div>`).join("")).join("")}</div>`;
+    else h += `<div class="grid">${d.ayahs.slice(a1 - 1, a2).map((A, k) => A.w.map((w, i) => `<div class="c"><b>${esc(wordText(s, a1 + k, i, w[0]))}${i === A.w.length - 1 ? ` <span class="n">${ud(a1 + k)}</span>` : ""}</b><small${ur ? ' class="ur"' : ""}>${esc(ur ? (w[3] || w[1]) : w[1])}</small></div>`).join("")).join("")}<div class="fill"></div></div>`;
     parts.push(h + "</section>");
   }
   const title = PDFS.kind === "s" ? `${META.surahs[PDFS.s - 1].tr}` : PDFS.kind === "p" ? `Para ${PDFS.p}` : "The Holy Quran";
-  w.document.open();
-  w.document.write(`<!doctype html><html lang="ar"><head><meta charset="utf-8"><title>QuranToSoul — ${esc(title)}</title>
+  const doc = (`<!doctype html><html lang="ar"><head><meta charset="utf-8"><title>QuranToSoul — ${esc(title)}</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Amiri+Quran&family=Noto+Nastaliq+Urdu&family=Crimson+Pro:wght@400;600&display=swap" rel="stylesheet">
 <style>@page{size:A4;margin:14mm 12mm}body{margin:0;color:#111;font-family:'Crimson Pro',Georgia,serif}
 .head{display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid #1E5486;padding-bottom:6px;margin-bottom:10px;font-size:12px;color:#1E5486}
@@ -52,13 +50,40 @@ document.addEventListener("click", async e => {
 .n{display:inline-block;min-width:1.6em;padding:0 3px;border:1.2px solid #1E5486;border-radius:50%;font-size:.6em;text-align:center;color:#1E5486;line-height:1.6;vertical-align:middle}
 .ay{break-inside:avoid;border-bottom:1px solid #ddd;padding:6px 0}.ay .ar{direction:rtl;font-family:'Amiri Quran',serif;font-size:22px;line-height:2.2;margin:0}
 .tr{margin:2px 0 0;font-size:13.5px;line-height:1.55}.tr.ur,.ur{font-family:'Noto Nastaliq Urdu',serif;direction:rtl;line-height:2.2;font-size:13px}
-.grid{direction:rtl;display:grid;grid-template-columns:repeat(6,1fr);border-top:1px solid #9bb8d6;border-right:1px solid #9bb8d6}
-.c{border-left:1px solid #9bb8d6;border-bottom:1px solid #9bb8d6;padding:3px 2px;text-align:center;break-inside:avoid}
-.c:nth-child(12n+1),.c:nth-child(12n+2),.c:nth-child(12n+3),.c:nth-child(12n+4),.c:nth-child(12n+5),.c:nth-child(12n+6){background:#EEF4FA}
-.c b{display:block;font-family:'Amiri Quran',serif;font-weight:400;font-size:20px;line-height:1.9}.c small{display:block;font-size:10.5px;line-height:1.5}.c small.ur{font-size:10px;line-height:1.9}
+.grid{direction:rtl;display:flex;flex-wrap:wrap;border:1.5px solid #2F5F8F;border-bottom:0;border-left:0}
+.c{flex:1 0 auto;display:flex;flex-direction:column;border-left:1px solid #8DB3D6;border-bottom:1.5px solid #2F5F8F;text-align:center;break-inside:avoid}
+.c b{display:block;flex:1;background:#DCEBF7;border-bottom:1px solid #8DB3D6;padding:2px 8px;font-family:'Amiri Quran',serif;font-weight:400;font-size:21px;line-height:1.9}
+.c small{display:block;padding:1px 6px;font-size:10.5px;line-height:1.5}.c small.ur{font-size:10.5px;line-height:2}.fill{flex:100 0 0}
 .foot{margin-top:14px;font-size:10px;color:#666;text-align:center}</style></head><body>
 <div class="head"><b>QuranToSoul · qurantosoul.com</b><span>${esc(title)}</span></div>${parts.join("")}
 <p class="foot">Arabic text: Tanzil / Quranic Arabic Corpus (Uthmani)${settings.script === "ip" ? ", Indo-Pak script" : ""}. ${PDFS.style !== "ar" ? "Translation: " + esc((META.sources || {})[settings.tr === "ur" ? "ur1" : settings.tr] || "") + ". " : ""}Made with QuranToSoul — free, no ads.</p>
-<script>document.fonts.ready.then(()=>setTimeout(()=>print(),400));<\/script></body></html>`);
-  w.document.close();
+</body></html>`);
+  PDF_DOC = { html: doc, title };
+  ov.querySelector(".pv-t").textContent = title;
+  ov.querySelector(".pv-body").innerHTML = `<iframe id="pvFrame" title="${esc(title)}"></iframe>`;
+  $("#pvFrame").srcdoc = doc;
 });
+
+/* in-app preview with "Save as PDF" (the print window offers Save as PDF on Android, iPhone and computers) */
+Object.assign(L.ur, { pdfSave:"PDF محفوظ کریں", pdfTab:"نئے ٹیب میں" });
+Object.assign(L.en, { pdfSave:"Save as PDF", pdfTab:"Open in new tab" });
+let PDF_DOC = null;
+function pdfOverlay(){
+  let ov = document.getElementById("pdfv");
+  if (!ov) { ov = document.createElement("section"); ov.id = "pdfv"; ov.setAttribute("role", "dialog"); ov.setAttribute("aria-modal", "true"); document.body.appendChild(ov); }
+  ov.innerHTML = `<div class="pv-top"><b class="pv-t"></b><button class="btn" data-pv="print">⤓ ${T("pdfSave")}</button><button class="btn ghost" data-pv="tab">${T("pdfTab")}</button>
+    <button class="iconbtn pv-x" data-pv="x" aria-label="Close"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg><span class="cap">${T("capClose")}</span></button></div><div class="pv-body"></div>`;
+  ov.classList.add("on"); return ov;
+}
+document.addEventListener("click", e => {
+  const b = e.target.closest("#pdfv [data-pv]"); if (!b) return;
+  const k = b.dataset.pv;
+  if (k === "x") { document.getElementById("pdfv").classList.remove("on"); return; }
+  if (!PDF_DOC) return;
+  if (k === "print") { const f = $("#pvFrame"); try { f.contentWindow.focus(); f.contentWindow.print(); } catch(err) { k2tab(); } }
+  else k2tab();
+});
+function k2tab(){
+  const url = URL.createObjectURL(new Blob([PDF_DOC.html.replace("</body>", "<script>document.fonts.ready.then(()=>setTimeout(()=>print(),400));<\/script></body>")], { type: "text/html" }));
+  const w = window.open(url, "_blank"); if (!w) toast(esc(T("pdfBlocked")), 4000);
+}

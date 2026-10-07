@@ -1,12 +1,13 @@
 "use strict";
 /* ---------- Reading display: font previews, page style, line separators, translation list, auto-hide bars, Go to ---------- */
-Object.assign(L.ur, { fontH:"قرآن کا رسم الخط", fUth:"عثمانی", fIp:"انڈو پاک", fTaj:"عثمانی + تجوید", styleH:"صفحے کا انداز", stPlain:"سادہ", stBoxed:"خانوں میں (لفظی معنی)", linesSep:"سطروں کے درمیان لکیریں", autoHide:"پڑھتے وقت اوپر نیچے کی پٹیاں چھپائیں",
+Object.assign(L.ur, { fontH:"قرآن کا رسم الخط", fUth:"عثمانی", fIp:"انڈو پاک", fTaj:"عثمانی + تجوید", styleH:"صفحے کا انداز", stPlain:"سادہ", stBoxed:"خانوں میں", stTable:"چھپے قرآن جیسا جدول", ayatN:n=>`آیات ${ud(n)}`, linesSep:"سطروں کے درمیان لکیریں", autoHide:"پڑھتے وقت نیچے کی پٹی چھپائیں",
   trH:"ترجمہ منتخب کریں", trHide:"ترجمہ چھپائیں", goT:"جائیں", goSurah:"سورت", goAyah:"آیت", goPara:"پارہ", goPage:"صفحہ", goBtn:"جائیں" });
-Object.assign(L.en, { fontH:"Quran script", fUth:"Uthmani", fIp:"Indo-Pak", fTaj:"Uthmani + Tajweed", styleH:"Page style", stPlain:"Plain", stBoxed:"Boxed (word meanings)", linesSep:"Lines between rows", autoHide:"Hide top and bottom bars while reading",
+Object.assign(L.en, { fontH:"Quran script", fUth:"Uthmani", fIp:"Indo-Pak", fTaj:"Uthmani + Tajweed", styleH:"Page style", stPlain:"Plain", stBoxed:"Boxed", stTable:"Printed table", ayatN:n=>`${n} ayahs`, linesSep:"Lines between rows", autoHide:"Hide the bottom bar while reading",
   trH:"Select translation", trHide:"Hide translation", goT:"Go to", goSurah:"Surah", goAyah:"Ayah", goPara:"Para", goPage:"Page", goBtn:"Go" });
 if (settings.autoHide == null) settings.autoHide = true;
 function applyReading(){
   document.body.classList.toggle("boxed", settings.pstyle === "boxed");
+  document.body.classList.toggle("tbl", settings.pstyle === "table");
   document.body.classList.toggle("linesep", !!settings.linesep);
 }
 const _applySettingsR = applySettings;
@@ -26,7 +27,7 @@ displaySheet = function(){
   const sw = (id, on, label) => `<label class="ds ds-row ds-sw"><span><b>${label}</b></span><input type="checkbox" role="switch" id="${id}"${on ? " checked" : ""}><i aria-hidden="true"></i></label>`;
   const trList = `<section class="ds"><b>${T("trH")}</b><ul class="trl">${[["none", T("trHide")], ...TRS.map(x => [x[0], settings.lang === "en" ? x[2] : x[1]])].map(([k, l]) =>
     `<li><button data-trsel="${k}" aria-pressed="${(settings.showTr === false ? "none" : settings.tr) === k}"><span>${esc(l)}</span><i>✓</i></button></li>`).join("")}</ul></section>`;
-  const extra = `<section class="ds"><b>${T("styleH")}</b><div class="rtb-seg wide"><button data-pst="plain" aria-pressed="${settings.pstyle !== "boxed"}">${T("stPlain")}</button><button data-pst="boxed" aria-pressed="${settings.pstyle === "boxed"}">${T("stBoxed")}</button></div></section>
+  const extra = `<section class="ds"><b>${T("styleH")}</b><div class="rtb-seg wide"><button data-pst="plain" aria-pressed="${!settings.pstyle || settings.pstyle === "plain"}">${T("stPlain")}</button><button data-pst="boxed" aria-pressed="${settings.pstyle === "boxed"}">${T("stBoxed")}</button><button data-pst="table" aria-pressed="${settings.pstyle === "table"}">${T("stTable")}</button></div></section>
     ${sw("dsLines", settings.linesep, T("linesSep"))}${sw("dsAuto", settings.autoHide, T("autoHide"))}`;
   if (show) { show.insertAdjacentHTML("afterend", extra); show.insertAdjacentHTML("afterend", trList); }
 };
@@ -40,7 +41,7 @@ document.addEventListener("click", async e => {
   const t = e.target.closest("#sheetBody [data-trsel]");
   if (t) { const k = t.dataset.trsel; if (k === "none") settings.showTr = false; else { settings.tr = k; settings.showTr = true; } saveSettings(); displaySheet(); if (CUR) rerender(); return; }
   const p = e.target.closest("#sheetBody [data-pst]");
-  if (p) { settings.pstyle = p.dataset.pst; if (settings.pstyle === "boxed") settings.wbw = true; saveSettings(); displaySheet(); if (CUR) rerender(); }
+  if (p) { settings.pstyle = p.dataset.pst; if (settings.pstyle !== "plain") settings.wbw = true; saveSettings(); displaySheet(); if (CUR) rerender(); }
 });
 document.addEventListener("change", e => {
   if (e.target.id === "dsLines") { settings.linesep = e.target.checked; saveSettings(); }
@@ -83,5 +84,7 @@ document.addEventListener("change", e => { if (e.target.id === "goS") { const n 
 const _renderR = render;
 render = function(){
   _renderR();
+  if (settings.pstyle === "table" && CUR) { const S = META.surahs[CUR.n - 1], m = $("#main"), head = `<div class="tb-head"><span>${T("paraN", nf(paraOf(CUR.n, 1)))}</span><b>سُورَةُ ${esc(S.ar)}</b><span>${T("ayatN", nf(S.ayahs))}</span></div>`;
+    const bi = m.querySelector(".bism"), ay = m.querySelector(".ayahs"); if (bi) bi.insertAdjacentHTML("beforebegin", head); else if (ay) ay.insertAdjacentHTML("beforebegin", head); }
   if (settings.pstyle === "boxed" || !settings.wbw) document.querySelectorAll("#main .ayah .words").forEach(w => { [...w.children].forEach(c => c.after(" ")); });
 };
