@@ -1102,3 +1102,68 @@ html[lang="en"] #learn{font-family:var(--en),var(--ur)}
 #learn .mean,#learn .tile,#learn .fb,#learn .qm,#learn .opts button,#learn .lg,#learn .also,#learn .typ{unicode-bidi:plaintext}
 html[lang="en"] body.lm-ur #learn .mean,html[lang="en"] body.lm-ur #learn .tile.en,html[lang="en"] body.lm-ur #learn .opts button,html[lang="en"] body.lm-ur #learn .qm,html[lang="en"] body.lm-ur #learn .fb{line-height:1.9}
 .ll-sm{margin-top:-6px}.ll-sw .rtb-seg button{padding:6px 10px}
+
+/* ===== v37: Quran scripts — each choice has its own font ===== */
+@font-face{font-family:"QTS IndoPak";src:url("https://static-cdn.tarteel.ai/qul/fonts/nastaleeq/Hanafi/normal-v4.2.2/with-waqf-lazmi/font.ttf") format("truetype");font-display:swap}
+:root{--f-ipn:"QTS IndoPak","Lateef","Scheherazade New",serif;--f-ipk:"Scheherazade New","Noto Naskh Arabic",serif;--f-uth:'Amiri Quran','Amiri',serif;--f-naskh:"Noto Naskh Arabic","Scheherazade New",serif;--f-amiri:"Amiri","Amiri Quran",serif}
+html[data-qf="ipn"]{--qfont:var(--f-ipn)}html[data-qf="ipk"]{--qfont:var(--f-ipk)}html[data-qf="uth"],html[data-qf="taj"]{--qfont:var(--f-uth)}html[data-qf="naskh"]{--qfont:var(--f-naskh)}html[data-qf="amiri"]{--qfont:var(--f-amiri)}
+html[data-qf] #main .w .ar,html[data-qf] #main .bism,html[data-qf] #mushaf .pg-text,html[data-qf] #mushaf .bism,html[data-qf] .ds-prev,html[data-qf] .hm-ar{font-family:var(--qfont)}
+html[data-qf="ipn"] #main .w .ar,html[data-qf="ipn"] #mushaf .pg-text{line-height:2.5}
+.fp-row.fp6{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.fp-row.fp6 .fp b{font-size:11.5px;text-align:center;line-height:1.3}
+.fp-c.fq-ipn{font-family:var(--f-ipn);font-size:20px}.fp-c.fq-ipk{font-family:var(--f-ipk)}.fp-c.fq-uth,.fp-c.fq-taj{font-family:var(--f-uth)}.fp-c.fq-naskh{font-family:var(--f-naskh)}.fp-c.fq-amiri{font-family:var(--f-amiri)}
+.fp-row.fp6 .fp-c{width:76px;height:76px;font-size:17px}
+/* printed table with "Arabic only": no meaning row */
+.tbl.nowbw #main .ayah .w .g{display:none!important}
+.tbl.nowbw #main .ayah .w .ar{border-bottom:0}
+/* ===== Settings page ===== */
+#setv{padding-bottom:40px}
+.st-top{position:sticky;top:calc(env(safe-area-inset-top,0px) + 58px);z-index:5;background:var(--bg);padding:8px 0 6px;margin:0 -2px}
+body.bars-off .st-top{top:0}
+.st-chips{display:flex;gap:6px;overflow-x:auto;padding:8px 0 2px;scrollbar-width:none}
+.st-chips button{flex:none;padding:7px 12px;border-radius:999px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);font:inherit;font-size:13px;font-weight:600}
+.st-sec{margin:14px 0;padding:14px;border-radius:16px;background:var(--surface);border:1px solid var(--line);scroll-margin-top:140px}
+.st-sec h3{display:flex;align-items:center;justify-content:space-between;margin:0 0 8px;font-size:18px}
+.st-reset{border:1.5px solid var(--line);background:none;border-radius:10px;padding:5px 10px;font:inherit;font-size:12.5px;color:var(--ink)}
+.st-row{padding:10px 0;border-bottom:1px solid var(--line)}.st-row:last-child{border-bottom:0}
+.st-row > b{display:block;margin-bottom:6px;font-size:14px}
+.st-prev{position:sticky;top:calc(env(safe-area-inset-top,0px) + 158px);z-index:4;padding:10px 12px;border-radius:12px;background:var(--bg);border:1.5px dashed var(--gold);margin-bottom:8px;box-shadow:0 6px 12px -10px rgba(0,0,0,.4)}
+body.bars-off .st-prev{top:100px}
+.st-prev small{color:var(--muted);font-size:11.5px}
+.st-ayah{display:flex;flex-wrap:wrap;gap:4px 8px;align-items:flex-start}
+.st-ayah .w{display:inline-flex;flex-direction:column;align-items:center}
+.st-ayah .ar{font-family:var(--qfont,var(--ar));font-size:calc(var(--arsize) * .8);line-height:1.9}
+html[data-arc] .st-ayah .ar{color:var(--arc)}
+.st-ayah .g{font-size:calc(11.5px * var(--ts,1));color:var(--muted)}
+.st-ayah .end{align-self:center;width:26px;height:26px;font-size:12px}
+.st-prev .tr{margin:6px 0 0;font-size:calc(14px * var(--ts,1))}
+#setDisp .ds:first-child{margin-top:0}
+.st-about summary{cursor:pointer;font-weight:700;padding:8px 0}
+.st-none{text-align:center;padding:20px}
+/* ===== Quranic Arabic course ===== */
+.c1-card{display:flex;align-items:center;gap:12px;width:100%;text-align:start;margin:0 0 14px;padding:14px;border-radius:16px;border:2px solid var(--gold);background:linear-gradient(135deg,color-mix(in srgb,var(--gold) 14%,var(--surface)),var(--surface));color:var(--ink);font:inherit}
+.c1-card > span:nth-child(2){flex:1;display:flex;flex-direction:column;gap:3px}.c1-card b{font-size:17px}.c1-card small{color:var(--muted)}
+.c1-badge{flex:none;width:48px;height:48px;border-radius:50%;display:grid;place-items:center;background:var(--gold);color:#fff;font-family:var(--ar);font-size:26px}
+.c1-bar{display:block;height:6px;border-radius:3px;background:var(--line);overflow:hidden;flex:1}.c1-bar em{display:block;height:100%;background:var(--gold)}
+.c1 h2{margin:10px 0 6px;line-height:1.5}.c1 h2 small{font-size:13px;color:var(--gold)}
+.c1-list{list-style:none;margin:12px 0;padding:0;display:flex;flex-direction:column;gap:8px}
+.c1-list button{width:100%;display:flex;align-items:center;gap:12px;padding:12px;border-radius:14px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);font:inherit;text-align:start}
+.c1-list button > span:last-child{display:flex;flex-direction:column}.c1-list small{color:var(--emerald,#1E7A5A);font-weight:700}
+.c1-list button.ok{border-color:color-mix(in srgb,#1E7A5A 50%,var(--line))}.c1-list button.ok .pk-n{background:#1E7A5A;color:#fff}
+.c1-i{font-size:15.5px;line-height:1.9}
+.c1-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.c1-w{display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 4px;border-radius:12px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);font:inherit}
+.c1-w.on{border-color:var(--gold);background:color-mix(in srgb,var(--gold) 12%,var(--surface))}
+.c1-w .oar{font-family:var(--qfont,var(--ar));font-size:24px;line-height:1.8}.c1-w small{font-size:12px;color:var(--muted);text-align:center;line-height:1.5}
+.c1-w small.ur,.c1 .ur{font-family:var(--ur);line-height:2}
+.c1-p{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--line)}
+.c1-p .oa{margin:0;font-family:var(--qfont,var(--ar));font-size:21px;line-height:2}.c1-p p{margin:2px 0}.c1-p small{color:var(--muted)}
+.c1-play{flex:none;width:38px;height:38px;border-radius:50%;border:0;background:#1E8E5A;color:#fff;font-size:15px}
+.c1-tip{margin-top:14px;padding:12px;border-radius:12px;background:color-mix(in srgb,var(--gold) 10%,var(--surface));border-inline-start:4px solid var(--gold)}.c1-tip p{margin:4px 0 0;line-height:1.9}
+.c1-top{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.c1-quiz .qcard{text-align:center;padding:22px 12px;margin-bottom:12px}.c1-quiz .qa{font-family:var(--qfont,var(--ar));font-size:42px}.c1-quiz .qm{font-size:22px}
+.c1-opts{display:flex;flex-direction:column;gap:8px;margin-bottom:12px}
+.c1-o{padding:12px;border-radius:12px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);font:inherit;font-size:16px}
+.c1-o .oar{font-family:var(--qfont,var(--ar));font-size:26px}
+.c1-o.ok{border-color:#1E8E5A;background:color-mix(in srgb,#1E8E5A 14%,var(--surface))}.c1-o.no{border-color:#C0392B;background:color-mix(in srgb,#C0392B 12%,var(--surface))}
+.c1-end{text-align:center;padding-top:30px}.c1-end .big{font-size:54px}.c1-end p{font-size:18px}

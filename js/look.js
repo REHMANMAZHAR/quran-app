@@ -29,10 +29,10 @@ displaySheet = function(){
   if (anchor) anchor.insertAdjacentHTML("beforebegin", html); else body.insertAdjacentHTML("beforeend", html);
 };
 document.addEventListener("click", e => {
-  const a = e.target.closest("#sheetBody [data-arc]"); if (a) { settings.arc = a.dataset.arc || null; saveSettings(); displaySheet(); return; }
-  const t = e.target.closest("#sheetBody [data-tbc]"); if (t) { settings.tbc = t.dataset.tbc; saveSettings(); displaySheet(); return; }
-  const n = e.target.closest("#sheetBody [data-num]"); if (n) { settings.num = n.dataset.num; saveSettings(); displaySheet(); if (CUR) rerender(); return; }
-  if (e.target.closest("#sheetBody [data-pv]")) { closeAll(); openPageView(); }
+  const a = e.target.closest(".dsx [data-arc]"); if (a) { settings.arc = a.dataset.arc || null; saveSettings(); displaySheet(); return; }
+  const t = e.target.closest(".dsx [data-tbc]"); if (t) { settings.tbc = t.dataset.tbc; saveSettings(); displaySheet(); return; }
+  const n = e.target.closest(".dsx [data-num]"); if (n) { settings.num = n.dataset.num; saveSettings(); displaySheet(); if (CUR) rerender(); return; }
+  if (e.target.closest(".dsx [data-pv]")) { closeAll(); openPageView(); }
 });
 /* page view: the ayah number works like everywhere else — play, tafsir, bookmark, share */
 $("#mushaf").addEventListener("click", e => {

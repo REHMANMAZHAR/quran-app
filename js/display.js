@@ -89,13 +89,13 @@ $("#main").addEventListener("click", e => {
 }, true);
 document.addEventListener("click", e => {
   if (e.target.closest("[data-hide-off]")) { setHide(false); return; }
-  const d = e.target.closest("#sheetBody [data-ds]"); if (d) { const k = +d.dataset.ds;
+  const d = e.target.closest(".dsx [data-ds]"); if (d) { const k = +d.dataset.ds;
     settings.size = Math.min(48, Math.max(16, settings.size + k * 2)); settings.ts = Math.round(Math.min(1.8, Math.max(0.7, (settings.ts || 1) + k * 0.1)) * 100) / 100;
     saveSettings(); displaySheet(); return; }
-  const th = e.target.closest("#sheetBody [data-th]"); if (th) { settings.theme = th.dataset.th; saveSettings(); displaySheet(); return; }
-  const vm = e.target.closest("#sheetBody [data-vm]"); if (vm) { const v = vm.dataset.vm; settings.wbw = v === "wbw" || v === "both"; settings.showTr = v === "tr" || v === "both"; saveSettings(); displaySheet(); return; }
-  const pp = e.target.closest("#sheetBody [data-paper]"); if (pp) { settings.paper = pp.dataset.paper; saveSettings(); displaySheet(); return; }
-  const ac = e.target.closest("#sheetBody [data-acc]"); if (ac) { settings.accent = ac.dataset.acc; saveSettings(); displaySheet(); return; }
+  const th = e.target.closest(".dsx [data-th]"); if (th) { settings.theme = th.dataset.th; saveSettings(); displaySheet(); return; }
+  const vm = e.target.closest(".dsx [data-vm]"); if (vm) { const v = vm.dataset.vm; settings.wbw = v === "wbw" || v === "both"; settings.showTr = v === "tr" || v === "both"; saveSettings(); displaySheet(); return; }
+  const pp = e.target.closest(".dsx [data-paper]"); if (pp) { settings.paper = pp.dataset.paper; saveSettings(); displaySheet(); return; }
+  const ac = e.target.closest(".dsx [data-acc]"); if (ac) { settings.accent = ac.dataset.acc; saveSettings(); displaySheet(); return; }
 });
 document.addEventListener("change", e => {
   if (e.target.id === "dsTj") { settings.tajweed = e.target.checked; if (settings.tajweed && settings.script === "ip") { settings.script = "uth"; document.documentElement.classList.remove("ipk"); } saveSettings(); displaySheet(); if (CUR) rerender(); }

@@ -1,10 +1,15 @@
 "use strict";
 /* ---------- Reading display: font previews, page style, line separators, translation list, auto-hide bars, Go to ---------- */
-Object.assign(L.ur, { fontH:"قرآن کا رسم الخط", fUth:"عثمانی", fIp:"انڈو پاک", fTaj:"عثمانی + تجوید", styleH:"صفحے کا انداز", stPlain:"سادہ", stBoxed:"خانوں میں", stTable:"چھپے قرآن جیسا جدول", ayatN:n=>`آیات ${ud(n)}`, linesSep:"سطروں کے درمیان لکیریں", autoHide:"پڑھتے وقت نیچے کی پٹی چھپائیں",
+Object.assign(L.ur, { fontH:"قرآن کا رسم الخط", fUth:"عثمانی (مدنی)", fIp:"انڈو پاک", fIpn:"انڈو پاک (نستعلیق طرز)", fIpk:"انڈو پاک (نسخ)", fNaskh:"نسخ (سادہ)", fAmiri:"امیری (کتابی)", fTaj:"عثمانی + تجوید", styleH:"صفحے کا انداز", stPlain:"سادہ", stBoxed:"خانوں میں", stTable:"چھپے قرآن جیسا جدول", ayatN:n=>`آیات ${ud(n)}`, linesSep:"سطروں کے درمیان لکیریں", autoHide:"پڑھتے وقت نیچے کی پٹی چھپائیں",
   trH:"ترجمہ منتخب کریں", trHide:"ترجمہ چھپائیں", goT:"جائیں", goSurah:"سورت", goAyah:"آیت", goPara:"پارہ", goPage:"صفحہ", goBtn:"جائیں" });
-Object.assign(L.en, { fontH:"Quran script", fUth:"Uthmani", fIp:"Indo-Pak", fTaj:"Uthmani + Tajweed", styleH:"Page style", stPlain:"Plain", stBoxed:"Boxed", stTable:"Printed table", ayatN:n=>`${n} ayahs`, linesSep:"Lines between rows", autoHide:"Hide the bottom bar while reading",
+Object.assign(L.en, { fontH:"Quran script", fUth:"Uthmani (Madinah)", fIp:"Indo-Pak", fIpn:"Indo-Pak (Nastaleeq)", fIpk:"Indo-Pak (Naskh)", fNaskh:"Naskh (simple)", fAmiri:"Amiri (book)", fTaj:"Uthmani + Tajweed", styleH:"Page style", stPlain:"Plain", stBoxed:"Boxed", stTable:"Printed table", ayatN:n=>`${n} ayahs`, linesSep:"Lines between rows", autoHide:"Hide the bottom bar while reading",
   trH:"Select translation", trHide:"Hide translation", goT:"Go to", goSurah:"Surah", goAyah:"Ayah", goPara:"Para", goPage:"Page", goBtn:"Go" });
 if (settings.autoHide == null) settings.autoHide = true;
+/* Quran script = text (Uthmani or Indo-Pak) + font; html[data-qf] picks the font */
+if (!settings.qf) settings.qf = settings.script === "ip" ? "ipn" : settings.tajweed ? "taj" : "uth";
+function qfNow(){ return settings.qf || "uth"; }
+function applyQf(){ document.documentElement.dataset.qf = qfNow(); document.documentElement.classList.toggle("ipk", settings.script === "ip"); }
+applyQf();
 function applyReading(){
   document.body.classList.toggle("boxed", settings.pstyle === "boxed");
   document.body.classList.toggle("tbl", settings.pstyle === "table");
@@ -18,9 +23,10 @@ const _displaySheetR = displaySheet;
 displaySheet = function(){
   _displaySheetR();
   const body = $("#sheetBody"), scr = [...body.querySelectorAll("section.ds")].find(s => s.querySelector("[data-tool=script]"));
-  const cur = settings.script === "ip" ? "ip" : settings.tajweed ? "taj" : "uth";
-  const tile = (v, k, cls) => `<button class="fp${cur === v ? " on" : ""}" data-font="${v}"><span class="fp-c ${cls}">${v === "taj" ? `<span class="tj tj-madd_6">أَنزَلَ</span> <span class="tj tj-ghunnah">إِلَيْكَ</span>` : "أَنزَلَ إِلَيْكَ"}</span><b>${T(k)}</b></button>`;
-  const fonts = `<section class="ds"><b>${T("fontH")}</b><div class="fp-row">${tile("ip", "fIp", "fp-ip")}${tile("uth", "fUth", "")}${tile("taj", "fTaj", "")}</div></section>`;
+  const cur = qfNow();
+  const UTH = "ٱلْحَمْدُ لِلَّهِ", IP = "اَلۡحَمۡدُ لِلّٰهِ";
+  const tile = (v, k) => `<button class="fp${cur === v ? " on" : ""}" data-font="${v}"><span class="fp-c fq-${v}">${v === "taj" ? `<span class="tj tj-hamzat_wasl">ٱ</span>لْحَمْدُ <span class="tj tj-lam_shamsiyyah">لِلَّهِ</span>` : v === "ipn" || v === "ipk" ? IP : UTH}</span><b>${T(k)}</b></button>`;
+  const fonts = `<section class="ds"><b>${T("fontH")}</b><div class="fp-row fp6">${tile("ipn", "fIpn")}${tile("ipk", "fIpk")}${tile("uth", "fUth")}${tile("taj", "fTaj")}${tile("naskh", "fNaskh")}${tile("amiri", "fAmiri")}</div></section>`;
   if (scr) scr.outerHTML = fonts; else body.querySelector(".ds-h").insertAdjacentHTML("afterend", fonts);
   const tjSec = [...body.querySelectorAll("section.ds")].find(s => s.querySelector("#dsTj")); if (tjSec) tjSec.remove();
   const show = [...body.querySelectorAll("section.ds")].find(s => s.querySelector("[data-vm]"));
@@ -32,15 +38,15 @@ displaySheet = function(){
   if (show) { show.insertAdjacentHTML("afterend", extra); show.insertAdjacentHTML("afterend", trList); }
 };
 document.addEventListener("click", async e => {
-  const f = e.target.closest("#sheetBody [data-font]");
+  const f = e.target.closest(".dsx [data-font]");
   if (f) { const v = f.dataset.font;
-    settings.script = v === "ip" ? "ip" : "uth"; settings.tajweed = v === "taj"; saveSettings();
+    settings.qf = v; settings.script = v === "ipn" || v === "ipk" ? "ip" : "uth"; settings.tajweed = v === "taj"; saveSettings(); applyQf();
     document.documentElement.classList.toggle("ipk", settings.script === "ip");
     if (settings.script === "ip" && !IPK) { try { IPK = await DATA.indopak(); } catch(err){} }
     displaySheet(); if (CUR) rerender(); return; }
-  const t = e.target.closest("#sheetBody [data-trsel]");
+  const t = e.target.closest(".dsx [data-trsel]");
   if (t) { const k = t.dataset.trsel; if (k === "none") settings.showTr = false; else { settings.tr = k; settings.showTr = true; } saveSettings(); displaySheet(); if (CUR) rerender(); return; }
-  const p = e.target.closest("#sheetBody [data-pst]");
+  const p = e.target.closest(".dsx [data-pst]");
   if (p) { settings.pstyle = p.dataset.pst; if (settings.pstyle !== "plain") settings.wbw = true; saveSettings(); displaySheet(); if (CUR) rerender(); }
 });
 document.addEventListener("change", e => {
