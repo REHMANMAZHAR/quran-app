@@ -1,0 +1,16 @@
+name: mp3quran-timings
+on:
+  push:
+    branches: [mqtime]
+    paths: [mq/fetch.py]
+permissions:
+  contents: write
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: pip install requests && python mq/fetch.py
+      - run: |
+          git config user.name "Claude for RMK"; git config user.email qurantosoulapp@gmail.com
+          git add mq && git commit -m "mp3quran timings [skip ci]" && git push -q
