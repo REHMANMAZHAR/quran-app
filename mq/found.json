@@ -1,0 +1,184 @@
+[
+ {
+  "id": 12,
+  "lang": "eng",
+  "name": "Idrees Abkr",
+  "moshaf": [
+   {
+    "id": 12,
+    "name": "Rewayat Hafs A'n Assem - Murattal",
+    "server": "https://cdn.mp3quran.net/audio/idrees-abkar/r1/",
+    "total": 114
+   }
+  ]
+ },
+ {
+  "id": 163,
+  "lang": "eng",
+  "name": "Hatem Fareed Alwaer",
+  "moshaf": [
+   {
+    "id": 163,
+    "name": "Rewayat Hafs A'n Assem - Murattal",
+    "server": "https://cdn.mp3quran.net/audio/hatem-waer/r1/",
+    "total": 114
+   }
+  ]
+ },
+ {
+  "id": 221,
+  "lang": "eng",
+  "name": "Raad Al Kurdi",
+  "moshaf": [
+   {
+    "id": 221,
+    "name": "Rewayat Hafs A'n Assem - Murattal",
+    "server": "https://cdn.mp3quran.net/audio/raad-kurdi/r1/",
+    "total": 114
+   }
+  ]
+ },
+ {
+  "id": 225,
+  "lang": "eng",
+  "name": "Abdulrahman Aloosi",
+  "moshaf": [
+   {
+    "id": 225,
+    "name": "Rewayat Hafs A'n Assem - Murattal",
+    "server": "https://cdn.mp3quran.net/audio/abdulrahman-oosi/r1/",
+    "total": 114
+   }
+  ]
+ },
+ {
+  "id": 254,
+  "lang": "eng",
+  "name": "Bader Alturki",
+  "moshaf": [
+   {
+    "id": 254,
+    "name": "Rewayat Hafs A'n Assem - Murattal",
+    "server": "https://cdn.mp3quran.net/audio/badr-turki/r1/",
+    "total": 114
+   }
+  ]
+ },
+ {
+  "id": 268,
+  "lang": "eng",
+  "name": "Peshawa Qadr Al-Kurdi",
+  "moshaf": [
+   {
+    "id": 268,
+    "name": "Rewayat Hafs A'n Assem - Murattal",
+    "server": "https://cdn.mp3quran.net/audio/peshawa-kurdi/r1/",
+    "total": 114
+   }
+  ]
+ },
+ {
+  "id": 79,
+  "lang": "eng",
+  "name": "Abdulaziz Alturki",
+  "moshaf": [
+   {
+    "id": 282,
+    "name": "Rewayat Hafs A'n Assem - Murattal",
+    "server": "https://cdn.mp3quran.net/audio/abdulaziz-turki/r1/",
+    "total": 114
+   }
+  ]
+ },
+ {
+  "id": 81,
+  "lang": "eng",
+  "name": "Fares Abbad",
+  "moshaf": [
+   {
+    "id": 81,
+    "name": "Rewayat Hafs A'n Assem - Murattal",
+    "server": "https://cdn.mp3quran.net/audio/fares-abbad/r1/",
+    "total": 114
+   }
+  ]
+ },
+ {
+  "id": 12,
+  "lang": "ar",
+  "name": "إدريس أبكر",
+  "moshaf": [
+   {
+    "id": 12,
+    "name": "حفص عن عاصم - مرتل",
+    "server": "https://cdn.mp3quran.net/audio/idrees-abkar/r1/",
+    "total": 114
+   }
+  ]
+ },
+ {
+  "id": 221,
+  "lang": "ar",
+  "name": "رعد محمد الكردي",
+  "moshaf": [
+   {
+    "id": 221,
+    "name": "حفص عن عاصم - مرتل",
+    "server": "https://cdn.mp3quran.net/audio/raad-kurdi/r1/",
+    "total": 114
+   }
+  ]
+ },
+ {
+  "id": 225,
+  "lang": "ar",
+  "name": "عبدالرحمن العوسي",
+  "moshaf": [
+   {
+    "id": 225,
+    "name": "حفص عن عاصم - مرتل",
+    "server": "https://cdn.mp3quran.net/audio/abdulrahman-oosi/r1/",
+    "total": 114
+   }
+  ]
+ },
+ {
+  "id": 254,
+  "lang": "ar",
+  "name": "بدر التركي",
+  "moshaf": [
+   {
+    "id": 254,
+    "name": "حفص عن عاصم - مرتل",
+    "server": "https://cdn.mp3quran.net/audio/badr-turki/r1/",
+    "total": 114
+   }
+  ]
+ },
+ {
+  "id": 268,
+  "lang": "ar",
+  "name": "بيشه وا قادر الكردي",
+  "moshaf": [
+   {
+    "id": 268,
+    "name": "حفص عن عاصم - مرتل",
+    "server": "https://cdn.mp3quran.net/audio/peshawa-kurdi/r1/",
+    "total": 114
+   }
+  ]
+ },
+ {
+  "id": 79,
+  "lang": "ar",
+  "name": "عبدالعزيز التركي",
+  "moshaf": [
+   {
+    "id": 282,
+    "name": "حفص عن عاصم - مرتل",
+    "server": "https://cdn.mp3quran.net/audio/abdulaziz-turki/r1/",
+    "total": 114
+   }
+  ]
+ }
+]
