@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: pip install requests && python mq/fetch.py
+      - run: pip install requests && SKIP_SEARCH=1 python mq/fetch.py
       - run: |
           git config user.name "Claude for RMK"; git config user.email qurantosoulapp@gmail.com
           git add mq && git commit -m "mp3quran timings [skip ci]" && git push -q
