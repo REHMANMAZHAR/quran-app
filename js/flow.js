@@ -84,7 +84,7 @@ function tafFollow(s, a){
   const el = ayEl(s, a);
   if (!el) { if (Date.now() - P.userScroll > 5000) openSurah(s, a).then(() => { const e2 = ayEl(s, a); if (e2) e2.classList.add("tafnow"); }); return; }
   el.classList.add("tafnow");
-  if (Date.now() - P.userScroll > 5000) { const r = el.getBoundingClientRect(); if (r.top < 90 || r.top > innerHeight * 0.6) el.scrollIntoView({ block: "start", behavior: "smooth" }); }
+  if (Date.now() - P.userScroll > 5000) pageTurn(el.querySelector(".w") || el, true);
 }
 /* a tafsir started from the Tafsir page opens the Quran at the same place, with the player made small */
 const _openLectureF = openLecture;

@@ -442,10 +442,22 @@ function markAyah(){
   const el = ayEl(P.s, P.a);
   if (!el || P.bism || P.taud) return;
   el.classList.add("playing");
-  if (Date.now() - P.userScroll > 4000) {
-    const r = el.getBoundingClientRect();
-    if (r.top < 70 || r.top > innerHeight * 0.55) el.scrollIntoView({ block: "start", behavior: "smooth" });
-  }
+  if (Date.now() - P.userScroll > 4000) pageTurn(el.querySelector(".w") || el, true);
+}
+/* keep the recited ayah / word on screen a page at a time: when it reaches the bottom, it becomes the top line */
+function readZone(){
+  const bar = document.querySelector(".bar"), off = document.body.classList.contains("bars-off");
+  const top = off || !bar ? 8 : Math.max(8, bar.getBoundingClientRect().bottom + 6);
+  const pl = document.getElementById("player"), vp = document.getElementById("vpanel"), tb = document.querySelector(".tabbar");
+  let bottom = innerHeight - 12;
+  if (!off) [pl, tb, vp].forEach(x => { if (x && x.offsetParent !== null && getComputedStyle(x).position === "fixed") { const r = x.getBoundingClientRect(); if (r.height && r.top < bottom && r.top > innerHeight * 0.4) bottom = r.top - 8; } });
+  return { top, bottom };
+}
+function pageTurn(t, ayahStart){
+  if (!t) return;
+  const r = t.getBoundingClientRect(); if (!r.height && !r.width) return;
+  const z = readZone();
+  if (r.bottom > z.bottom || r.top < z.top || (ayahStart && r.top > z.top + (z.bottom - z.top) * 0.85)) scrollTo({ top: scrollY + r.top - z.top, behavior: "smooth" });
 }
 function setLive(w0, w1){
   const key = w0 + ":" + w1 + ":" + P.a;
@@ -456,10 +468,7 @@ function setLive(w0, w1){
   const el = ayEl(P.s, P.a); if (!el) return;
   for (let i = w0; i < w1; i++) { const w = el.querySelector(`.w[data-i="${i}"]`); if (w) w.classList.add("live"); }
   const first = el.querySelector(`.w[data-i="${w0}"]`);
-  if (first && Date.now() - P.userScroll > 4000) {
-    const r = first.getBoundingClientRect();
-    if (r.bottom > innerHeight - 90 || r.top < 70) first.scrollIntoView({ block: "center", behavior: "smooth" });
-  }
+  if (first && Date.now() - P.userScroll > 4000) pageTurn(first, false);
 }
 function tick(){
   P.raf = 0;
