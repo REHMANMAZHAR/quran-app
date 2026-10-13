@@ -1,0 +1,19 @@
+name: clip-audio
+on:
+  push:
+    branches: [clipaudio]
+    paths: [a/list.txt]
+permissions:
+  contents: write
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          mkdir -p a/out
+          while read f; do [ -n "$f" ] && curl -sfL -A "QuranToSoul/1.0" "https://everyayah.com/data/$f" -o "a/out/$(echo $f | tr / _)" || echo "miss $f"; done < a/list.txt
+          ls -la a/out
+      - run: |
+          git config user.name "Claude for RMK"; git config user.email qurantosoulapp@gmail.com
+          git add a/out && git commit -m "clip audio [skip ci]" && git push -q
