@@ -1190,3 +1190,12 @@ body.bars-off.playing main{padding-bottom:40px}
 .bm-none{padding:8px 2px;font-size:calc(13px * var(--uiz,1))}
 .hm-card.bm-card{display:block}
 .bm-list b{font-size:calc(15px * var(--uiz,1));line-height:1.4;color:var(--ink)}
+/* v39: jump target flash, bookmark management */
+.ayah.goto .w .ar{animation:gotoFlash 2.2s ease}
+@keyframes gotoFlash{0%,35%{background:color-mix(in srgb,var(--gold) 38%,transparent)}100%{background:transparent}}
+.bm-del{flex:none;width:32px;height:32px;display:grid;place-items:center;border-radius:50%;color:var(--muted);font-size:16px;cursor:pointer}
+.bm-del:hover,.bm-del:focus{background:color-mix(in srgb,#C0392B 14%,transparent);color:#C0392B}
+.bm-manage{display:block;margin:8px 2px 0;font-size:calc(13.5px * var(--uiz,1))}
+.me-bm{margin:4px 0 8px}
+#me-bm{display:flex;align-items:center;justify-content:space-between}
+.toast.on button{pointer-events:auto;cursor:pointer;font-weight:700}

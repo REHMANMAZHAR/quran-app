@@ -1,8 +1,8 @@
 "use strict";
 /* ---------- Reading comfort: players hide while reading, a tap brings the bars back, app text follows the phone,
    and the Dashboard shows where you left off with bookmarks (date and time). ---------- */
-Object.assign(L.ur, { uizH:"ایپ کے متن کا سائز", uizAuto:"فون کے مطابق", uizSub:"مینو، بٹن، ترجمہ اور اسباق کا سائز (قرآن کا سائز ڈسپلے میں الگ ہے)", bmH:"جہاں چھوڑا تھا اور بُک مارکس", bmLast:"آخری بار پڑھا", bmTaf:"تفسیر", bmAt:t=>`${t} پر`, bmNone:"بُک مارک کے لیے آیت نمبر دبائیں ← بُک مارک", dBm:"جہاں چھوڑا اور بُک مارکس" });
-Object.assign(L.en, { uizH:"App text size", uizAuto:"Follow phone", uizSub:"Menus, buttons, translation and lessons (the Quran's own size is under Display)", bmH:"Where you left off & bookmarks", bmLast:"Last read", bmTaf:"Tafsir", bmAt:t=>`at ${t}`, bmNone:"To bookmark, tap an ayah number → Bookmark", dBm:"Where you left off & bookmarks" });
+Object.assign(L.ur, { uizH:"ایپ کے متن کا سائز", uizAuto:"فون کے مطابق", uizSub:"مینو، بٹن، ترجمہ اور اسباق کا سائز (قرآن کا سائز ڈسپلے میں الگ ہے)", bmCardH:"جہاں چھوڑا تھا اور بُک مارکس", bmLast:"آخری بار پڑھا", bmTaf:"تفسیر", bmAt:t=>`${t} پر`, bmNone:"بُک مارک کے لیے آیت نمبر دبائیں ← بُک مارک", dBm:"جہاں چھوڑا اور بُک مارکس" });
+Object.assign(L.en, { uizH:"App text size", uizAuto:"Follow phone", uizSub:"Menus, buttons, translation and lessons (the Quran's own size is under Display)", bmCardH:"Where you left off & bookmarks", bmLast:"Last read", bmTaf:"Tafsir", bmAt:t=>`at ${t}`, bmNone:"To bookmark, tap an ayah number → Bookmark", dBm:"Where you left off & bookmarks" });
 /* ---- 1. the recitation bar and the small tafsir player hide with the other bars; a tap on the page brings them back ---- */
 let hideT = 0;
 function hideSoon(){ clearTimeout(hideT); hideT = setTimeout(() => { if (LV.view === "read" && settings.autoHide !== false && !document.querySelector("#sheet.on,#drawer.on,#picker.on")) document.body.classList.add("bars-off"); }, 3500); }
@@ -53,10 +53,10 @@ function bmCard(){
   const tf = typeof VS !== "undefined" ? ["ur", "en", "bq"].map(k => VS[k] && VS[k].n ? [k, VS[k].n, VS[k].t ? VS[k].t[VS[k].n] || 0 : 0] : null).filter(Boolean)[0] : null;
   const row = (attr, ico, title, sub, right) => `<li><button ${attr}><span class="bm-i">${ico}</span><span><b>${title}</b><small>${sub}</small></span><span class="bm-t">${right}</span></button></li>`;
   const ay = k => { const [s, a] = k.split(":").map(Number); return `${esc(surahName(s))} ${nf(s)}:${nf(a)}`; };
-  return `<section class="hm-card bm-card"><h3>${T("bmH")}</h3><ul class="bm-list">
+  return `<section class="hm-card bm-card"><h3>${T("bmCardH")}</h3><ul class="bm-list">
     ${last ? row(`data-bmgo="${last.s}:${last.a}"`, "📖", T("bmLast"), ay(last.s + ":" + last.a), esc(when(lastAt))) : ""}
     ${tf ? row(`data-bmtaf="${tf[0]}:${tf[1]}"`, "🎧", T("bmTaf"), `${esc(T(TAF_SER[tf[0]].num, nf(tf[1])))} · ${esc(T("bmAt", mmss(tf[2])))}`, "") : ""}
-    ${bms.map(k => row(`data-bmgo="${k}"`, "★", ay(k), esc(when(U.bm[k])), "")).join("")}
+    ${bms.map(k => row(`data-bmgo="${k}"`, "★", ay(k), esc(when(U.bm[k])), `<span class="bm-del" data-bmdel="${k}" role="button" tabindex="0" aria-label="${esc(T("bmDel"))}">✕</span>`)).join("")}
     ${bms.length ? "" : `<li class="muted bm-none">${T("bmNone")}</li>`}</ul></section>`;
 }
 if (settings.dash && settings.dash.bm == null) settings.dash.bm = 1;
