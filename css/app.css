@@ -1199,3 +1199,31 @@ body.bars-off.playing main{padding-bottom:40px}
 .me-bm{margin:4px 0 8px}
 #me-bm{display:flex;align-items:center;justify-content:space-between}
 .toast.on button{pointer-events:auto;cursor:pointer;font-weight:700}
+/* v40 daily worship */
+.pw-row li{position:relative}
+.pt-tick{display:block;margin:6px auto 0;width:26px;height:26px;border-radius:50%;border:2px solid currentColor;background:transparent;color:inherit;opacity:.75;font:700 14px/1 system-ui;padding:0;cursor:pointer}
+.pt-tick.on{background:#3DBE8B;border-color:#3DBE8B;color:#fff;opacity:1}
+.pt-tick:disabled{opacity:.25;cursor:default}
+.pt{margin-top:14px}
+.pt-grid{display:grid;grid-template-columns:auto repeat(7,1fr);gap:6px;align-items:center;text-align:center;font-size:calc(12px*var(--uiz,1))}
+.pt-grid b{font-weight:600;opacity:.7}
+.pt-grid i{display:block;height:20px;border-radius:6px;background:var(--line,rgba(127,127,127,.18))}
+.pt-grid i.on{background:#3DBE8B}
+.pt-n{text-align:start;padding-inline-end:6px}
+.pt-sum{margin-top:10px;line-height:1.8}
+.ts-card{margin:12px 0;padding:14px;border-radius:18px;background:var(--card,#fff);box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.ts-top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px}
+.ts-ph{margin-bottom:10px}
+.ts-tap{display:flex;flex-direction:column;align-items:center;justify-content:center;width:min(240px,70vw);aspect-ratio:1;margin:6px auto;border-radius:50%;border:0;cursor:pointer;color:#fff;
+  background:radial-gradient(circle at 50% 50%,#1F5E57 62%,transparent 63%),conic-gradient(#F5C842 var(--p),rgba(255,255,255,.15) 0),#13242A;-webkit-tap-highlight-color:transparent;touch-action:manipulation;user-select:none}
+.ts-tap:active{transform:scale(.97)}
+.ts-ar{font-family:var(--qfont,serif);font-size:calc(22px*var(--uiz,1));direction:rtl}
+.ts-n{font:700 calc(46px*var(--uiz,1))/1.1 system-ui}
+.ts-g{opacity:.75}
+.ts-ctl{display:flex;justify-content:center;gap:12px;align-items:center;margin-top:8px}
+.jm-card{display:block}
+.jm-card h3{margin:0 0 8px}
+.jm-row{display:flex;gap:10px;align-items:center;width:100%;padding:8px 0;border:0;background:none;color:inherit;text-align:start;font:inherit;flex-wrap:wrap}
+.jm-row>span:nth-child(2){flex:1;display:flex;flex-direction:column}
+.jm-row .c1-bar{flex-basis:100%}
+.w .tl{display:block;font:italic calc(11px*var(--uiz,1))/1.3 system-ui;opacity:.7;text-align:center}
