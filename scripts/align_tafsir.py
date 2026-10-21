@@ -10,40 +10,45 @@ def grams(t, k=3): return {t[i:i+k] for i in range(len(t) - k + 1)}
 def ayah_text(s, a, cache={}):
     if s not in cache: cache[s] = json.load(open(f"data/s/{s:03d}.json"))["ayahs"]
     return "".join(w[0] for w in cache[s][a - 1]["w"])
-def align(tr, ranges):
-    segs = tr["segs"]
-    W = [norm(" ".join(x[2] for x in segs[i:i+3])) for i in range(len(segs))]   # 3-segment windows
+URDU = {"ہے","کے","کی","میں","اور","کہ","نہیں","سے","تو","یہ","وہ","کا","ہیں","گا","گے","ہو","تھا","تھے","جو","پر","لیے","لئے","بھی","ہم","آپ","اس","ان"}
+def is_urdu(t): return sum(1 for x in t.split() if x in URDU) >= 2
+def align(tr, ranges, PEN=0.35):
+    """Each ayah: the window whose letters best match the ayah's opening. Picks are in order; two picks with
+    no Urdu speech between them are penalised (that is the passage recited in one go, not the explanation)."""
+    segs = tr["segs"]; N = len(segs)
+    W = [norm(" ".join(x[2] for x in segs[i:i+2])) for i in range(N)]   # 2-segment windows
     WG = [grams(w) for w in W]
-    ayahs = []
-    for (s, a1, a2) in ranges:
-        for a in range(a1, a2 + 1): ayahs.append((s, a))
-    # score[k][i]: share of the ayah's opening letters (first ~60 letters) found in window i
+    UR = [is_urdu(x[2]) for x in segs]
+    ayahs = [(s, a) for (s, a1, a2) in ranges for a in range(a1, a2 + 1)]
     sc = []
     for (s, a) in ayahs:
-        g = grams(norm(ayah_text(s, a))[:60])
+        txt = norm(ayah_text(s, a)); g = grams(txt[:45])
         sc.append([len(g & wg) / max(1, len(g)) for wg in WG])
-    # DP: monotonic times; gap under 25s between consecutive picks is penalised (that is the
-    # opening recitation of the whole passage, not the explanation)
-    K, N, NEG = len(ayahs), len(segs), -1e9
+    K, NEG = len(ayahs), -1e9
     best = [[NEG] * N for _ in range(K)]; back = [[-1] * N for _ in range(K)]
     for i in range(N): best[0][i] = sc[0][i]
     for k in range(1, K):
-        run, arg = NEG, -1
+        pm, pa = NEG, -1          # max of best[k-1][0..lastU-1]  (an Urdu segment lies between: no penalty)
+        rm, ra = NEG, -1          # max of best[k-1][lastU..i-1]   (no Urdu between: penalty)
         for i in range(N):
-            # candidates j < i ; keep a running max with gap penalty computed exactly over a short tail
-            if i > 0 and best[k-1][i-1] > run: run, arg = best[k-1][i-1], i - 1
-            v, b = run, arg
-            if b >= 0 and segs[i][0] - segs[b][0] < 25: v -= 0.35
-            best[k][i], back[k][i] = v + sc[k][i], b
+            if i > 0:
+                j = i - 1; v = best[k-1][j]
+                if UR[j]:          # segment j is Urdu: everything before j now has Urdu between it and i
+                    if rm > pm: pm, pa = rm, ra
+                    rm, ra = NEG, -1
+                    if v > pm: pm, pa = v, j   # j itself is Urdu speech, then i: treat as separated
+                elif v > rm: rm, ra = v, j
+            c1, c2 = pm, rm - PEN
+            if c1 >= c2: best[k][i], back[k][i] = c1 + sc[k][i], pa
+            else: best[k][i], back[k][i] = c2 + sc[k][i], ra
     i = max(range(N), key=lambda x: best[K-1][x]); pick = [0] * K
     for k in range(K - 1, -1, -1): pick[k] = i; i = back[k][i]
     out = []
     for k in range(K):
-        i, g = pick[k], grams(norm(ayah_text(*ayahs[k]))[:60])
-        j = max(range(i, min(i + 3, N)), key=lambda x: len(g & grams(norm(segs[x][2]))))   # the segment where the recitation starts
-        out.append((ayahs[k], segs[j][0], round(sc[k][i], 2)))
+        i = pick[k]; out.append((ayahs[k], segs[i][0], round(sc[k][i], 2)))
     return out
 def build(parts_json="data/tafsir/ur-parts.json", src="align/out", dst="data/tafsir/ur-times.json", MIN=0.2):
+    MIN = float(MIN)
     """parts: [[n,s1,a1,s2,a2,file],...]. Writes {"s:a":[part, seconds, exact(1)/approx(0)]}."""
     parts, res, stats = json.load(open(parts_json)), {}, [0, 0]
     meta = json.load(open("data/meta.json"))
