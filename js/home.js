@@ -54,7 +54,7 @@ function ayahOfDay(){
 async function renderHome(){
   const el = $("#home"), last = store.get("last", { s: 1, a: 1 }), S = META.surahs[last.s - 1];
   const d = dayKey(), read = (U.rd && U.rd[d] ? U.rd[d].length : 0) || U.days[d] || 0, goal = typeof dailyReadTarget === "function" ? dailyReadTarget().pace : (U.goal || 10);
-  const mins = Math.round(((U.secs || {})[d] || 0) / 60), pct = Math.min(100, Math.round(read / Math.max(1, goal) * 100));
+  const mins = Math.round(((U.secs || {})[d] || 0) / 60), pct = Math.round(read / Math.max(1, goal) * 100);
   el.innerHTML = `<header class="hm-top"><h2>${T("homeT")}</h2><p>${esc(gregToday())}</p></header>
     ${prayerWidget(true)}
     <section class="hm-card hm-cont" data-hcont="1" role="button" tabindex="0">

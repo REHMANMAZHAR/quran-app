@@ -8,39 +8,67 @@ Object.assign(L.en, { ptH:"Prayer tracker", ptSub:"Tick the prayers you have pra
   tsH:"Tasbih", tsSub:"Tap to count — the phone gives a small buzz at the goal", tsAfter:"After salah 33 / 33 / 34", tsGoal:"Goal", tsToday:n=>`${n} today`, tsReset:"Reset", tsCustom:"Your goal",
   jmH:"Jumu'ah Mubarak", jmKahf:"Read Surah Al-Kahf", jmKahfSub:(a)=>`${a} / 110 ayahs today`, jmDurood:"Durood", jmDuroodSub:"Send plenty of blessings on Friday", jmHour:"The hour of acceptance", jmHourSub:"Make dua between Asr and Maghrib", jmRem:"Remind me to read Al-Kahf every Friday (calendar)",
   tlH:"Show transliteration", tlSub:"Pronunciation in English letters under each word" });
-/* ===== 1. prayer tracker ===== */
-if (!U.pr) U.pr = {};           // { "2026-10-20": [fajr, dhuhr, asr, maghrib, isha] as 0/1 }
+/* ===== 1. prayer tracker: how each prayer was prayed (mosque jamaat / jamaat / alone / qaza), any past day can be ticked ===== */
+Object.assign(L.ur, { ptHow:"نماز کیسے پڑھی؟", ptM:"مسجد میں جماعت", ptJ:"جماعت سے (گھر یا دفتر)", ptA:"اکیلے", ptQ:"قضا (وقت کے بعد)", ptX:"نشان ہٹائیں", ptPrev:"پچھلا ہفتہ", ptNext:"اگلا ہفتہ", ptTapCell:"کسی بھی خانے کو دبا کر پچھلی نماز بھی درج کریں",
+  ptBy:(m,j,a,q)=>`مسجد ${ud(m)} · جماعت ${ud(j)} · اکیلے ${ud(a)} · قضا ${ud(q)}` });
+Object.assign(L.en, { ptHow:"How did you pray?", ptM:"In the mosque, with jamaat", ptJ:"With jamaat (home or work)", ptA:"Alone", ptQ:"Qaza (after its time)", ptX:"Remove tick", ptPrev:"Previous week", ptNext:"Next week", ptTapCell:"Tap any box to log an earlier prayer too",
+  ptBy:(m,j,a,q)=>`Mosque ${m} · Jamaat ${j} · Alone ${a} · Qaza ${q}` });
+if (!U.pr) U.pr = {};           // { "2026-10-20": [fajr, dhuhr, asr, maghrib, isha] } 0 none · 1 alone · 2 jamaat · 3 mosque jamaat · 4 qaza
 const PR_IDX = [0, 2, 3, 4, 5];
 const prDay = d => U.pr[d] || [0, 0, 0, 0, 0];
 const dk = dt => new Date(dt.getTime() - dt.getTimezoneOffset() * 6e4).toISOString().slice(0, 10);
+const PT_ICO = {
+  3: `<svg viewBox="0 0 24 24"><path d="M12 3c-.8 1.2-1.2 2-1.2 2.6M5 20V12a7 7 0 0 1 14 0v8M3 20h18M10 20v-4a2 2 0 0 1 4 0v4"/></svg>`,
+  2: `<svg viewBox="0 0 24 24"><circle cx="8" cy="8" r="2.6"/><circle cx="16" cy="8" r="2.6"/><path d="M3.5 19c0-3 2-5 4.5-5s4.5 2 4.5 5M11.5 19c0-3 2-5 4.5-5s4.5 2 4.5 5"/></svg>`,
+  1: `<svg viewBox="0 0 24 24"><circle cx="12" cy="7.5" r="3"/><path d="M6.5 20c0-3.6 2.5-6 5.5-6s5.5 2.4 5.5 6"/></svg>`,
+  4: `<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg>` };
+const PT_KEY = { 3: "ptM", 2: "ptJ", 1: "ptA", 4: "ptQ" };
+const isDue = (d, j) => d < dayKey() || (d === dayKey() && todayTimes().t[PR_IDX[j]] <= ((nowMin() % 1440) + 1440) % 1440);
 const _prayerWidgetD = prayerWidget;
 prayerWidget = function(link){
-  const html = _prayerWidgetD(link), d = dayKey(), got = prDay(d), now = ((nowMin() % 1440) + 1440) % 1440, t = todayTimes().t;
+  const html = _prayerWidgetD(link), d = dayKey(), got = prDay(d);
   let k = 0;
   return html.replace(/<li class="([^"]*)"><span>([^<]*)<\/span><b>([^<]*)<\/b><\/li>/g, (m, cls, nm, tm) => {
-    const j = k++, due = t[PR_IDX[j]] <= now, on = got[j];
-    return `<li class="${cls}"><span>${nm}</span><b>${tm}</b><button class="pt-tick${on ? " on" : ""}" data-pt="${j}"${due || on ? "" : " disabled"} aria-pressed="${!!on}" aria-label="${esc(T("ptTap"))}">${on ? "✓" : ""}</button></li>`;
+    const j = k++, v = got[j], due = isDue(d, j);
+    return `<li class="${cls}"><span>${nm}</span><b>${tm}</b><button class="pt-tick${v ? " on pt" + v : ""}" data-pt="${d}|${j}"${due || v ? "" : " disabled"} aria-label="${esc(v ? T(PT_KEY[v]) : T("ptTap"))}">${v ? PT_ICO[v] : ""}</button></li>`;
   });
 };
+function ptChooser(d, j){
+  const v = prDay(d)[j], names = T("prNames"), dt = new Date(d + "T12:00:00");
+  const day = d === dayKey() ? (settings.lang === "en" ? "Today" : "آج") : new Intl.DateTimeFormat(settings.lang === "en" ? "en-GB" : "ur-PK", { weekday: "long", day: "numeric", month: "long" }).format(dt);
+  $("#sheetBody").innerHTML = `<div class="pt-ch"><h3>${names[PR_IDX[j]]} · <small>${esc(day)}</small></h3><p class="muted">${T("ptHow")}</p>
+    ${[3, 2, 1, 4].map(c => `<button class="pt-opt pt${c}${v === c ? " on" : ""}" data-ptset="${d}|${j}|${c}"><span class="pt-oi">${PT_ICO[c]}</span><b>${T(PT_KEY[c])}</b>${v === c ? "<i>✓</i>" : ""}</button>`).join("")}
+    ${v ? `<button class="linkbtn" data-ptset="${d}|${j}|0">${T("ptX")}</button>` : ""}</div>`;
+  openSheet();
+}
+function ptRefresh(){ if (LV.view === "home") renderHome(); else if (LV.view === "prayer") renderPrayer(); }
 document.addEventListener("click", e => {
-  const b = e.target.closest("[data-pt]"); if (!b) return;
-  e.stopPropagation(); e.preventDefault();
-  const d = dayKey(), a = prDay(d).slice(), j = +b.dataset.pt; a[j] = a[j] ? 0 : 1; U.pr[d] = a; saveU();
-  if (a[j] && navigator.vibrate) navigator.vibrate(15);
-  if (LV.view === "home") renderHome(); else if (LV.view === "prayer") renderPrayer();
+  const b = e.target.closest("[data-pt]"); if (b) { e.stopPropagation(); e.preventDefault(); const [d, j] = b.dataset.pt.split("|"); ptChooser(d, +j); return; }
+  const s = e.target.closest("[data-ptset]"); if (!s) return;
+  e.stopPropagation(); const [d, j, c] = s.dataset.ptset.split("|"), a = prDay(d).slice(); a[+j] = +c; U.pr[d] = a; saveU();
+  if (+c && navigator.vibrate) navigator.vibrate(15);
+  closeAll(); ptRefresh();
 }, true);
-function ptStats(n){
-  let sum = 0, full = 0; for (let i = 0; i < n; i++) { const dt = new Date(); dt.setDate(dt.getDate() - i); const a = prDay(dk(dt)), c = a.reduce((x, y) => x + y, 0); sum += c; if (c === 5) full++; }
-  return { sum, full, of: n * 5 };
+function ptStats(n, end){
+  const r = { sum: 0, full: 0, of: n * 5, by: { 1: 0, 2: 0, 3: 0, 4: 0 } };
+  for (let i = 0; i < n; i++) { const dt = new Date(end || Date.now()); dt.setDate(dt.getDate() - i); const a = prDay(dk(dt)), c = a.filter(Boolean).length; r.sum += c; if (c === 5) r.full++; a.forEach(x => { if (x) r.by[x]++; }); }
+  return r;
 }
+let PT_OFF = 0;
 function ptWeekHTML(){
-  const names = T("prNames"), days = []; for (let i = 6; i >= 0; i--) { const dt = new Date(); dt.setDate(dt.getDate() - i); days.push(dt); }
-  const w = ptStats(7), m = ptStats(new Date().getDate());
-  return `<section class="ps pt"><h4>${T("ptH")}</h4><p class="ds-note" style="margin-top:0">${T("ptSub")}</p>
-    <div class="pt-grid"><span></span>${days.map(dt => `<b>${esc(new Intl.DateTimeFormat(settings.lang === "en" ? "en-GB" : "ur-PK", { weekday: "short" }).format(dt))}</b>`).join("")}
-    ${PR_IDX.map((pi, j) => `<span class="pt-n">${names[pi]}</span>${days.map(dt => `<i class="${prDay(dk(dt))[j] ? "on" : ""}"></i>`).join("")}`).join("")}</div>
-    <p class="pt-sum"><b>${T("ptWeek")}:</b> ${T("ptOf", nf(w.sum), nf(w.of))} · ${T("ptFull", nf(w.full))}<br><b>${T("ptMonth")}:</b> ${T("ptOf", nf(m.sum), nf(m.of))}</p></section>`;
+  const names = T("prNames"), days = [], end = new Date(); end.setDate(end.getDate() - PT_OFF * 7);
+  for (let i = 6; i >= 0; i--) { const dt = new Date(end); dt.setDate(dt.getDate() - i); days.push(dt); }
+  const w = ptStats(7, end), m = ptStats(new Date().getDate()), today = dayKey(), wd = new Intl.DateTimeFormat(settings.lang === "en" ? "en-GB" : "ur-PK", { weekday: "short" });
+  return `<section class="ps pt"><div class="pt-top"><button class="iconbtn" data-ptw="1" aria-label="${T("ptPrev")}">‹</button><h4>${T("ptH")}</h4><button class="iconbtn" data-ptw="-1"${PT_OFF ? "" : " disabled"} aria-label="${T("ptNext")}">›</button></div>
+    <p class="ds-note" style="margin-top:0">${T("ptTapCell")}</p>
+    <div class="pt-grid"><span></span>${days.map(dt => `<b class="${dk(dt) === today ? "now" : ""}">${esc(wd.format(dt))}<small>${nf(dt.getDate())}</small></b>`).join("")}
+    ${PR_IDX.map((pi, j) => `<span class="pt-n">${names[pi]}</span>${days.map(dt => { const d = dk(dt), v = prDay(d)[j], due = isDue(d, j);
+      return `<button class="pt-c${v ? " pt" + v : ""}" data-pt="${d}|${j}"${due || v ? "" : " disabled"} aria-label="${esc(names[pi] + " " + d)}">${v ? PT_ICO[v] : ""}</button>`; }).join("")}`).join("")}</div>
+    <div class="pt-leg">${[3, 2, 1, 4].map(c => `<span><i class="pt${c}">${PT_ICO[c]}</i>${T(PT_KEY[c])}</span>`).join("")}</div>
+    <p class="pt-sum"><b>${PT_OFF ? "" : T("ptWeek") + ":"}</b> ${T("ptOf", nf(w.sum), nf(w.of))} · ${T("ptFull", nf(w.full))}<br><small>${T("ptBy", nf(w.by[3]), nf(w.by[2]), nf(w.by[1]), nf(w.by[4]))}</small>
+    ${PT_OFF ? "" : `<br><b>${T("ptMonth")}:</b> ${T("ptOf", nf(m.sum), nf(m.of))}`}</p></section>`;
 }
+document.addEventListener("click", e => { const b = e.target.closest("[data-ptw]"); if (!b) return; PT_OFF = Math.max(0, PT_OFF + +b.dataset.ptw); const el = $("#prayerv .pt"); if (el) el.outerHTML = ptWeekHTML(); });
 const _renderPrayerD = renderPrayer;
 renderPrayer = function(){ _renderPrayerD(); const pw = $("#prayerv .pw"); if (pw) pw.insertAdjacentHTML("afterend", ptWeekHTML()); };
 VIEWS.prayer.render = renderPrayer;

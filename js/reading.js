@@ -1,12 +1,14 @@
 "use strict";
 /* ---------- Reading display: font previews, page style, line separators, translation list, auto-hide bars, Go to ---------- */
-Object.assign(L.ur, { fontH:"قرآن کا رسم الخط", fUth:"عثمانی (مدنی)", fIp:"انڈو پاک", fIpn:"انڈو پاک (نستعلیق طرز)", fIpk:"انڈو پاک (نسخ)", fNaskh:"نسخ (سادہ)", fAmiri:"امیری (کتابی)", fTaj:"عثمانی + تجوید", styleH:"صفحے کا انداز", stPlain:"سادہ", stBoxed:"خانوں میں", stTable:"چھپے قرآن جیسا جدول", ayatN:n=>`آیات ${ud(n)}`, linesSep:"سطروں کے درمیان لکیریں", autoHide:"پڑھتے وقت نیچے کی پٹی چھپائیں",
+Object.assign(L.ur, { fontH:"قرآن کا رسم الخط", fUth:"مدنی مصحف (عثمانی)", fIp:"انڈو پاک", fIpn:"انڈو پاک (پاکستانی مصحف)", fIpk:"انڈو پاک (نسخ)", fNaskh:"سادہ اور صاف (نسخ)", fAmiri:"امیری (کتابی)", fTaj:"مدنی + تجوید کے رنگ", styleH:"صفحے کا انداز", stPlain:"سادہ", stBoxed:"خانوں میں", stTable:"چھپے قرآن جیسا جدول", ayatN:n=>`آیات ${ud(n)}`, linesSep:"سطروں کے درمیان لکیریں", autoHide:"پڑھتے وقت نیچے کی پٹی چھپائیں",
   trH:"ترجمہ منتخب کریں", trHide:"ترجمہ چھپائیں", goT:"جائیں", goSurah:"سورت", goAyah:"آیت", goPara:"پارہ", goPage:"صفحہ", goBtn:"جائیں" });
-Object.assign(L.en, { fontH:"Quran script", fUth:"Uthmani (Madinah)", fIp:"Indo-Pak", fIpn:"Indo-Pak (Nastaleeq)", fIpk:"Indo-Pak (Naskh)", fNaskh:"Naskh (simple)", fAmiri:"Amiri (book)", fTaj:"Uthmani + Tajweed", styleH:"Page style", stPlain:"Plain", stBoxed:"Boxed", stTable:"Printed table", ayatN:n=>`${n} ayahs`, linesSep:"Lines between rows", autoHide:"Hide the bottom bar while reading",
+Object.assign(L.en, { fontH:"Quran script", fUth:"Madinah mushaf (Uthmani)", fIp:"Indo-Pak", fIpn:"Indo-Pak (Pakistani mushaf)", fIpk:"Indo-Pak (Naskh)", fNaskh:"Simple and clear (Naskh)", fAmiri:"Amiri (book)", fTaj:"Madinah + Tajweed colours", styleH:"Page style", stPlain:"Plain", stBoxed:"Boxed", stTable:"Printed table", ayatN:n=>`${n} ayahs`, linesSep:"Lines between rows", autoHide:"Hide the bottom bar while reading",
   trH:"Select translation", trHide:"Hide translation", goT:"Go to", goSurah:"Surah", goAyah:"Ayah", goPara:"Para", goPage:"Page", goBtn:"Go" });
 if (settings.autoHide == null) settings.autoHide = true;
 /* Quran script = text (Uthmani or Indo-Pak) + font; html[data-qf] picks the font */
 if (!settings.qf) settings.qf = settings.script === "ip" ? "ipn" : settings.tajweed ? "taj" : "uth";
+/* v43: four clearly different scripts; older choices map to the nearest one */
+if (settings.qf === "ipk") { settings.qf = "ipn"; settings.script = "ip"; } else if (settings.qf === "amiri") { settings.qf = "uth"; settings.script = "uth"; }
 function qfNow(){ return settings.qf || "uth"; }
 function applyQf(){ document.documentElement.dataset.qf = qfNow(); document.documentElement.classList.toggle("ipk", settings.script === "ip"); }
 applyQf();
@@ -26,7 +28,7 @@ displaySheet = function(){
   const cur = qfNow();
   const UTH = "ٱلْحَمْدُ لِلَّهِ", IP = "اَلۡحَمۡدُ لِلّٰهِ";
   const tile = (v, k) => `<button class="fp${cur === v ? " on" : ""}" data-font="${v}"><span class="fp-c fq-${v}">${v === "taj" ? `<span class="tj tj-hamzat_wasl">ٱ</span>لْحَمْدُ <span class="tj tj-lam_shamsiyyah">لِلَّهِ</span>` : v === "ipn" || v === "ipk" ? IP : UTH}</span><b>${T(k)}</b></button>`;
-  const fonts = `<section class="ds"><b>${T("fontH")}</b><div class="fp-row fp6">${tile("ipn", "fIpn")}${tile("ipk", "fIpk")}${tile("uth", "fUth")}${tile("taj", "fTaj")}${tile("naskh", "fNaskh")}${tile("amiri", "fAmiri")}</div></section>`;
+  const fonts = `<section class="ds"><b>${T("fontH")}</b><div class="fp-row fp4">${tile("ipn", "fIpn")}${tile("uth", "fUth")}${tile("taj", "fTaj")}${tile("naskh", "fNaskh")}</div></section>`;
   if (scr) scr.outerHTML = fonts; else body.querySelector(".ds-h").insertAdjacentHTML("afterend", fonts);
   const tjSec = [...body.querySelectorAll("section.ds")].find(s => s.querySelector("#dsTj")); if (tjSec) tjSec.remove();
   const show = [...body.querySelectorAll("section.ds")].find(s => s.querySelector("[data-vm]"));
