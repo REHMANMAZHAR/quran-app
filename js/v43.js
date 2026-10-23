@@ -3,12 +3,12 @@
    · Settings as a menu with clear pages · pinch to resize text (the page reflows to fit) ---------- */
 Object.assign(L.ur, { rkH:(s,n)=>`${s} · رکوع ${ud(n)}`, rkAy:(a,b)=>`آیات ${ud(a)}–${ud(b)}`, rkOf:(n,t)=>`سورت کا ${ud(n)} / ${ud(t)} رکوع`, rkPara:n=>`پارہ ${ud(n)}`, rkMk:"مکی سورت", rkMd:"مدنی سورت",
   rkSum:"خلاصہ", rkTr:"پورا ترجمہ", rkWords:"اس رکوع کے اہم الفاظ", rkTaf:"اس رکوع کی تفسیر سنیں", rkRec:"تلاوت سنیں", rkRead:"یہاں سے پڑھیں",
-  rkDraft:"خلاصہ ہمارے اپنے آسان الفاظ میں ہے۔ تفصیل کے لیے تفسیر ابن کثیر پڑھیں۔", rkIK:n=>`تفسیر ابن کثیر (اردو) — پارہ ${ud(n)}`, rkNone:"اس رکوع کا خلاصہ جلد آ رہا ہے۔ تب تک پورا ترجمہ پڑھیں یا تفسیر سنیں۔",
+  rkDraft:"خلاصہ ڈاکٹر اسرار احمد کی تفسیر بیان القرآن کی روشنی میں، ہمارے آسان الفاظ میں", rkNone:"اس رکوع کا خلاصہ جلد آ رہا ہے۔ تب تک پورا ترجمہ پڑھیں یا تفسیر سنیں۔",
   stMenuSub:{ disp:"رسم الخط، صفحہ، سائز، رنگ", tr:"ترجمہ اور لفظی معنی", rec:"قاری، رفتار، وقفہ", taf:"تفسیر کا ذریعہ", learn:"معانی اور اسباق کی زبان", pr:"نماز کے اوقات، یاد دہانیاں", app:"زبان، ڈیش بورڈ، بیک اپ، مدد" },
   stBack:"ترتیبات", gText:"قرآن کا متن", gPage:"صفحے کی ترتیب", gShow:"قرآن کے ساتھ دکھائیں", gColor:"رنگ اور تھیم", gRead:"پڑھتے وقت", zoomHint:"دو انگلیوں سے چھوٹا بڑا کریں" });
 Object.assign(L.en, { rkH:(s,n)=>`${s} · Ruku ${n}`, rkAy:(a,b)=>`Ayahs ${a}–${b}`, rkOf:(n,t)=>`Ruku ${n} of ${t} in this surah`, rkPara:n=>`Para ${n}`, rkMk:"Makki surah", rkMd:"Madani surah",
   rkSum:"In brief", rkTr:"Full translation", rkWords:"Key words in this ruku", rkTaf:"Listen to the tafsir of this ruku", rkRec:"Listen to recitation", rkRead:"Read from here",
-  rkDraft:"The summary is in our own simple words. For the full explanation, read Tafsir Ibn Kathir.", rkIK:n=>`Tafsir Ibn Kathir (Urdu) — Para ${n}`, rkNone:"A summary for this ruku is coming. Meanwhile read the full translation or listen to the tafsir.",
+  rkDraft:"Summary in our own simple words, following Dr. Israr Ahmad's Bayan-ul-Quran", rkNone:"A summary for this ruku is coming. Meanwhile read the full translation or listen to the tafsir.",
   stMenuSub:{ disp:"Script, page, size, colours", tr:"Translation and word meanings", rec:"Reciter, speed, pause", taf:"Tafsir source", learn:"Language for meanings and lessons", pr:"Prayer times, reminders", app:"Language, dashboard, backup, help" },
   stBack:"Settings", gText:"Quran text", gPage:"Page layout", gShow:"Show with the Quran", gColor:"Colours and theme", gRead:"While reading", zoomHint:"Pinch with two fingers to resize" });
 /* ===== 1. reading counts: whatever ayah stays on screen ~2 s is read (works for the printed table and long ayahs too) ===== */
@@ -73,8 +73,6 @@ new MutationObserver(fitEnds).observe(document.body, { childList: true, subtree:
 let RK = null;
 const rkData = () => RK ? Promise.resolve(RK) : load("ruku", `data/ruku.json?v=${DV}`).then(x => (RK = x)).catch(() => (RK = []));
 const juzOf = (s, a) => { let j = 1; META.juz.forEach((x, k) => { if (s > x[0] || (s === x[0] && a >= x[1])) j = k + 1; }); return j; };
-/* Urdu Tafsir Ibn Kathir, one PDF per para, on quranurdu.com (linked, not copied); para 6 comes in two files */
-const ikUrl = j => `http://download3.quranurdu.com/Tafseer%20Ibn-e-Kaseer/${j === 6 ? "06A" : String(j).padStart(2, "0")}.pdf`;
 async function openRuku(s, a1, a2, rs){
   const S = META.surahs[s - 1], en = settings.lang === "en", D = await rkData(), d = await DATA.surah(s);
   const row = D.find(x => x[0] === s && x[1] === a1), total = D.filter(x => x[0] === s).length || rs;
@@ -92,7 +90,6 @@ async function openRuku(s, a1, a2, rs){
     <div class="wd-actions rk-act"><button class="btn" data-rkt="${s}:${a1}">${TAF_ICO} ${T("rkTaf")}</button><button class="btn ghost" data-rkp="${s}:${a1}">▶ ${T("rkRec")}</button><button class="btn ghost" data-rko="${s}:${a1}">${T("rkRead")}</button></div>
     ${words.length ? `<h4>${T("rkWords")}</h4><div class="sf-forms">${words.slice(0, 8).map(([, w]) => `<span class="sf"><b class="oar">${esc(w[0])}</b><span class="ur">${esc(w[3] || "")}</span><small dir="ltr">${esc(w[1] || "")}</small></span>`).join("")}</div>` : ""}
     <details class="rk-tr"><summary>${T("rkTr")}</summary><p class="${urTr ? "ur" : ""}">${tr}</p></details>
-    <a class="btnlink rk-ik" href="${ikUrl(juzOf(s, a1))}" target="_blank" rel="noopener">📖 ${T("rkIK", nf(juzOf(s, a1)))}</a>
     ${sum ? `<p class="draft">${T("rkDraft")}</p>` : ""}</div>`;
   openSheet();
 }
