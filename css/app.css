@@ -1387,3 +1387,4 @@ html[dir="ltr"] .st-back{transform:none}
 .fq-uth,.fq-taj{font-family:var(--f-uth)}.fq-ipn{font-family:var(--f-ipn)}.fq-naskh{font-family:var(--f-naskh)}
 .tbl #main .ayah .last .w .ar .end{font-size:max(calc(11px * var(--uiz,1)), calc(var(--arsize) * .34))}
 .tbl #main .ayah .last .w .ar .end.d3{font-size:max(calc(9.5px * var(--uiz,1)), calc(var(--arsize) * .29))}
+.rk-ik{display:block;margin:10px 0 0;padding:10px 12px;border-radius:12px;border:1.5px solid var(--line);text-align:center;color:var(--ink);text-decoration:none;font-weight:600}
