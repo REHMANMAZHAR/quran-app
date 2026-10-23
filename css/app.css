@@ -1388,3 +1388,29 @@ html[dir="ltr"] .st-back{transform:none}
 .tbl #main .ayah .last .w .ar .end{font-size:max(calc(11px * var(--uiz,1)), calc(var(--arsize) * .34))}
 .tbl #main .ayah .last .w .ar .end.d3{font-size:max(calc(9.5px * var(--uiz,1)), calc(var(--arsize) * .29))}
 .rk-ik{display:block;margin:10px 0 0;padding:10px 12px;border-radius:12px;border:1.5px solid var(--line);text-align:center;color:var(--ink);text-decoration:none;font-weight:600}
+
+/* v46: Zakat calculator + Hadith */
+.zk-res{position:sticky;top:0;z-index:2;background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:12px 16px;margin:4px 0 14px;box-shadow:0 4px 14px rgba(0,0,0,.06)}
+.zk-r{display:flex;justify-content:space-between;gap:12px;padding:4px 0;font-size:calc(14px * var(--uiz,1))}.zk-r span{color:var(--muted)}
+.zk-r.big{border-top:1px solid var(--line);margin-top:4px;padding-top:8px;font-size:calc(18px * var(--uiz,1))}.zk-r.big b{color:var(--gold)}
+.zk-msg{margin:6px 0 0;font-weight:600}.zk-why{margin:6px 0 0;font-size:calc(12.5px * var(--uiz,1));color:var(--muted)}
+.zk-h{margin:18px 0 6px;font-size:calc(16px * var(--uiz,1))}.zk-hint{margin:0 0 8px;font-size:calc(12.5px * var(--uiz,1));color:var(--muted)}
+.zk-f{display:flex;flex-direction:column;gap:4px;margin:0 0 10px;font-size:calc(13.5px * var(--uiz,1))}.zk-f span{color:var(--muted)}
+.zk-f input,.zk-f select,.zk-date{width:100%;box-sizing:border-box;min-height:44px;padding:8px 12px;border:1px solid var(--line);border-radius:12px;background:var(--surface);color:var(--ink);font:inherit;font-size:16px}
+.zk-2{display:grid;grid-template-columns:1fr 1fr;gap:10px}.zk-3{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:10px}
+.zk-seg{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 6px}.zk-seg button{flex:1;min-height:42px;padding:6px 10px;border:1px solid var(--line);border-radius:12px;background:var(--surface);color:var(--ink);font:inherit;font-size:calc(13.5px * var(--uiz,1))}
+.zk-seg button[aria-checked="true"],.zk-seg button[aria-selected="true"]{background:var(--gold);color:#13242A;border-color:var(--gold);font-weight:600}
+.zk-next{margin:6px 0 0;font-weight:600}.zk-who{margin:0 0 10px;padding-inline-start:22px;line-height:1.9}
+.hd-tabs{margin-bottom:12px}
+.hd-card{border:1px solid var(--line);border-radius:16px;background:var(--surface);margin:0 0 10px;overflow:hidden}
+.hd-card.done .hd-num{background:var(--gold);color:#13242A}
+.hd-head{display:flex;align-items:center;gap:12px;width:100%;padding:12px 14px;background:none;border:0;color:inherit;font:inherit;text-align:start;cursor:pointer}
+.hd-head b{flex:1;font-size:calc(15px * var(--uiz,1))}.hd-ok{color:var(--gold);font-weight:700}
+.hd-num{flex:none;width:32px;height:32px;border-radius:50%;display:grid;place-items:center;border:1px solid var(--gold);font-size:calc(13px * var(--uiz,1))}
+.hd-body{padding:4px 14px 14px}.hd-card.open .hd-head{border-bottom:1px dashed var(--line)}
+.hd-ar{font-family:"Amiri",serif;font-size:calc(21px * var(--uiz,1));line-height:2;margin:10px 0}
+.hd-tr{line-height:1.7;margin:8px 0}.hd-tr.ur{font-family:"Noto Nastaliq Urdu",serif;line-height:2.3}
+.hd-src{font-size:calc(12.5px * var(--uiz,1));color:var(--muted);margin:4px 0 8px}
+.hd-chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}.hd-chip{border:1px solid var(--gold);border-radius:999px;padding:3px 12px;background:none;color:inherit;font:inherit;font-size:calc(13px * var(--uiz,1))}.hd-chip.muted{border-color:var(--line);color:var(--muted)}
+.hd-filter{font-size:calc(13.5px * var(--uiz,1));margin:0 0 10px}
+.hm-card.hd-day{display:block;width:100%;text-align:start;font:inherit;color:inherit;cursor:pointer}.hm-card.hd-day span{display:block;margin-top:4px;line-height:1.8}
