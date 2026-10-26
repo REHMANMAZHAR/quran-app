@@ -17,13 +17,17 @@ const JZN = ["الٓمٓ", "سَيَقُولُ", "تِلْكَ الرُّسُل�
   "اتْلُ مَا أُوحِيَ", "وَمَنْ يَقْنُتْ", "وَمَا لِيَ", "فَمَنْ أَظْلَمُ", "إِلَيْهِ يُرَدُّ", "حٰمٓ", "قَالَ فَمَا خَطْبُكُمْ", "قَدْ سَمِعَ اللّٰهُ", "تَبَارَكَ الَّذِي", "عَمَّ"];
 let MK = null;
 load("marks", `data/marks.json?v=${DV}`).then(x => { MK = x; markAll(); }).catch(() => {});
+/* quarter marks (الربع · النصف · الثلاثة): a small word at the end of the ayah before the quarter starts, as in printed mushafs */
+const qMark = q => `<span class="qm" role="note" title="${esc(T("qName")[q])}" aria-label="${esc(T("qName")[q])}">${T("qLbl")[q]}</span>`;
 function markAll(){
   if (!MK) return;
   document.querySelectorAll("#main .ayah:not([data-mk])").forEach(ay => {
     ay.dataset.mk = 1;
-    const blk = ay.closest(".sblk"), s = blk ? +blk.dataset.s : CUR && CUR.n, a = +ay.dataset.a, m = MK[s] && MK[s][a]; if (!m) return;
+    const blk = ay.closest(".sblk"), s = blk ? +blk.dataset.s : CUR && CUR.n, a = +ay.dataset.a, m = MK[s] && MK[s][a], nx = MK[s] && MK[s][a + 1];
+    if (nx && nx.q && !nx.j) { const end = ay.querySelector(".last .end"); if (end) end.insertAdjacentHTML("afterend", qMark(nx.q)); else ay.insertAdjacentHTML("beforeend", qMark(nx.q)); }
+    if (!m) return;
     if (m.j) ay.insertAdjacentHTML("beforebegin", `<div class="jz-band" role="note"><span>${T("jzStart", nf(m.j))}</span><b>${JZN[m.j - 1]}</b></div>`);
-    else if (m.q) ay.insertAdjacentHTML("beforebegin", `<div class="q-band" role="note" title="${esc(T("qName")[m.q])}"><b>${T("qLbl")[m.q]}</b><small>${esc(T("qName")[m.q])}</small></div>`);
+    else if (m.q && a === 1) { const w0 = ay.querySelector(".words"); if (w0) w0.insertAdjacentHTML("afterbegin", qMark(m.q)); }
     if (m.r) {
       const [rs, rj, n] = m.r, t = esc(T("rkT", rs, rj, n));
       const html = `<span class="rk" role="button" tabindex="0" data-rk="${s}:${a - n + 1}:${a}:${rs}" title="${t}" aria-label="${t}"><i>${nf(rs)}</i><b>ع</b><i>${nf(rj)}</i></span>`;

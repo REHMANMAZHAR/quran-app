@@ -1414,3 +1414,15 @@ html[dir="ltr"] .st-back{transform:none}
 .hd-chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}.hd-chip{border:1px solid var(--gold);border-radius:999px;padding:3px 12px;background:none;color:inherit;font:inherit;font-size:calc(13px * var(--uiz,1))}.hd-chip.muted{border-color:var(--line);color:var(--muted)}
 .hd-filter{font-size:calc(13.5px * var(--uiz,1));margin:0 0 10px}
 .hm-card.hd-day{display:block;width:100%;text-align:start;font:inherit;color:inherit;cursor:pointer}.hm-card.hd-day span{display:block;margin-top:4px;line-height:1.8}
+/* v47: quarter marks as a small word at the ayah end; even word spacing; lighter top bar */
+.qm{display:inline-block;vertical-align:middle;margin-inline:4px;padding:0 6px;border-radius:6px;color:var(--gold);border:1px solid color-mix(in srgb,var(--gold) 55%,transparent);font-family:var(--qfont,var(--ar,serif));font-size:calc(13px*var(--uiz,1));line-height:1.7;white-space:nowrap;align-self:center}
+.q-band{display:none}
+.jz-band{margin:10px 0 6px;padding:3px 10px;gap:10px;font-size:calc(12px*var(--uiz,1))}
+.jz-band b{font-size:calc(17px*var(--uiz,1))}
+body:not(.tbl) #main .words{justify-content:space-between}
+body:not(.tbl) #main .words::after{content:"";flex:1 0 0}
+.w .g{max-width:7.5em}
+.bar{-webkit-backdrop-filter:none;backdrop-filter:none;background:var(--surface)}
+.bar .iconbtn{min-width:0;flex:0 1 auto}
+.bar .cap{font-size:min(calc(11.5px * var(--uiz,1)), 2.8vw);max-width:100%;overflow:hidden;text-overflow:ellipsis}
+#main{overflow-anchor:auto}
