@@ -15,7 +15,7 @@
   try { META = await metaP; }
   catch(e){ $("#main").innerHTML = `<div class="loading">${T("loadFail")}</div>`; return; }
   try { [EX, LV.V] = await Promise.all([DATA.extras(), DATA.vocab()]); } catch(e) {}
-  DATA.senses().then(x => { SENSES = x; }).catch(() => {});
+  setTimeout(() => DATA.senses().then(x => { SENSES = x; }).catch(() => {}), 4000);   // not needed for the first screen
   const dl = deepLink();
   if (dl) { await openSurah(dl.s, dl.a, dl.w); history.replaceState(null, "", location.pathname); return registerSW(); }
   const last = store.get("last", null);

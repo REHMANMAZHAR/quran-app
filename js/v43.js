@@ -155,13 +155,13 @@ displaySheet = function(){ const r = _displaySheetV(); if (LV.view === "settings
 /* ===== 6. pinch to resize: the text itself gets bigger or smaller and re-flows to the screen (no sideways scrolling) ===== */
 const PZ = { on: false, d0: 0, f: 1, anchor: null, ay: 0, raf: 0 };
 const tDist = t => Math.hypot(t[0].clientX - t[1].clientX, t[0].clientY - t[1].clientY);
+const pzTarget = () => LV.view === "page" ? $("#mushaf") : $("#main");
 function pzApply(){
-  PZ.raf = 0; const r = document.documentElement.style, f = PZ.f;
+  PZ.raf = 0; const f = PZ.f;
   if (LV.view === "read" || LV.view === "page") {
-    r.setProperty("--arsize", Math.round(Math.min(80, Math.max(16, settings.size * f))) + "px");
-    const uz = settings.uiz && settings.uiz !== "auto" ? +settings.uiz : phoneScale(); r.setProperty("--ts", Math.min(2.2, Math.max(.7, (settings.ts || 1) * f)) * uz);
-  } else r.setProperty("--uiz", Math.min(1.9, Math.max(.8, PZ.u0 * f)));
-  if (PZ.anchor && PZ.anchor.isConnected) { const dy = PZ.anchor.getBoundingClientRect().top - PZ.ay; if (Math.abs(dy) > 1) scrollBy(0, dy); }
+    /* while the fingers move, the page is only scaled as a picture (smooth); the text re-flows once, when the fingers lift */
+    const t = pzTarget(); if (t) { t.style.transformOrigin = `${PZ.ox}px ${PZ.oy}px`; t.style.transform = `scale(${f})`; }
+  } else { document.documentElement.style.setProperty("--uiz", Math.min(1.9, Math.max(.8, PZ.u0 * f))); }
   const tip = $("#pzTip"); if (tip) tip.textContent = Math.round(f * 100) + "%";
 }
 document.addEventListener("touchstart", e => {
@@ -169,6 +169,7 @@ document.addEventListener("touchstart", e => {
   PZ.on = true; PZ.d0 = tDist(e.touches); PZ.f = 1; PZ.u0 = settings.uiz && settings.uiz !== "auto" ? +settings.uiz : phoneScale();
   const cx = (e.touches[0].clientX + e.touches[1].clientX) / 2, cy = (e.touches[0].clientY + e.touches[1].clientY) / 2, el = document.elementFromPoint(cx, cy);
   PZ.anchor = el && (el.closest(".ayah .w") || el.closest(".ayah") || el); PZ.ay = PZ.anchor ? PZ.anchor.getBoundingClientRect().top : 0;
+  const t = pzTarget(); if (t && (LV.view === "read" || LV.view === "page")) { const r = t.getBoundingClientRect(); PZ.ox = cx - r.left; PZ.oy = cy - r.top; t.style.willChange = "transform"; }
   if (!$("#pzTip")) document.body.insertAdjacentHTML("beforeend", `<div id="pzTip" class="pz-tip">100%</div>`);
 }, { passive: true });
 document.addEventListener("touchmove", e => {
@@ -176,9 +177,16 @@ document.addEventListener("touchmove", e => {
   e.preventDefault(); PZ.f = Math.min(2.4, Math.max(.5, tDist(e.touches) / PZ.d0)); if (!PZ.raf) PZ.raf = requestAnimationFrame(pzApply);
 }, { passive: false });
 function pzEnd(){
-  if (!PZ.on) return; PZ.on = false; const t = $("#pzTip"); if (t) t.remove();
-  if (Math.abs(PZ.f - 1) < .03) { applySettings(); return; }
-  if (LV.view === "read" || LV.view === "page") { settings.size = Math.round(Math.min(80, Math.max(16, settings.size * PZ.f))); settings.ts = Math.round(Math.min(2.2, Math.max(.7, (settings.ts || 1) * PZ.f)) * 20) / 20; }
+  if (!PZ.on) return; PZ.on = false; const tp = $("#pzTip"); if (tp) tp.remove();
+  const t = pzTarget(), clear = () => { if (t) { t.style.transform = ""; t.style.transformOrigin = ""; t.style.willChange = ""; } };
+  if (Math.abs(PZ.f - 1) < .03) { clear(); applySettings(); return; }
+  if (LV.view === "page") { settings.mpz = Math.round(Math.min(2.5, Math.max(.6, (settings.mpz || 1) * PZ.f)) * 100) / 100; clear(); store.set("settings", settings); if (typeof mpZoom === "function") mpZoom(); return; }
+  if (LV.view === "read") {
+    settings.size = Math.round(Math.min(80, Math.max(16, settings.size * PZ.f))); settings.ts = Math.round(Math.min(2.2, Math.max(.7, (settings.ts || 1) * PZ.f)) * 20) / 20;
+    /* keep the word that was under the fingers at the same height after the text re-flows */
+    if (typeof ANC !== "undefined" && PZ.anchor) { ANC.el = PZ.anchor; ANC.off = PZ.ay; ANC.hold = Date.now() + 900; }
+    clear();
+  }
   else settings.uiz = Math.round(Math.min(1.9, Math.max(.8, PZ.u0 * PZ.f)) * 20) / 20;
   saveSettings();
 }

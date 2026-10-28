@@ -8,7 +8,7 @@ if (!settings.ltext) settings.ltext = settings.lang || "ur";
 delete settings.llang;
 const LEARN_V = { learn: 1, games: 1 };
 let REAL_LANG = null, llSync = false, LEMW = null;
-DATA.words().then(W => { LEMW = W; }).catch(() => {});
+setTimeout(() => DATA.words().then(W => { LEMW = W; }).catch(() => {}), 5000);   // not needed for the first screen
 /* the meaning of a dictionary entry (lemma) in the chosen language — used by the quiz on what you read */
 function lemMean(li){ if (!LEMW) return ""; return settings.lmean === "ur" ? LEMW.lemUr[li] : settings.lmean === "ro" ? (LEMW.lemRo || [])[li] : ""; }
 /* vocabulary and drill meanings follow the chosen meaning language */

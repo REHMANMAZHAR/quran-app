@@ -207,7 +207,7 @@ const lecFor = (s, a, ser = "bq") => (RANGES[ser].find(L => L[1] && key(L[1], L[
 const lecsInSurah = (s, ser = "bq") => RANGES[ser].filter(L => L[1] && key(L[1], L[2]) <= key(s, 999) && key(L[3], L[4]) >= key(s, 1));
 function lecLabel(n, s, ser = "bq"){
   const L = RANGES[ser][n - 1];
-  if (!L[1]) return n <= 4 ? T("intro") : T("closing");
+  if (!L[1]) { const intro = RANGES[ser].slice(0, 4).filter(x => !x[1]).length; return n <= 4 ? (intro > 1 ? `${T("intro")} ${nf(n)}` : T("intro")) : T("closing"); }
   if (s) { const cnt = META.surahs[s - 1].ayahs || 999; const a = L[1] === s ? L[2] : 1, b = L[3] === s ? Math.min(L[4], cnt) : cnt; return T("lecAyahs", nf(a), nf(b)); }
   const nm = x => settings.lang === "en" ? META.surahs[x - 1].tr : META.surahs[x - 1].ar;
   const end = (x, a) => a === 999 ? nm(x) : `${nm(x)} ${nf(a)}`;

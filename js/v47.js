@@ -9,7 +9,10 @@ function ancGrab(){
   if (ANC.hold > Date.now() || (LV.view !== "read" && LV.view !== "page")) return;
   const y = ancLine(); let el = null;
   for (const x of [innerWidth / 2, innerWidth * .75, innerWidth * .25]) { const e = document.elementFromPoint(x, y + 6); el = e && (e.closest("#main .w") || e.closest("#main .ayah")); if (el) break; }
-  if (!el) { const a = document.querySelector("#main .ayah"); if (!a) return; for (const x of document.querySelectorAll("#main .ayah")) { if (x.getBoundingClientRect().bottom > y) { el = x; break; } } }
+  if (!el) {   /* over a heading or band: take the first word below the line, measuring only the chunk on screen (never the whole surah) */
+    const cks = document.querySelectorAll("#main .ck"), pool = cks.length ? cks : document.querySelectorAll("#main .ayah");
+    for (const c of pool) { if (c.getBoundingClientRect().bottom > y) { el = [...c.querySelectorAll(".w")].find(w => w.getBoundingClientRect().bottom > y) || c; break; } }
+  }
   if (el) { ANC.el = el; ANC.off = el.getBoundingClientRect().top; }
 }
 function ancRestore(){

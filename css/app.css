@@ -1435,3 +1435,20 @@ body:not(.tbl) #main .words::after{content:"";flex:1 0 0}
 .qm{font-weight:700;border-width:1.5px}
 :root[data-theme="dark"] .rk{color:#4CC38A;border-color:#4CC38A}:root[data-theme="dark"] .qm1{color:#6FA3F0;border-color:#6FA3F0}:root[data-theme="dark"] .qm2{color:#F07A6C;border-color:#F07A6C}:root[data-theme="dark"] .qm3{color:#B596F0;border-color:#B596F0}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]):not([data-theme="sepia"]) .rk{color:#4CC38A;border-color:#4CC38A}:root:not([data-theme="light"]):not([data-theme="sepia"]) .qm1{color:#6FA3F0;border-color:#6FA3F0}:root:not([data-theme="light"]):not([data-theme="sepia"]) .qm2{color:#F07A6C;border-color:#F07A6C}:root:not([data-theme="light"]):not([data-theme="sepia"]) .qm3{color:#B596F0;border-color:#B596F0}}
+/* v49: reader drawn in chunks (ruku by ruku); off-screen chunks are skipped by the browser */
+#main .ck{content-visibility:auto;contain-intrinsic-size:auto 1200px}
+.tbl #main .ck{display:flex;flex-wrap:wrap;direction:rtl;flex:1 0 100%;width:100%}
+.tbl #main .ck > .jz-band{flex:1 0 100%;margin:0;border-radius:0;border-width:0 0 1.5px;border-style:solid;border-color:var(--tb-b);background:var(--tb-ar)}
+html{overflow-anchor:none}
+/* v49: mushaf page — printed-page look */
+#mushaf{padding:8px 6px 20px}
+.mp-head{display:flex;justify-content:space-between;align-items:center;max-width:760px;margin:0 auto 6px;padding:0 10px;color:var(--muted);font-size:calc(13px*var(--uiz,1))}
+.mp-head b{color:var(--gold);font-family:system-ui;font-size:calc(14px*var(--uiz,1))}
+.mp-page{max-width:760px;margin:0 auto;padding:10px 4px 12px;border-radius:6px;background:#FFFDF6;color:#1b1b1b;box-shadow:0 0 0 1.5px #C9A65A,0 0 0 5px #FFFDF6,0 0 0 6.5px #C9A65A,0 6px 18px rgba(0,0,0,.12);overflow:hidden}
+:root[data-theme="dark"] .mp-page{background:#1A1712;color:#EDE6D6;box-shadow:0 0 0 1.5px #8C7440,0 0 0 5px #1A1712,0 0 0 6.5px #8C7440}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]):not([data-theme="sepia"]) .mp-page{background:#1A1712;color:#EDE6D6;box-shadow:0 0 0 1.5px #8C7440,0 0 0 5px #1A1712,0 0 0 6.5px #8C7440}}
+:root[data-theme="sepia"] .mp-page{background:#F6ECD2}
+.mp-page quran-madina-html{display:block;margin:0 auto}
+.mp-page quran-madina-html-header{display:none!important}
+.mp-page .mp-sel,.mp-page .mp-sel .quran-madina-html-word{background:color-mix(in srgb,var(--gold) 28%,transparent);border-radius:4px}
+.mp-nav{max-width:760px;margin:16px auto 0}
