@@ -203,3 +203,16 @@ saveOfflinePack = async function(){
 };
 /* show whether the pack is already saved */
 new MutationObserver(() => { const b = document.querySelector('[data-stx="pack"]:not([data-offc])'); if (!b) return; b.dataset.offc = 1; const d = store.get("offlineAt", null); if (d && !OFF_BUSY) b.insertAdjacentHTML("afterend", `<small class="off-ok">${esc(T("offSaved", d))}</small>`); }).observe($("#setv"), { childList: true, subtree: true });
+
+/* ===== 7. Press-and-hold time for word details (default 5 s), chosen in Settings › Display ===== */
+Object.assign(L.ur, { holdH:"لفظ کی تفصیل کے لیے دبائے رکھنے کا وقت", holdSub:"اتنی دیر انگلی لفظ پر رکھیں تو تفصیل کھلے گی؛ اسکرول کرنے سے کچھ نہیں کھلتا", sec:n=>`${ud(n)} سیکنڈ` });
+Object.assign(L.en, { holdH:"Hold time for word details", holdSub:"Keep your finger on a word this long to open its details; scrolling never opens anything", sec:n=>`${n} s` });
+if (settings.holdMs == null) settings.holdMs = 5000;
+const _renderSettings49 = renderSettings;
+renderSettings = function(){
+  _renderSettings49();
+  const sec = $("#st-disp"); if (!sec || sec.querySelector("[data-hold]")) return;
+  sec.insertAdjacentHTML("beforeend", `<div class="st-row"><b>${T("holdH")}</b><div class="rtb-seg wide">${[1000, 2000, 3000, 5000].map(v => `<button data-hold="${v}" aria-pressed="${+settings.holdMs === v}">${T("sec", nf(v / 1000))}</button>`).join("")}</div><p class="ds-note">${T("holdSub")}</p></div>`);
+};
+VIEWS.settings.render = renderSettings;
+document.addEventListener("click", e => { const b = e.target.closest("[data-hold]"); if (!b) return; settings.holdMs = +b.dataset.hold; saveSettings(); document.querySelectorAll("[data-hold]").forEach(x => x.setAttribute("aria-pressed", x === b)); });

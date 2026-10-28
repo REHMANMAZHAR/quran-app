@@ -203,12 +203,15 @@ const main = $("#main");
 main.addEventListener("pointerdown", e => {
   const w = e.target.closest(".w"); if (!w) return;
   pressEl = w; sx = e.clientX; sy = e.clientY; longFired = false;
-  w.classList.add("press");
-  pressT = setTimeout(() => { longFired = true; w.classList.remove("press"); if (navigator.vibrate) navigator.vibrate(12); openWord(+w.dataset.a, +w.dataset.i); }, 450);
+  /* hold still on a word for the chosen time (default 5 s) to open its details; a fill shows the progress, scrolling or a second finger cancels it */
+  const ms = +settings.holdMs || 5000; w.style.setProperty("--hold", ms + "ms"); w.classList.add("press");
+  pressT = setTimeout(() => { longFired = true; w.classList.remove("press"); if (navigator.vibrate) navigator.vibrate(12); openWord(+w.dataset.a, +w.dataset.i); }, ms);
 });
 const cancelPress = () => { clearTimeout(pressT); if (pressEl) pressEl.classList.remove("press"); pressEl = null; };
 main.addEventListener("pointermove", e => { if (pressEl && Math.hypot(e.clientX-sx, e.clientY-sy) > 10) cancelPress(); });
 main.addEventListener("pointercancel", cancelPress);
+addEventListener("scroll", () => { if (pressEl) cancelPress(); }, { passive: true });
+main.addEventListener("touchstart", e => { if (e.touches.length > 1) cancelPress(); }, { passive: true });
 main.addEventListener("pointerup", e => {
   const w = pressEl; cancelPress();
   if (w && !longFired) quickMeaning(+w.dataset.a, +w.dataset.i);

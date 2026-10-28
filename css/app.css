@@ -1452,3 +1452,7 @@ html{overflow-anchor:none}
 .mp-page quran-madina-html-header{display:none!important}
 .mp-page .mp-sel,.mp-page .mp-sel .quran-madina-html-word{background:color-mix(in srgb,var(--gold) 28%,transparent);border-radius:4px}
 .mp-nav{max-width:760px;margin:16px auto 0}
+/* v50: press-and-hold shows a filling bar under the word (only after a short pause, so taps and scrolls show nothing) */
+#main .w.press{background:none;position:relative}
+#main .w.press::after{content:"";position:absolute;inset-inline-start:8%;bottom:1px;height:3px;width:0;border-radius:2px;background:var(--gold);animation:holdfill var(--hold,5000ms) linear forwards;animation-delay:.25s}
+@keyframes holdfill{from{width:0}to{width:84%}}
