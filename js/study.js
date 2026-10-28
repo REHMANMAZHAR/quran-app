@@ -18,7 +18,7 @@ const JZN = ["الٓمٓ", "سَيَقُولُ", "تِلْكَ الرُّسُل�
 let MK = null;
 load("marks", `data/marks.json?v=${DV}`).then(x => { MK = x; markAll(); }).catch(() => {});
 /* quarter marks (الربع · النصف · الثلاثة): a small word at the end of the ayah before the quarter starts, as in printed mushafs */
-const qMark = q => `<span class="qm" role="note" title="${esc(T("qName")[q])}" aria-label="${esc(T("qName")[q])}">${T("qLbl")[q]}</span>`;
+const qMark = q => `<span class="qm qm${q}" role="note" title="${esc(T("qName")[q])}" aria-label="${esc(T("qName")[q])}">${T("qLbl")[q]}</span>`;
 function markAll(){
   if (!MK) return;
   document.querySelectorAll("#main .ayah:not([data-mk])").forEach(ay => {

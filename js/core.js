@@ -224,8 +224,7 @@ let toastT;
 function toast(html, ms = 2600){ const t = $("#toast"); t.innerHTML = html; t.classList.add("on"); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove("on"), ms); }
 function quickMeaning(a, i){
   if (document.body.classList.contains("hifz")) { const el = document.querySelector(`#a${a} .w[data-i="${i}"]`); if (el) el.classList.toggle("shown"); return; }
-  const w = CUR.ayahs[a-1].w[i], g = glossOf(w);
-  toast(`<span class="tar">${esc(w[0])}</span><span dir="${g.ur?"rtl":"ltr"}">${esc(g.t)}</span><br><small>${T("hold")}</small>`);
+  /* a plain tap shows nothing (so touching the page to scroll never pops a meaning); press and hold opens the full word details */
 }
 
 /* ---------- word sheet ---------- */

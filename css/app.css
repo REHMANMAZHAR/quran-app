@@ -1426,3 +1426,12 @@ body:not(.tbl) #main .words::after{content:"";flex:1 0 0}
 .bar .iconbtn{min-width:0;flex:0 1 auto}
 .bar .cap{font-size:min(calc(11.5px * var(--uiz,1)), 2.8vw);max-width:100%;overflow:hidden;text-overflow:ellipsis}
 #main{overflow-anchor:auto}
+/* v48: each mark its own colour — ruku green, rub' blue, nisf crimson, thalatha purple */
+.rk b{color:inherit}
+.rk{color:#1E8E5A;border-color:#1E8E5A;background:color-mix(in srgb,#1E8E5A 12%,transparent)}
+.qm1{color:#2F6FD0;border-color:#2F6FD0;background:color-mix(in srgb,#2F6FD0 10%,transparent)}
+.qm2{color:#C0392B;border-color:#C0392B;background:color-mix(in srgb,#C0392B 10%,transparent)}
+.qm3{color:#7A4FC4;border-color:#7A4FC4;background:color-mix(in srgb,#7A4FC4 10%,transparent)}
+.qm{font-weight:700;border-width:1.5px}
+:root[data-theme="dark"] .rk{color:#4CC38A;border-color:#4CC38A}:root[data-theme="dark"] .qm1{color:#6FA3F0;border-color:#6FA3F0}:root[data-theme="dark"] .qm2{color:#F07A6C;border-color:#F07A6C}:root[data-theme="dark"] .qm3{color:#B596F0;border-color:#B596F0}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]):not([data-theme="sepia"]) .rk{color:#4CC38A;border-color:#4CC38A}:root:not([data-theme="light"]):not([data-theme="sepia"]) .qm1{color:#6FA3F0;border-color:#6FA3F0}:root:not([data-theme="light"]):not([data-theme="sepia"]) .qm2{color:#F07A6C;border-color:#F07A6C}:root:not([data-theme="light"]):not([data-theme="sepia"]) .qm3{color:#B596F0;border-color:#B596F0}}
