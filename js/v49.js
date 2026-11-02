@@ -216,3 +216,18 @@ renderSettings = function(){
 };
 VIEWS.settings.render = renderSettings;
 document.addEventListener("click", e => { const b = e.target.closest("[data-hold]"); if (!b) return; settings.holdMs = +b.dataset.hold; saveSettings(); document.querySelectorAll("[data-hold]").forEach(x => x.setAttribute("aria-pressed", x === b)); });
+
+/* ===== 8. Uthmani text in the King Fahd (KFGQPC) Hafs font, drawn as in the printed Madina mushaf =====
+   This font version expects a different code for two marks than the Quran text uses:
+   the jazm/sukun (ْ U+0652) is its U+06E1 (the small ح-head, as printed), and the round "silent letter" zero (۟ U+06DF) is its U+0652.
+   Without this swap every sukun looked round and every silent alif showed a dotted circle. Same length, so tajweed colouring still lines up. */
+const kfOn = () => settings.script !== "ip" && ["uth", "taj"].includes(typeof qfNow === "function" ? qfNow() : "uth");
+const kfFix = s => s.replace(/ْ/g, "ۡ").replace(/۟/g, "ْ");
+const _wordText49 = wordText;
+wordText = function(n, a, i, uth){ const t = _wordText49(n, a, i, uth); return kfOn() && t === uth ? kfFix(t) : t; };
+const _buildBlock49b = buildBlock;
+buildBlock = function(d){ const blk = _buildBlock49b(d); if (kfOn()) blk.querySelectorAll(".bism").forEach(e => { e.textContent = kfFix(e.textContent); }); return blk; };
+/* the ayah of the day on the Dashboard uses the same font */
+const _renderHome49k = renderHome;
+renderHome = async function(){ const r = await _renderHome49k(); if (kfOn()) document.querySelectorAll("#home .hm-ar").forEach(e => { if (!e.dataset.kf) { e.dataset.kf = 1; e.textContent = kfFix(e.textContent); } }); return r; };
+VIEWS.home.render = renderHome;

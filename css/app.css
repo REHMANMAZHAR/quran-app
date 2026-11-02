@@ -1104,8 +1104,9 @@ html[lang="en"] body.lm-ur #learn .mean,html[lang="en"] body.lm-ur #learn .tile.
 .ll-sm{margin-top:-6px}.ll-sw .rtb-seg button{padding:6px 10px}
 
 /* ===== v37: Quran scripts — each choice has its own font ===== */
-@font-face{font-family:"QTS IndoPak";src:url("https://static-cdn.tarteel.ai/qul/fonts/nastaleeq/Hanafi/normal-v4.2.2/with-waqf-lazmi/font.ttf") format("truetype");font-display:swap}
-:root{--f-ipn:"QTS IndoPak","Lateef","Scheherazade New",serif;--f-ipk:"Scheherazade New","Noto Naskh Arabic",serif;--f-uth:'Amiri Quran','Amiri',serif;--f-naskh:"Noto Naskh Arabic","Scheherazade New",serif;--f-amiri:"Amiri","Amiri Quran",serif}
+/* IndoPak: DigitalKhatt IndoPak font (OFL), self-hosted with the matching IndoPak text — no outside server, so it never falls back to a wrong font */
+@font-face{font-family:"QMH IndoPak";src:url("../vendor/qmh/assets/db/v2/indopak-qmh.woff2") format("woff2");font-display:block}
+:root{--f-ipn:"QMH IndoPak","Scheherazade New",serif;--f-ipk:"QMH IndoPak","Scheherazade New",serif;--f-uth:'Amiri Quran','Amiri',serif;--f-naskh:"Noto Naskh Arabic","Scheherazade New",serif;--f-amiri:"Amiri","Amiri Quran",serif}
 html[data-qf="ipn"]{--qfont:var(--f-ipn)}html[data-qf="ipk"]{--qfont:var(--f-ipk)}html[data-qf="uth"],html[data-qf="taj"]{--qfont:var(--f-uth)}html[data-qf="naskh"]{--qfont:var(--f-naskh)}html[data-qf="amiri"]{--qfont:var(--f-amiri)}
 html[data-qf] #main .w .ar,html[data-qf] #main .bism,html[data-qf] #mushaf .pg-text,html[data-qf] #mushaf .bism,html[data-qf] .ds-prev,html[data-qf] .hm-ar{font-family:var(--qfont)}
 html[data-qf="ipn"] #main .w .ar,html[data-qf="ipn"] #mushaf .pg-text{line-height:2.5}
@@ -1456,3 +1457,11 @@ html{overflow-anchor:none}
 #main .w.press{background:none;position:relative}
 #main .w.press::after{content:"";position:absolute;inset-inline-start:8%;bottom:1px;height:3px;width:0;border-radius:2px;background:var(--gold);animation:holdfill var(--hold,5000ms) linear forwards;animation-delay:.25s}
 @keyframes holdfill{from{width:0}to{width:84%}}
+/* v51: IndoPak text always uses its own IndoPak font (whatever font was picked before), so no word ever breaks */
+html.ipk #main .w .ar,html.ipk #main .bism,html.ipk .ds-prev,html.ipk .hm-ar,html.ipk .pg-text,html.ipk #mushaf .bism{font-family:"QMH IndoPak","Scheherazade New",serif!important}
+html.ipk #main .w .ar{line-height:2.2}
+/* v51: the Display preview scrolls with the page (no longer pinned over the settings) */
+.st-prev,#setv.st-one #st-disp .st-prev,body.bars-off .st-prev{position:static!important;max-height:none;box-shadow:none}
+/* table layout: the row that ends a ruku is filled with an empty cell instead of a white gap */
+.tbl #main .ck::after{content:"";flex:1 0 0;min-width:0;background:var(--tb-ar);border-bottom:1.5px solid var(--tb-b);border-inline-start:1px solid var(--tb-l)}
+.tbl #main .ayah .last > .w{align-self:stretch}
