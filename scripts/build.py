@@ -19,6 +19,6 @@ except Exception as e:
 os.remove(tmp)
 h = hashlib.sha1(open(out, "rb").read()).hexdigest()[:10]
 idx = os.path.join(ROOT, "index.html"); html = open(idx, encoding="utf8").read()
-html = re.sub(r'(?:<script src="js/[a-z0-9]+\.js(?:\?v=[^"]*)?"></script>\n?)+', f'<script src="js/app.min.js?v={h}"></script>\n', html, count=1)
+html = re.sub(r'(?:<script src="js/[a-z0-9.]+\.js(?:\?v=[^"]*)?"></script>\n?)+', f'<script src="js/app.min.js?v={h}"></script>\n', html, count=1)
 open(idx, "w", encoding="utf8").write(html)
 print("js/app.min.js", round(os.path.getsize(out) / 1024), "KB  (", len(order), "files )  v=" + h)
