@@ -46,7 +46,7 @@ const PRON_O = { "1S":["me / my","مجھے / میرا"], "1P":["us / our","ہم�
   "3MS":["him / his / it","اسے / اس کا"], "3FS":["her / it / its","اسے / اس کا (مؤنث)"], "3MP":["them / their","انہیں / ان کا"], "3FP":["them / their (f.)","انہیں / ان کا (مؤنث)"], "3D":["them two / their","ان دونوں کو / کا"], "3MD":["them two / their","ان دونوں کو / کا"], "3FD":["them two / their (f.)","ان دونوں کو / کا"] };
 const SUBJ = new Set(["ت","تم","تما","تن","نا","وا","و","ا","ن","ون","ين","ان","ي"]);
 function partMeaning(segs, j){
-  const s = segs[j], t = tagsOf(s[1]).split("|"), b = bareAr(s[0]), en = settings.lang === "en";
+  const s = segs[j], t = tagsOf(s[1]).split("|"), b = bareAr(s[0]), en = settings.lang === "en" && settings.gl !== "ur";
   const pick = x => x ? (en ? x[0] : x[1] + " · " + x[0]) : "";
   if (s[3] === "p") {
     const k = Object.keys(PREF).find(k => t.includes(k)); if (!k) return "";
@@ -57,7 +57,7 @@ function partMeaning(segs, j){
       const pgn = t.find(x => /^[123][MF]?[SDP]$/.test(x)); if (!pgn) return "";
       const prev = segs[j - 1], prevT = prev ? tagsOf(prev[1]).split("|") : [];
       const isSubj = prev && prev[3] === "" && prevT[0] === "V" && SUBJ.has(b);
-      return pick((isSubj ? PRON_S : PRON_O)[pgn]) + (isSubj ? ` (${T("subj")})` : "");
+      return pick((isSubj ? PRON_S : PRON_O)[pgn]) + (isSubj ? ` (${en ? "subject (doer)" : "فاعل — کرنے والا"})` : "");
     }
     if (t.includes("EMPH")) return pick(["(emphasis: surely)","(تاکید) ضرور"]);
     if (t.includes("VOC")) return pick(["O (calling)","اے (پکارنا)"]);
@@ -65,7 +65,9 @@ function partMeaning(segs, j){
     if (t.includes("ADDR")) return pick(["(addressing — no separate meaning)","(خطاب کا حرف — الگ معنی نہیں)"]);
     return "";
   }
-  if (s[2] >= 0) { const Lm = META.lemmas[s[2]]; if (Lm && Lm[4]) return `<b>${T("baseMean")}</b> ${esc(Lm[4])} <span class="rv">${T("reviewed")}</span>`; }
+  if (s[2] >= 0) { const Lm = META.lemmas[s[2]], U = !en && typeof lemUr === "function" && LUR ? lemUr(s[2]) : "";
+    if (U) return `<b>${T("baseMean")}</b> <span class="ur">${esc(U)}</span> <small class="g-en">${esc(Lm[4] || "")}</small> <span class="rv">${T("reviewed")}</span>`;
+    if (Lm && Lm[4]) return `<b>${T("baseMean")}</b> ${esc(Lm[4])} <span class="rv">${T("reviewed")}</span>`; }
   return "";
 }
 function partMeaningHTML(segs, j){

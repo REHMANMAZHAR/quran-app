@@ -91,8 +91,10 @@ Object.assign(L.en, { mnH:"Meanings of this word (across the Quran)", mnHere:"he
   irInd:"Indicative (ُ) — normal", irSub:"Subjunctive (َ) — after an / lan", irJus:"Jussive (ْ) — after lam / lā (do not) / li (let)", irIndT:"does / will do", irSubT:"“that he does” — with lan: “will never do”", irJusT:"lam: “did not” · lā: “do not” · li: “let him do”",
   irMabni:"This word is fixed (mabnī): its ending never changes (pronouns, demonstratives, relative nouns, particles, past-tense verbs).", irMaqsur:"This word ends in ا / ى / ي, so the case vowel is not written; all three cases look the same.", irPlural:"In sound masculine plurals and duals the case is shown by letters:", irPl1:"-ūna / -āni = nominative", irPl2:"-īna / -ayni = accusative and genitive", irWaqf:"When pausing at the end of an ayah the last vowel is read as a sukun (ْ); the meaning does not change.",
   irWhyP:p=>`Genitive here because the preposition “${p}” comes before it.`, irWhyGen:"Genitive here because it is the second part of a possessive (“of …”).", irWhyInna:p=>`Accusative here because “${p}” comes before it.`, irWhyLa:"Accusative here: after “lā” of total negation the noun is accusative (“no … at all”).", irWhyAcc:"Accusative here — it stands as an object or circumstance in the sentence.", irWhyNom:"Nominative here — it stands as the subject or predicate in the sentence.", irWhyMood:(p, m)=>`${m} here because “${p}” comes before it.`, irWhyInd:"Indicative here — no particle before it changes the mood.", irNote:"Built from general grammar rules; ask a teacher for the finer points." });
-let LUR = null, SUR = null;
-const loadLUR = () => LUR && SUR ? Promise.resolve(LUR) : Promise.all([load("lemur", `data/lemma-ur.json?v=${DV}`), load("senur", `data/learn/senses-ur.json?v=${DV}`).catch(() => ({}))]).then(([x, y]) => { LUR = x; SUR = y; return x; });
+let LUR = null, SUR = null, LINF = {};
+const loadLUR = () => LUR && SUR ? Promise.resolve(LUR) : Promise.all([load("lemur", `data/lemma-ur.json?v=${DV}`), load("senur", `data/learn/senses-ur.json?v=${DV}`).catch(() => ({})), load("leminf", `data/lemma-ur-inf.json?v=${DV}`).catch(() => ({}))]).then(([x, y, z]) => { LUR = x; SUR = y; LINF = z || {}; return x; });
+/* Urdu base meaning of a base word: verbs in their dictionary form (دیکھنا، نازل کرنا), other words by their most common Urdu meaning */
+function lemUr(li){ const L = META.lemmas[li]; if (!L) return ""; if (L[1] === "V") return LINF[li] || ""; return LUR && LUR[li] ? LUR[li][0][0] : ""; }
 const urFirst = () => settings.lang !== "en" || settings.gl === "ur";
 const SMALL_UR = new Set("اور کے کی کا کو نے میں سے پر ہے ہیں تھا تھے تھی ہو گا گی گے بھی تو".split(" "));
 const urCore = u => { let t = (u || "").replace(/[—۔]/g, " ").trim().split(/\s+/).filter(Boolean); while (t.length && SMALL_UR.has(t[0])) t.shift(); while (t.length && SMALL_UR.has(t[t.length - 1])) t.pop(); return t.join(" "); };
@@ -160,11 +162,12 @@ function meaningsHTML(w, A, i){
 }
 const _openWord52 = openWord;
 openWord = function(a, i){
+  if (!LUR && (settings.gl === "ur" || settings.lang !== "en")) { loadLUR().then(() => openWord(a, i)).catch(() => { _openWord52(a, i); }); return; }   // Urdu base meanings ready before the sheet is drawn
   _openWord52(a, i);
   const n = CUR.n, A = CUR.ayahs[a - 1], w = A.w[i];
   const done = () => {
     const body = $("#sheetBody"); if (!body || !body.querySelector(".wd-head")) return;
-    if (urFirst() && LUR) body.querySelectorAll(".lemlist [data-lem]").forEach(b => { const x = LUR[+b.dataset.lem], g = b.querySelector(".lg"); if (x && g && !g.dataset.ur) { g.dataset.ur = 1; g.innerHTML = `${esc(x[0][0])}<small>${esc(g.textContent)}</small>`; g.classList.add("ur"); } });
+    if (urFirst() && LUR) body.querySelectorAll(".lemlist [data-lem]").forEach(b => { const u = lemUr(+b.dataset.lem), g = b.querySelector(".lg"); if (u && g && !g.dataset.ur) { g.dataset.ur = 1; g.innerHTML = `${esc(u)}<small>${esc(META.lemmas[+b.dataset.lem][4] || "")}</small>`; g.classList.add("ur"); } });
     const old = body.querySelector("ul.senses:not(.mn)");
     if (old && SUR && !old.dataset.ur) { const tmp = document.createElement("div"); tmp.innerHTML = senseHTML(w[5], w); const nu = tmp.querySelector("ul.senses"); if (nu) { nu.dataset.ur = 1; old.replaceWith(nu); } }
     if (!body.querySelector(".mn")) {
@@ -176,3 +179,5 @@ openWord = function(a, i){
   let tries = 0; const go = () => { if ($("#sheetBody .wd-head")) done(); else if (++tries < 20) setTimeout(go, 150); };
   (LUR ? Promise.resolve() : loadLUR()).then(go).catch(() => {});
 };
+
+setTimeout(() => { if (typeof META !== "undefined" && META) loadLUR().catch(() => {}); }, 7000);

@@ -1518,3 +1518,8 @@ ul.ir i{color:var(--gold);font-style:normal;font-weight:700}
 .ir-n{color:var(--muted);line-height:1.8}
 .lemlist .lg.ur{font-family:var(--ur)}.lemlist .lg small{display:block;font-family:var(--en);font-size:11px;color:var(--muted)}
 .senses b.ur,.senses small.ur{font-family:var(--ur)}.senses small.en-g{color:var(--muted);font-size:12px}
+.seg-row .g-ur b,.seg-row .g-ur li,.pm .ur{font-family:var(--ur),var(--en);line-height:1.9}
+.seg-row .g-ur ul{direction:rtl;text-align:right}
+.seg-row .g-ur{direction:rtl;text-align:right}
+.g-en{display:block;color:var(--muted);font-family:var(--en);font-size:calc(12px*var(--uiz,1));direction:ltr;text-align:left}
+.pm .g-en{display:inline}
