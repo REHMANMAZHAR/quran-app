@@ -47,7 +47,7 @@ const PRON_O = { "1S":["me / my","مجھے / میرا"], "1P":["us / our","ہم�
 const SUBJ = new Set(["ت","تم","تما","تن","نا","وا","و","ا","ن","ون","ين","ان","ي"]);
 function partMeaning(segs, j){
   const s = segs[j], t = tagsOf(s[1]).split("|"), b = bareAr(s[0]), en = settings.lang === "en" && settings.gl !== "ur";
-  const pick = x => x ? (en ? x[0] : x[1] + " · " + x[0]) : "";
+  const pick = x => x ? (en ? x[0] + " · " + x[1] : x[1] + " · " + x[0]) : "";
   if (s[3] === "p") {
     const k = Object.keys(PREF).find(k => t.includes(k)); if (!k) return "";
     const tab = PREF[k]; return pick(tab[b] || tab[b.slice(-1)] || tab["*"]);
@@ -65,8 +65,9 @@ function partMeaning(segs, j){
     if (t.includes("ADDR")) return pick(["(addressing — no separate meaning)","(خطاب کا حرف — الگ معنی نہیں)"]);
     return "";
   }
-  if (s[2] >= 0) { const Lm = META.lemmas[s[2]], U = !en && typeof lemUr === "function" && LUR ? lemUr(s[2]) : "";
-    if (U) return `<b>${T("baseMean")}</b> <span class="ur">${esc(U)}</span> <small class="g-en">${esc(Lm[4] || "")}</small> <span class="rv">${T("reviewed")}</span>`;
+  if (s[2] >= 0) { const Lm = META.lemmas[s[2]], U = typeof lemUr === "function" && LUR ? lemUr(s[2]) : "";
+    if (U && !en) return `<b>${T("baseMean")}</b> <span class="ur">${esc(U)}</span> <small class="g-en">${esc(Lm[4] || "")}</small> <span class="rv">${T("reviewed")}</span>`;
+    if (U && Lm && Lm[4]) return `<b>${T("baseMean")}</b> ${esc(Lm[4])} <span class="ur">· ${esc(U)}</span> <span class="rv">${T("reviewed")}</span>`;
     if (Lm && Lm[4]) return `<b>${T("baseMean")}</b> ${esc(Lm[4])} <span class="rv">${T("reviewed")}</span>`; }
   return "";
 }

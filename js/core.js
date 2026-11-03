@@ -79,7 +79,7 @@ function load(key, path){
   }
   return cache[key];
 }
-const DV = "18";  // bump whenever data/ changes, so phones fetch fresh files instead of old cached ones
+const DV = "19";  // bump whenever data/ changes, so phones fetch fresh files instead of old cached ones
 const DATA = {
   meta: () => load("meta", `data/meta.json?v=${DV}`),
   occ:  () => load("occ", `data/occ.json?v=${DV}`),
@@ -251,11 +251,12 @@ function openWord(a, i){
   const urW = settings.gl === "ur" || settings.lang !== "en";
   const G = (!urW && META.grammar_en) || META.grammar;
   segs.forEach((s, j) => {
-    const [title0, lines] = G[s[1]], enT = urW && settings.lang === "en" && META.grammar_en ? META.grammar_en[s[1]][0] : "";
+    /* always both languages: the other language's name shown small under the title, and (for English) the Urdu notes too */
+    const [title0, lines] = G[s[1]], enT = urW ? (META.grammar_en ? META.grammar_en[s[1]][0] : "") : META.grammar[s[1]][0], urLines = !urW ? META.grammar[s[1]][1] : null;
     const title = title0 + (enT ? "" : "");
     const L = s[2] >= 0 ? META.lemmas[s[2]] : null;
-    h += `<div class="seg-row"><div class="sar seg-${s[3]}">${esc(s[0])}</div><div${urW ? ' class="g-ur"' : ""}><b>${esc(title)}</b>${enT ? `<small class="g-en">${esc(enT)}</small>` : ""}`;
-    if (lines.length) h += `<ul>${lines.map(x => `<li>${esc(x)}</li>`).join("")}</ul>`;
+    h += `<div class="seg-row"><div class="sar seg-${s[3]}">${esc(s[0])}</div><div${urW ? ' class="g-ur"' : ""}><b>${esc(title)}</b>${enT ? `<small class="${urW ? "g-en" : "g-ur2"}">${esc(enT)}</small>` : ""}`;
+    if (lines.length) h += `<ul>${lines.map((x, k) => `<li>${esc(x)}${urLines && urLines[k] ? `<small class="g-ur2">${esc(urLines[k])}</small>` : ""}</li>`).join("")}</ul>`;
     h += partMeaningHTML(segs, j);
     if (L && s[3] === "" && L[2] >= 0) h += `<div class="lem">${T("base")} <span>${esc(L[0])}</span></div>`;
     h += `</div></div>`;
