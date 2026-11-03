@@ -8,6 +8,8 @@ function chunkBlock(blk, s){
   const kids = [...box.children]; let ck = null, n = 0, words = 0;
   const close = () => { if (ck) { ck.style.containIntrinsicSize = `auto ${Math.max(200, Math.round(words * CK.pxw))}px`; ck.dataset.w = words; } ck = null; n = 0; words = 0; };
   for (const el of kids) {
+    /* a new para always starts its own chunk, like a new page */
+    if (ck && n && el.classList.contains("ayah")) { const m0 = typeof MK !== "undefined" && MK && MK[s] && MK[s][+el.dataset.a]; if (m0 && m0.j) close(); }
     if (!ck) { ck = document.createElement("div"); ck.className = "ck"; box.insertBefore(ck, el); }
     ck.appendChild(el);
     if (el.classList.contains("ayah")) {
@@ -222,11 +224,14 @@ document.addEventListener("click", e => { const b = e.target.closest("[data-hold
    the jazm/sukun (ْ U+0652) is its U+06E1 (the small ح-head, as printed), and the round "silent letter" zero (۟ U+06DF) is its U+0652.
    Without this swap every sukun looked round and every silent alif showed a dotted circle. Same length, so tajweed colouring still lines up. */
 const kfOn = () => settings.script !== "ip" && ["uth", "taj"].includes(typeof qfNow === "function" ? qfNow() : "uth");
-const kfFix = s => s.replace(/ْ/g, "ۡ").replace(/۟/g, "ْ");
+const kfFix = s => s.replace(/ْ/g, "ۡ").replace(/۟/g, "ْ")
+  .replace(/ٍۭ/g, "ِۢ")   /* iqlab under kasratan: kasra + meem, which this font joins into the small meem below */
+  .replace(/۪/g, "ٜ");                /* imala in مَجْر۪ىٰهَا (11:41), as in the KFGQPC text */
+const KF_OTHER = /[ۣ۫۬]/;          /* ishmam / tasheel / small low seen: no glyph in this font, so these 3 words use Amiri Quran */
 const _wordText49 = wordText;
 wordText = function(n, a, i, uth){ const t = _wordText49(n, a, i, uth); return kfOn() && t === uth ? kfFix(t) : t; };
 const _buildBlock49b = buildBlock;
-buildBlock = function(d){ const blk = _buildBlock49b(d); if (kfOn()) blk.querySelectorAll(".bism").forEach(e => { e.textContent = kfFix(e.textContent); }); return blk; };
+buildBlock = function(d){ const blk = _buildBlock49b(d); if (kfOn()) { blk.querySelectorAll(".bism").forEach(e => { e.textContent = kfFix(e.textContent); }); blk.querySelectorAll(".w .ar").forEach(e => { if (KF_OTHER.test(e.textContent)) e.style.fontFamily = "'Amiri Quran','Amiri',serif"; }); } return blk; };
 /* the ayah of the day on the Dashboard uses the same font */
 const _renderHome49k = renderHome;
 renderHome = async function(){ const r = await _renderHome49k(); if (kfOn()) document.querySelectorAll("#home .hm-ar").forEach(e => { if (!e.dataset.kf) { e.dataset.kf = 1; e.textContent = kfFix(e.textContent); } }); return r; };

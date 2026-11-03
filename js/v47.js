@@ -3,7 +3,7 @@
 /* We remember the word at the top of the screen while you scroll; when the screen width changes (rotation, split view,
    text size) we bring that same word back to the same height, a few times while the layout settles. */
 const ANC = { el: null, off: 0, w: innerWidth, hold: 0, raf: 0 };
-const ancLine = () => { const b = $(".bar"); return (b ? b.getBoundingClientRect().bottom : 60) + 12; };
+const ancLine = () => { const b = $(".bar"), h = document.getElementById("rdHead"); let y = b ? b.getBoundingClientRect().bottom : 60; if (h && h.getClientRects().length) y = Math.max(y, h.getBoundingClientRect().bottom); return y + 12; };
 function ancGrab(){
   ANC.raf = 0;
   if (ANC.hold > Date.now() || (LV.view !== "read" && LV.view !== "page")) return;

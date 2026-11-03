@@ -1465,3 +1465,56 @@ html.ipk #main .w .ar{line-height:2.2}
 /* table layout: the row that ends a ruku is filled with an empty cell instead of a white gap */
 .tbl #main .ck::after{content:"";flex:1 0 0;min-width:0;background:var(--tb-ar);border-bottom:1.5px solid var(--tb-b);border-inline-start:1px solid var(--tb-l)}
 .tbl #main .ayah .last > .w{align-self:stretch}
+/* ===== v52 ===== */
+/* side margins inside each chunk for the marks (paint containment of the chunk would clip anything outside it) */
+#main .ck{position:relative;padding-inline:20px}
+.tbl #main .ayahs{border:0;background:none}
+.tbl #main .ck{background:linear-gradient(90deg,transparent 18px,var(--tb-b) 18px,var(--tb-b) 20px,transparent 20px,transparent calc(100% - 20px),var(--tb-b) calc(100% - 20px),var(--tb-b) calc(100% - 18px),transparent calc(100% - 18px))}
+.tbl #main .ayahs > .ck:first-child{padding-top:2px}
+.tbl #main .ayahs > .ck:first-child::before{content:"";position:absolute;top:0;left:18px;right:18px;height:2px;background:var(--tb-b)}
+.tbl #main .ck::after{display:none!important}
+.tbl #main .sblk > .tb-head,.tbl #main .sblk > .bism{margin-inline:18px}
+/* the marks */
+#main .g-mk{position:absolute;z-index:2;margin:0}
+#main .rk.g-mk{left:1px;width:17px;min-width:0;padding:2px 0;border-width:1.2px;border-radius:6px;font-size:calc(8.5px*var(--uiz,1))}
+#main .rk.g-mk b{font-size:calc(13px*var(--uiz,1))}
+#main .qm.g-mk{right:1px;width:16px;padding:5px 0;writing-mode:vertical-rl;text-orientation:mixed;font-size:calc(11px*var(--uiz,1));line-height:16px;border-width:1.2px;border-radius:6px;text-align:center}
+/* a new para opens like a new page */
+#main .jz-band{margin:26px 0 10px;padding:10px 12px;border-radius:12px;border:0;border-top:3px double var(--gold);border-bottom:3px double var(--gold);background:color-mix(in srgb,var(--gold) 10%,var(--surface));flex-direction:column;gap:2px}
+#main .jz-band span{font-size:calc(12px*var(--uiz,1));color:var(--muted);font-weight:600}
+#main .jz-band b{font-size:calc(22px*var(--uiz,1))}
+.tbl #main .ck > .jz-band{margin:22px 0 0;border-radius:0;border-left:0;border-right:0;background:color-mix(in srgb,var(--gold) 12%,var(--surface))}
+/* pinned surah / para header */
+#rdHead{display:none;position:fixed;left:0;right:0;top:calc(env(safe-area-inset-top,0px) + var(--barh,58px));z-index:19;height:34px;align-items:center;justify-content:space-between;gap:8px;padding:0 10px;background:var(--surface);border-bottom:1px solid var(--line);transition:top .2s;direction:rtl}
+body.rd #rdHead{display:flex}
+body.bars-off #rdHead{top:env(safe-area-inset-top,0px)}
+body.rd #main{padding-top:36px}
+#rdHead button{background:none;border:0;color:var(--ink);font:inherit;display:flex;align-items:baseline;gap:6px;padding:4px 2px;cursor:pointer}
+#rdHead .rh-s b,#rdHead .rh-p b{font-family:var(--qfont,var(--ar,serif));font-weight:400;font-size:calc(17px*var(--uiz,1))}
+#rdHead small{color:var(--muted);font-size:calc(11.5px*var(--uiz,1))}
+.rh-as{display:flex;align-items:center;gap:2px;direction:ltr;position:relative}
+.rh-as button{width:28px;height:28px;justify-content:center;align-items:center!important;border-radius:50%;padding:0!important}
+.rh-as svg{width:14px;height:14px;stroke:currentColor;stroke-width:2.4;fill:none}
+.rh-dot{border:1.5px solid var(--gold)!important;color:var(--gold)!important}
+.rh-as.run .rh-dot{background:var(--gold)!important;color:var(--surface)!important}
+.rh-as [data-ras="slow"],.rh-as [data-ras="fast"]{display:none!important;font-size:18px;color:var(--muted)!important}
+.rh-as.open [data-ras="slow"],.rh-as.open [data-ras="fast"]{display:flex!important}
+.rh-lv{font-style:normal;font-size:11px;color:var(--muted);min-width:8px}
+.rh-ask{display:none;position:absolute;top:30px;left:50%;transform:translateX(-50%);white-space:nowrap;font-style:normal;font-size:12px;background:var(--gold);color:#13242A;padding:2px 8px;border-radius:10px}
+.rh-as.hint .rh-ask{display:block}
+.rh-as.hint .rh-dot{animation:rhpulse 1s ease-in-out 5}
+@keyframes rhpulse{50%{transform:scale(1.25)}}
+#asBar{display:none!important}
+/* word details: meanings + i'rab */
+.senses.mn li b{font-family:var(--ur)}
+.mn-loc{border:0;background:none;color:var(--muted);font-size:12px;text-decoration:underline;cursor:pointer}
+ul.ir{list-style:none;padding:0;margin:6px 0}
+ul.ir li{display:flex;gap:12px;align-items:center;padding:8px 6px;border-bottom:1px solid var(--line)}
+ul.ir li.here{background:color-mix(in srgb,var(--gold) 14%,transparent);border-radius:8px}
+ul.ir .ir-f{font-family:var(--ar);font-size:calc(24px*var(--uiz,1));min-width:92px;text-align:center;direction:rtl}
+ul.ir small{display:block;color:var(--muted);line-height:1.6}
+ul.ir i{color:var(--gold);font-style:normal;font-weight:700}
+.ir-why{margin:8px 0;padding:8px 10px;border-radius:10px;background:color-mix(in srgb,var(--sage,#5a8) 12%,transparent);line-height:1.8}
+.ir-n{color:var(--muted);line-height:1.8}
+.lemlist .lg.ur{font-family:var(--ur)}.lemlist .lg small{display:block;font-family:var(--en);font-size:11px;color:var(--muted)}
+.senses b.ur,.senses small.ur{font-family:var(--ur)}.senses small.en-g{color:var(--muted);font-size:12px}
