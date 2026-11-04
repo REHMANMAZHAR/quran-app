@@ -1527,3 +1527,46 @@ ul.ir i{color:var(--gold);font-style:normal;font-weight:700}
 .seg-row li .g-ur2{text-align:inherit}
 .lemlist .lg .en-p{display:block}.lemlist .lg small.ur-s{display:block;font-family:var(--ur);font-size:calc(13px*var(--uiz,1));color:var(--muted);direction:rtl}
 .pm .ur{font-family:var(--ur)}
+/* ===== v55 ===== */
+/* auto-scroll controls in the strip: bigger, and − / + / stop stay visible while it is on */
+#rdHead{height:40px}
+.rh-as{gap:4px}
+.rh-as button{width:34px;height:34px}
+.rh-as .rh-dot{width:36px;height:36px}
+.rh-as svg{width:16px;height:16px}
+.rh-as.on [data-ras="slow"],.rh-as.on [data-ras="fast"]{display:flex!important;font-size:24px;font-weight:700;line-height:1;color:var(--ink)!important;background:color-mix(in srgb,var(--ink) 9%,transparent)!important}
+.rh-as.on .rh-lv{font-style:normal;font-weight:700;min-width:14px;text-align:center;font-size:calc(13px*var(--uiz,1));color:var(--gold)}
+.rh-as .rh-x{color:var(--muted)!important}
+.rh-as button:active{transform:scale(.92)}
+/* the top bar no longer repeats surah and para in the reader (the strip shows them) */
+body.rd .bar .hpill{display:none!important}
+/* pinch: the label when the next pinch step switches between reading and mushaf pages */
+#main.pz-sw,#mushaf.pz-sw{opacity:.55;transition:opacity .15s}
+.pz-tip{white-space:nowrap;line-height:1.5;min-width:64px;width:max-content;text-align:center}
+html[lang="ur"] .pz-tip.sw{font-family:var(--ur);font-size:17px;line-height:1.9;padding:4px 18px}
+.pz-tip.sw{background:var(--gold);color:#111;font-weight:700}
+/* landscape phones: small bars so the Quran gets the screen */
+@media (orientation:landscape) and (max-height:540px){
+  :root{--tabh:42px}
+  .bar{padding:1px 6px!important;min-height:0}
+  .bar .iconbtn,body.rd .bar .iconbtn{min-height:34px!important;min-width:34px!important;padding:0 2px!important}
+  .bar .iconbtn svg,body.rd .bar .iconbtn svg{width:24px!important;height:24px!important;padding:4px!important}
+  .bar .cap{display:none!important}
+  .bar .title b{font-size:calc(17px*var(--uiz,1));line-height:1.3}
+  .bar .title small{display:none}
+  .brandmark{width:22px;height:22px}
+  .tabbar{padding-top:2px;padding-bottom:calc(env(safe-area-inset-bottom,0px) + 2px)}
+  .tabbar button{flex-direction:row;gap:6px;min-height:0}
+  .tabbar button svg{width:26px!important;height:26px!important;padding:4px!important}
+  .tabbar button span{font-size:calc(11px*var(--uiz,1))}
+  #rdHead{height:32px}
+  .rh-as button{width:28px;height:28px}.rh-as .rh-dot{width:30px;height:30px}
+  .rh-as.on [data-ras="slow"],.rh-as.on [data-ras="fast"]{font-size:20px}
+}
+/* black dark mode: true black page, white Arabic, neutral grey bars and table lines (the default in dark; "Navy" keeps the old look) */
+:root[data-theme="dark"]:not([data-paper="navy"]){--bg:#000;--surface:#141414;--ink:#F4F4F4;--muted:#A0A0A0;--line:#2B2B2B;--live:#1D2833;--hit:#3A3120;
+  --tb-ar:#0C0C0C;--tb-g:#000;--tb-l:#272727;--tb-b:#3C3C3C;--night:#1E1E1E}
+@media (prefers-color-scheme:dark){:root:not([data-theme]):not([data-paper="navy"]){--bg:#000;--surface:#141414;--ink:#F4F4F4;--muted:#A0A0A0;--line:#2B2B2B;--live:#1D2833;--hit:#3A3120;
+  --tb-ar:#0C0C0C;--tb-g:#000;--tb-l:#272727;--tb-b:#3C3C3C;--night:#1E1E1E}}
+:root[data-theme="dark"]:not([data-paper="navy"]):not([data-arc]) body:not(.hifz) #main .w .ar{color:#fff}
+@media (prefers-color-scheme:dark){:root:not([data-theme]):not([data-paper="navy"]):not([data-arc]) body:not(.hifz) #main .w .ar{color:#fff}}

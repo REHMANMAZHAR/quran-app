@@ -152,7 +152,7 @@ document.addEventListener("click", e => {
   else { AS.lv = Math.max(0, Math.min(AS_SPEEDS.length - 1, AS.lv + +v)); settings.asLv = AS.lv; saveSettings(); asBar(); }
 });
 /* a finger on the page pauses; leaving the reader stops */
-addEventListener("touchstart", e => { if (AS.on && AS.run && !e.target.closest("#asBar")) { AS.run = false; asBar(); } }, { passive: true });
+/* (v55: a finger no longer pauses auto-scroll — it only holds it while you scroll) */
 const _showViewAS = showView;
 showView = function(v){ if (v !== "read") asStop(); _showViewAS(v); };
 const _displaySheetAS = displaySheet;
