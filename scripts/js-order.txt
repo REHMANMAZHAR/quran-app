@@ -39,4 +39,5 @@ js/v47.js
 js/v49.js
 js/v52.js
 js/v55.js
+js/v56.js
 js/start.js

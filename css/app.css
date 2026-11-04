@@ -1570,3 +1570,13 @@ html[lang="ur"] .pz-tip.sw{font-family:var(--ur);font-size:17px;line-height:1.9;
   --tb-ar:#0C0C0C;--tb-g:#000;--tb-l:#272727;--tb-b:#3C3C3C;--night:#1E1E1E}}
 :root[data-theme="dark"]:not([data-paper="navy"]):not([data-arc]) body:not(.hifz) #main .w .ar{color:#fff}
 @media (prefers-color-scheme:dark){:root:not([data-theme]):not([data-paper="navy"]):not([data-arc]) body:not(.hifz) #main .w .ar{color:#fff}}
+/* ===== v56: quarter marks are buttons; the quarter sheet ===== */
+#main .qm[data-qt]{cursor:pointer}
+#main .qm[data-qt]:active{transform:scale(.94)}
+.qt-sh h3{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.qt-sh h3 .qm{font-size:calc(15px*var(--uiz,1))}
+.qt-sub{margin:0 0 4px;color:var(--muted);font-size:calc(13px*var(--uiz,1))}
+.qt-rk{margin:8px 0}
+.qt-rk b small{font-weight:400;color:var(--muted);margin-inline-start:6px}
+.qt-go{margin-top:6px;border:1px solid var(--line);background:none;color:var(--ink);border-radius:10px;padding:4px 10px;font:inherit;font-size:calc(12.5px*var(--uiz,1));cursor:pointer}
+.qt-go .tafico{width:14px;height:14px;vertical-align:-2px}

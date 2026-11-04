@@ -18,16 +18,25 @@ const JZN = ["الٓمٓ", "سَيَقُولُ", "تِلْكَ الرُّسُل�
 let MK = null;
 load("marks", `data/marks.json?v=${DV}`).then(x => { MK = x; markAll(); }).catch(() => {});
 /* quarter marks (الربع · النصف · الثلاثة): a small word at the end of the ayah before the quarter starts, as in printed mushafs */
-const qMark = q => `<span class="qm qm${q}" role="note" title="${esc(T("qName")[q])}" aria-label="${esc(T("qName")[q])}">${T("qLbl")[q]}</span>`;
+const qMark = (q, at) => `<span class="qm qm${q}" role="button" tabindex="0" data-qt="${at}:${q}" title="${esc(T("qName")[q])}" aria-label="${esc(T("qName")[q])}">${T("qLbl")[q]}</span>`;
 function markAll(){
   if (!MK) return;
   document.querySelectorAll("#main .ayah:not([data-mk])").forEach(ay => {
     ay.dataset.mk = 1;
     const blk = ay.closest(".sblk"), s = blk ? +blk.dataset.s : CUR && CUR.n, a = +ay.dataset.a, m = MK[s] && MK[s][a], nx = MK[s] && MK[s][a + 1];
-    if (nx && nx.q && !nx.j) { const end = ay.querySelector(".last .end"); if (end) end.insertAdjacentHTML("afterend", qMark(nx.q)); else ay.insertAdjacentHTML("beforeend", qMark(nx.q)); }
+    /* the quarter that starts with the next ayah — also across a surah boundary: a quarter that opens a surah is marked at the
+       last ayah of the surah before it, on the same line as that surah's last ruku (not on the first line of the new surah) */
+    const S = META.surahs[s - 1], n1 = S && a === S.ayahs && MK[s + 1] && MK[s + 1][1];
+    const qn = nx && nx.q && !nx.j ? [nx.q, `${s}:${a + 1}`] : n1 && n1.q && !n1.j ? [n1.q, `${s + 1}:1`] : null;
+    if (qn) {
+      document.querySelectorAll(`#main .qm[data-qt="${qn[1]}:${qn[0]}"]`).forEach(x => x.remove());   // shown at the next surah's start before this ayah was drawn
+      const end = ay.querySelector(".last .end"); if (end) end.insertAdjacentHTML("afterend", qMark(qn[0], qn[1])); else ay.insertAdjacentHTML("beforeend", qMark(qn[0], qn[1]));
+    }
     if (!m) return;
     if (m.j) ay.insertAdjacentHTML("beforebegin", `<div class="jz-band" role="note"><span>${T("jzStart", nf(m.j))}</span><b>${JZN[m.j - 1]}</b></div>`);
-    else if (m.q && a === 1) { const w0 = ay.querySelector(".words"); if (w0) w0.insertAdjacentHTML("afterbegin", qMark(m.q)); }
+    else if (m.q && a === 1 && !document.querySelector(`#main .qm[data-qt="${s}:1:${m.q}"]`)) {
+      /* only when the surah before is not on the page (opened straight at this surah) */
+      const w0 = ay.querySelector(".words"); if (w0) w0.insertAdjacentHTML("afterbegin", qMark(m.q, `${s}:1`)); }
     if (m.r) {
       const [rs, rj, n] = m.r, t = esc(T("rkT", rs, rj, n));
       const html = `<span class="rk" role="button" tabindex="0" data-rk="${s}:${a - n + 1}:${a}:${rs}" title="${t}" aria-label="${t}"><i>${nf(rs)}</i><b>ع</b><i>${nf(rj)}</i></span>`;
@@ -35,7 +44,7 @@ function markAll(){
     }
   });
 }
-new MutationObserver(markAll).observe($("#main"), { childList: true, subtree: true });
+new MutationObserver(() => markAll()).observe($("#main"), { childList: true, subtree: true });
 /* ===== 2. tafsir: the whole group of ayahs being explained, exact start, ±15s and ayah steps ===== */
 tafNow = function(marks, t){
   if (!marks.length) return;
