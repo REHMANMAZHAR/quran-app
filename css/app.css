@@ -1580,3 +1580,11 @@ html[lang="ur"] .pz-tip.sw{font-family:var(--ur);font-size:17px;line-height:1.9;
 .qt-rk b small{font-weight:400;color:var(--muted);margin-inline-start:6px}
 .qt-go{margin-top:6px;border:1px solid var(--line);background:none;color:var(--ink);border-radius:10px;padding:4px 10px;font:inherit;font-size:calc(12.5px*var(--uiz,1));cursor:pointer}
 .qt-go .tafico{width:14px;height:14px;vertical-align:-2px}
+/* ===== v57: para on the right, surah on the left; para progress bar ===== */
+#rdHead .rh-p{order:-1}
+#rdHead .rh-as{order:0}
+#rdHead .rh-s{order:1}
+#rdHead .rh-pc{font-style:normal;font-weight:700;color:var(--gold);font-size:calc(11px*var(--uiz,1))}
+.rh-pg{position:absolute;left:0;right:0;bottom:-1px;height:3px;background:color-mix(in srgb,var(--ink) 10%,transparent);direction:rtl;pointer-events:none}
+.rh-pg-f{position:absolute;top:0;bottom:0;inset-inline-start:0;width:0;background:var(--gold);transition:width .25s ease}
+.rh-tk{position:absolute;top:-2px;width:3px;height:7px;margin-inline-start:-1.5px;border-radius:2px;background:currentColor}
