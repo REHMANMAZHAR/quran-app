@@ -1,0 +1,27 @@
+{
+  "_note": "Curated root insights (the 'eye-opener' line + one graded hadith), keyed by root letters. Seeded for review; expand via the scholar-review track. Hadith text is paraphrased.",
+  "كتب": {
+    "aha": {
+      "en": "To prescribe a duty is, literally, to write it upon you — كُتِبَ (prescribed) and الكِتاب (the Book) are one root. Even His mercy, Allah كَتَبَ — wrote upon Himself (6:54).",
+      "ur": "کسی فرض کا مقرر ہونا دراصل اُس کا تم پر «لکھ دیا جانا» ہے — کُتِبَ (فرض کیا گیا) اور الکِتاب (کتاب) ایک ہی مادے سے ہیں۔ حتیٰ کہ اللہ نے اپنی رحمت بھی اپنے اوپر کَتَبَ — لکھ لی (۶:۵۴)۔"
+    },
+    "hadith": {
+      "grade_en": "Ṣaḥīḥ", "grade_ur": "صحیح",
+      "src": "Bukhārī 8 · Muslim 16",
+      "en": "The Prophet ﷺ named fasting Ramadan one of the five supports Islam is built upon — so what 2:183 “prescribes” is a pillar, not a suggestion.",
+      "ur": "نبی ﷺ نے رمضان کے روزے کو اسلام کے پانچ ستونوں میں شمار کیا — یعنی ۲:۱۸۳ میں جو «فرض» ہوا وہ ایک رکن ہے، محض ترغیب نہیں۔"
+    }
+  },
+  "رحم": {
+    "aha": {
+      "en": "The word for Allah’s رَحْمَة (mercy) is the word for the رَحِم (womb) — the All-Merciful named the organ of shelter and nurture after Himself. No translation shows this; the root does.",
+      "ur": "اللہ کی رَحْمَة (رحمت) کا لفظ اور رَحِم (ماں کا پیٹ) کا لفظ ایک ہی ہے — رحمٰن نے پناہ و پرورش کے عضو کو اپنے نام سے منسوب کیا۔ یہ ترجمے میں نظر نہیں آتا، مادہ دکھاتا ہے۔"
+    },
+    "hadith": {
+      "grade_en": "Ṣaḥīḥ", "grade_ur": "صحیح",
+      "src": "Tirmidhī 1907 · Abū Dāwūd 1694",
+      "en": "The Prophet ﷺ reported that Allah said: “I am ar-Raḥmān; I created the womb (ar-raḥim) and derived its name from My own; whoever keeps its ties, I keep ties with him.”",
+      "ur": "نبی ﷺ نے فرمایا کہ اللہ نے فرمایا: «میں رحمٰن ہوں، میں نے رَحِم کو پیدا کیا اور اس کا نام اپنے نام سے نکالا؛ جو اسے جوڑے گا میں اُس سے جُڑوں گا، اور جو اسے کاٹے گا میں اُس سے کٹ جاؤں گا۔»"
+    }
+  }
+}
