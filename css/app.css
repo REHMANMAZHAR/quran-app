@@ -1607,3 +1607,18 @@ html[lang="ur"] .pz-tip.sw{font-family:var(--ur);font-size:17px;line-height:1.9;
 #rdHead .rh-pc{font-size:calc(12.5px*var(--uiz,1));font-weight:800;color:var(--gold);
   background:color-mix(in srgb,var(--gold) 16%,transparent);border-radius:999px;padding:1px 7px;
   line-height:1.5;letter-spacing:.01em}
+
+/* ===== v59 ===== */
+/* 3. Jumping to an ayah left it tucked under the pinned chrome: scroll-padding-top was a fixed
+   64px while the real chrome is the top bar (--barh, ~58px) plus the strip (~40px) = ~98px.
+   Tie it to the actual bars instead, so a jumped-to ayah always lands in clear view. */
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + var(--barh,58px) + 46px)}
+html:has(body.bars-off){scroll-padding-top:calc(env(safe-area-inset-top,0px) + 46px)}
+@media (max-height:520px){
+  html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + var(--barh,58px) + 38px)}
+  html:has(body.bars-off){scroll-padding-top:calc(env(safe-area-inset-top,0px) + 38px)}
+}
+/* landscape: give the page back the top bar's height while it is hidden */
+@media (orientation:landscape) and (max-height:520px){
+  body.rd.bars-off .bar{transform:translateY(-110%);pointer-events:none}
+}
