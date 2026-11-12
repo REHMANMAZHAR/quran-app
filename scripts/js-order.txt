@@ -41,4 +41,7 @@ js/v52.js
 js/v55.js
 js/v56.js
 js/v57.js
+js/insight.js
+js/v58.js
+js/v59.js
 js/start.js
