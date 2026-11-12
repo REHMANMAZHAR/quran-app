@@ -1644,3 +1644,11 @@ html:has(body.bars-off){scroll-padding-top:calc(env(safe-area-inset-top,0px) + 5
 /* الحزب - the half-para point where the next hizb begins; heavier than the three quarter marks */
 .qm4{color:#0E7C5A;border-color:#0E7C5A;background:color-mix(in srgb,#0E7C5A 14%,transparent);font-weight:700}
 .rh-tk.qm4{background:#0E7C5A;width:3px;opacity:.9}
+/* ===== v62: no blank holes in the table =====
+   v58 ended every ayah with an empty cell to stop a lone word stretching across a row. But when the next ayah
+   carried on in the same row, that empty cell sat in the middle of the row as a blank hole (after 97, 98, 99…).
+   Rows in the middle of a ruku are always full, so they only need their few spare pixels shared out among the
+   words. The empty cell is now kept only after the last ayah of a ruku block (where the row really does end early). */
+.tbl #main .ayah .words::after{content:none}
+.tbl #main .ck > .ayah:not(:has(~ .ayah)) .words::after,
+.tbl #main .ayahs > .ayah:not(:has(~ .ayah)) .words::after{content:""}
