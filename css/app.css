@@ -1612,13 +1612,30 @@ html[lang="ur"] .pz-tip.sw{font-family:var(--ur);font-size:17px;line-height:1.9;
 /* 3. Jumping to an ayah left it tucked under the pinned chrome: scroll-padding-top was a fixed
    64px while the real chrome is the top bar (--barh, ~58px) plus the strip (~40px) = ~98px.
    Tie it to the actual bars instead, so a jumped-to ayah always lands in clear view. */
-html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + var(--barh,58px) + 46px)}
-html:has(body.bars-off){scroll-padding-top:calc(env(safe-area-inset-top,0px) + 46px)}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + var(--barh,58px) + 52px)}
+html:has(body.bars-off){scroll-padding-top:calc(env(safe-area-inset-top,0px) + 52px)}
 @media (max-height:520px){
-  html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + var(--barh,58px) + 38px)}
-  html:has(body.bars-off){scroll-padding-top:calc(env(safe-area-inset-top,0px) + 38px)}
+  html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + var(--barh,58px) + 44px)}
+  html:has(body.bars-off){scroll-padding-top:calc(env(safe-area-inset-top,0px) + 44px)}
 }
 /* landscape: give the page back the top bar's height while it is hidden */
 @media (orientation:landscape) and (max-height:520px){
   body.rd.bars-off .bar{transform:translateY(-110%);pointer-events:none}
+}
+
+/* ===== v60 ===== */
+/* The tafsir book under the last word's meaning was a 34px button with a top margin of
+   0.35 x the Arabic size, so every ayah-ending cell grew by ~45px and, because cells in a row
+   match the tallest, the whole row grew with it. Make it a small inline mark on the meaning. */
+.tbl #main .w .g .g-taf{width:17px;height:14px;margin:0 0 0 3px;padding:0;vertical-align:-2px;opacity:.85}
+.tbl #main .w .g .g-taf .tafico{width:14px;height:14px;stroke-width:2}
+
+/* Surah and para names, and the percent, were too small to read at a glance in the strip. */
+#rdHead{height:46px}
+#rdHead .rh-s b,#rdHead .rh-p b{font-size:calc(20px*var(--uiz,1))}
+#rdHead .rh-s small,#rdHead .rh-p small{font-size:calc(12.5px*var(--uiz,1));opacity:.95}
+#rdHead .rh-pc{font-size:calc(13.5px*var(--uiz,1))}
+@media (max-height:520px){
+  #rdHead{height:38px}
+  #rdHead .rh-s b,#rdHead .rh-p b{font-size:calc(17px*var(--uiz,1))}
 }
