@@ -1639,3 +1639,8 @@ html:has(body.bars-off){scroll-padding-top:calc(env(safe-area-inset-top,0px) + 5
   #rdHead{height:38px}
   #rdHead .rh-s b,#rdHead .rh-p b{font-size:calc(17px*var(--uiz,1))}
 }
+
+/* ===== v61 ===== */
+/* الحزب - the half-para point where the next hizb begins; heavier than the three quarter marks */
+.qm4{color:#0E7C5A;border-color:#0E7C5A;background:color-mix(in srgb,#0E7C5A 14%,transparent);font-weight:700}
+.rh-tk.qm4{background:#0E7C5A;width:3px;opacity:.9}
