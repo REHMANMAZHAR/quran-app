@@ -50,10 +50,13 @@ const L = {
     listen:a=>`Play ayah ${a}`, ayahs:n=>`${n} ayahs`, num:n=>String(n)
   }
 };
-const T = (k, ...a) => { const v = (L[settings.lang] || L.ur)[k]; return typeof v === "function" ? v(...a) : v; };
+/* WSH: while the word sheet is open and the word meanings are in Urdu, its labels are in Urdu too, even with an English interface */
+let WSH = false;
+const T = (k, ...a) => { const lg = WSH && settings.gl === "ur" ? "ur" : settings.lang; let v = (L[lg] || L.ur)[k]; if (v === undefined) v = (L[settings.lang] || L.ur)[k]; return typeof v === "function" ? v(...a) : v; };
 const TRS = [
   ["ur",  "مولانا فتح محمد جالندھری", "Fateh Muhammad Jalandhry (Urdu)"],
   ["ur2", "شیخ الہند محمود الحسن", "Shaykh-ul-Hind Mahmood ul Hassan (Urdu)"],
+  ["ur3", "مولانا محمد جوناگڑھی", "Muhammad Junagarhi (Urdu)"],
   ["en2", "Abdullah Yusuf Ali (English)", "Abdullah Yusuf Ali"],
   ["en",  "Marmaduke Pickthall (English)", "Marmaduke Pickthall"]
 ];
@@ -79,7 +82,7 @@ function load(key, path){
   }
   return cache[key];
 }
-const DV = "23";  // bump whenever data/ changes, so phones fetch fresh files instead of old cached ones
+const DV = "24";  // bump whenever data/ changes, so phones fetch fresh files instead of old cached ones
 const DATA = {
   meta: () => load("meta", `data/meta.json?v=${DV}`),
   occ:  () => load("occ", `data/occ.json?v=${DV}`),
@@ -174,7 +177,7 @@ function render(){
   });
   h += `</div>`;
   const src = META.sources;
-  const trName = {ur:src.ur1, ur2:src.ur2, en:src.en, en2:src.en2}[trKey] || "—";
+  const trName = {ur:src.ur1, ur2:src.ur2, ur3:src.ur3, en:src.en, en2:src.en2}[trKey] || "—";
   h += `<div class="surah-foot">${T("trLabel")} ${esc(trName)}
         <div class="nav">${n>1?`<button data-go="${n-1}">${T("prevS")}</button>`:"<span></span>"}${n<114?`<button data-go="${n+1}">${T("nextS")}</button>`:""}</div></div>`;
   $("#main").innerHTML = h;

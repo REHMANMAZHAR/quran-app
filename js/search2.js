@@ -79,11 +79,11 @@ $("#searchv").addEventListener("click", e => {
 document.addEventListener("click", e => { const r = e.target.closest("#sheetBody [data-root-open]"); if (r) { closeAll(); openRoot(+r.dataset.rootOpen); } });
 /* word sheet: occurrences carry a translation line; the lead meaning follows the chosen word-meaning language */
 moreOcc = async function(){
-  const st = occState, batch = st.list.slice(st.shown, st.shown + 12), ur = trUr();
+  const st = occState, batch = st.list.slice(st.shown, st.shown + 12), ur = trUr() || settings.gl === "ur";   // Urdu word meanings → Urdu ayah translation too
   st.shown += batch.length;
   const items = await Promise.all(batch.map(async loc => {
     const [s, a, w] = loc.split(":").map(Number);
-    const d = await DATA.surah(s), A = d.ayahs[a - 1], tr = ur ? A.ur : (A[settings.tr] || A.en);
+    const d = await DATA.surah(s), A = d.ayahs[a - 1], tr = ur ? (trUr() && A[settings.tr]) || A.ur : (A[settings.tr] || A.en);
     const text = A.w.map((x, k) => k === w - 1 ? `<mark>${esc(x[0])}</mark>` : esc(x[0])).join(" ");
     return `<li><button data-loc="${loc}"><div class="oa">${text}</div>${tr ? `<div class="otr ${ur ? "ur" : "en"}" dir="${ur ? "rtl" : "ltr"}">${esc(tr)}</div>` : ""}<div class="or">${esc(surahName(s))} ${nf(s)}:${nf(a)}${loc === st.current ? T("thisAyah") : ""}</div></button></li>`;
   }));

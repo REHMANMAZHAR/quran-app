@@ -37,7 +37,7 @@ function renderSettings(){
   el.innerHTML = `<div class="st-top"><input id="stq" class="search" type="search" placeholder="${esc(T("stFind"))}" aria-label="${esc(T("stFind"))}">
       <nav class="st-chips">${SECS.map(([k, l]) => `<button data-stgo="${k}">${T(l)}</button>`).join("")}</nav></div>
     <section class="st-sec" id="st-disp"><h3>${T("stDisp")}<button class="st-reset" data-streset="disp">↺ ${T("stReset")}</button></h3><div class="st-prev" id="stPrev"></div><div id="setDisp" class="dsx"></div></section>
-    <section class="st-sec" id="st-tr"><h3>${T("stTr")}</h3>${row(T("stGl"), seg("stgl", settings.gl, [["ur", "اردو"], ["en", "English"]]))}<p class="ds-note">${T("stTrNote")}</p></section>
+    <section class="st-sec" id="st-tr"><h3>${T("stTr")}</h3>${row(T("stGl"), seg("stgl", settings.gl, [["ur", "اردو"], ["en", "English"]]))}${row(T("stUrF"), seg("sturf", settings.urf || "noto", URF.map(f => [f[0], `<span style="font-family:${f[1]}">${f[2]}</span>`])))}<p class="ds-note">${T("stTrNote")}</p></section>
     <section class="st-sec" id="st-rec"><h3>${T("stRec")}</h3>${row(T("reciter"), `<select id="stRec" class="wide-sel">${recs}</select>`)}
       ${row(T("speed"), seg("stsp", settings.speed, [[0.75, T("slow")], [1, T("normal")], [1.25, T("fast")]]))}
       ${row(T("gapH"), seg("stgap", settings.gap || 0, [0, 1, 2, 3, 5].map(g => [g, g ? T("gapS", nf(g)) : T("gap0")])))}
@@ -69,6 +69,7 @@ document.addEventListener("click", e => {
 $("#setv").addEventListener("click", async e => {
   const go = e.target.closest("[data-stgo]"); if (go) { const t = $("#st-" + go.dataset.stgo); if (t) t.scrollIntoView({ block: "start", behavior: "smooth" }); return; }
   const r = e.target.closest("[data-streset]"); if (r) { Object.assign(settings, DISP_DEF); delete settings.paper; delete settings.arc; saveSettings(); applySettings(); if (typeof applyQf === "function") applyQf(); renderSettings(); if (CUR) rerender(); toast(esc(T("stResetDone"))); return; }
+  const uf = e.target.closest("[data-sturf]"); if (uf) { settings.urf = uf.dataset.sturf; saveSettings(); applyUrf(); renderSettings(); return; }
   const gl = e.target.closest("[data-stgl]"); if (gl) { settings.gl = gl.dataset.stgl; saveSettings(); renderSettings(); if (CUR) rerender(); return; }
   const sp = e.target.closest("[data-stsp]"); if (sp) { settings.speed = +sp.dataset.stsp; P.audio.playbackRate = settings.speed; saveSettings(); renderSettings(); return; }
   const gp = e.target.closest("[data-stgap]"); if (gp) { settings.gap = +gp.dataset.stgap; saveSettings(); renderSettings(); return; }

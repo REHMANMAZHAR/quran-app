@@ -156,7 +156,7 @@ senseHTML = function(stem, w){
 function meaningsHTML(w, A, i){
   const li = w[5]; if (li == null || li < 0 || !LUR || !LUR[li]) return "";
   const here = urCore(w[3]), list = LUR[li];
-  const ctx = [A.w[i - 1], A.w[i + 1]].filter(Boolean).map(x => `${x[0]} (${settings.lang === "en" ? x[1] : x[3] || x[1]})`).join(" … ");
+  const ctx = [A.w[i - 1], A.w[i + 1]].filter(Boolean).map(x => `${x[0]} (${settings.lang === "en" && settings.gl !== "ur" ? x[1] : x[3] || x[1]})`).join(" … ");
   const Lm = META.lemmas[li], hasS = SENSES && SENSES[Lm[0] + "|" + (Lm[2] >= 0 ? META.roots[Lm[2]][0] : "")];
   if (hasS) return `<p class="ir-why mn"><b>${T("mnWhy")}</b> ${esc(T("mnWhyT", w[3] || w[1], ctx))}</p>`;
   const rows = list.map(([u, c, loc]) => `<li class="${u === here ? "here" : ""}"><b>${esc(u)}</b> <span class="c">${T("mnTimes", nf(c))}</span>${u === here ? ` <i>${T("mnHere")}</i>` : ""} <button class="mn-loc" data-sloc="${loc}">${loc.split(":").slice(0, 2).join(":")}</button></li>`).join("");

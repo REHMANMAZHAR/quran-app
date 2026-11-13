@@ -1664,3 +1664,9 @@ html,body{overflow-x:clip}
 #main .end.rk-end::after{content:"ع";position:absolute;top:-.42em;left:-.62em;font:700 1.05em/1 var(--ar,serif);color:#1F8A5A;background:var(--tb-ar,var(--bg));border-radius:50%;padding:0 .08em;pointer-events:none}
 :root[data-theme="dark"] #main .end.rk-end::after{color:#4CC38A}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]):not([data-theme="sepia"]) #main .end.rk-end::after{color:#4CC38A}}
+/* v65: Urdu word sheet inside an English interface */
+#sheet.wsh-ur #sheetBody{font-family:var(--ur);text-align:right}
+#sheet.wsh-ur #sheetBody .en,#sheet.wsh-ur #sheetBody .g-en,#sheet.wsh-ur #sheetBody [dir="ltr"]{text-align:left}
+/* v65: Gulzar — book-style Nastaliq, closest free font to printed IndoPak copies (SIL OFL, vendor/fonts/Gulzar-OFL.txt) */
+@font-face{font-family:'Gulzar';src:url('../vendor/fonts/gulzar-arabic-400.woff2') format('woff2');font-display:swap;unicode-range:U+0600-06FF,U+0750-077F,U+0870-088E,U+0890-0891,U+0898-08E1,U+08E3-08FF,U+200C-200E,U+2010-2011,U+204F,U+2E41,U+FB50-FDFF,U+FE70-FE74,U+FE76-FEFC}
+html[data-urf="gulzar"] .w .g.ur{line-height:1.7}

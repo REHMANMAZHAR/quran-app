@@ -46,4 +46,5 @@ js/v58.js
 js/v59.js
 js/v60.js
 js/v63.js
+js/v65.js
 js/start.js
