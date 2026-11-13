@@ -177,7 +177,7 @@ document.addEventListener("touchstart", e => {
 }, { passive: true });
 document.addEventListener("touchmove", e => {
   if (!PZ.on || e.touches.length !== 2) return;
-  e.preventDefault(); PZ.f = Math.min(2.4, Math.max(.5, tDist(e.touches) / PZ.d0)); if (!PZ.raf) PZ.raf = requestAnimationFrame(pzApply);
+  e.preventDefault(); PZ.f = Math.min(2.4, Math.max(.3, tDist(e.touches) / PZ.d0)); /* down to 30%, so a long pinch can reach the mushaf pages */ if (!PZ.raf) PZ.raf = requestAnimationFrame(pzApply);
 }, { passive: false });
 function pzEnd(){
   if (!PZ.on) return; PZ.on = false; const tp = $("#pzTip"); if (tp) tp.remove();

@@ -17,10 +17,15 @@ pzSwitch = function(){
 const _pzEnd60 = pzEnd;
 pzEnd = function(){
   const was = settings.size, wasTs = settings.ts || 1;
+  /* (v63) the Urdu keeps one fixed proportion to the Arabic. Before, each pinch multiplied the Urdu size and then
+     clipped it at 1.8, so zooming in and back out left the meanings at their smallest (0.7). Now the proportion is
+     remembered and only changes when you set the Urdu size yourself (A+ / A−). */
+  let k = settings.tsk || wasTs / was;
+  if (Math.abs(Math.min(2.2, Math.max(.7, was * k)) - wasTs) > .06) k = wasTs / was;   // you changed the Urdu size yourself
   _pzEnd60();
   if (!was || settings.size === was) return;
-  const ts = Math.min(1.8, Math.max(.7, wasTs * (settings.size / was)));
-  settings.ts = Math.round(ts * 100) / 100;
+  settings.tsk = Math.round(k * 10000) / 10000;
+  settings.ts = Math.round(Math.min(2.2, Math.max(.7, settings.size * k)) * 100) / 100;
   if (typeof applyUiz === "function") applyUiz();
   else document.documentElement.style.setProperty("--ts", settings.ts);
   saveSettings();

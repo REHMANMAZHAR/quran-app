@@ -40,7 +40,7 @@ function markAll(){
     if (m.r) {
       const [rs, rj, n] = m.r, t = esc(T("rkT", rs, rj, n));
       const html = `<span class="rk" role="button" tabindex="0" data-rk="${s}:${a - n + 1}:${a}:${rs}" title="${t}" aria-label="${t}"><i>${nf(rs)}</i><b>ع</b><i>${nf(rj)}</i></span>`;
-      const end = ay.querySelector(".last .end"); if (end) end.insertAdjacentHTML("afterend", html); else ay.insertAdjacentHTML("beforeend", html);
+      const end = ay.querySelector(".last .end"); if (end) { end.insertAdjacentHTML("afterend", html); end.classList.add("rk-end"); } else ay.insertAdjacentHTML("beforeend", html);
     }
   });
 }
