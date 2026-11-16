@@ -1670,3 +1670,17 @@ html,body{overflow-x:clip}
 /* v65: Gulzar — book-style Nastaliq, closest free font to printed IndoPak copies (SIL OFL, vendor/fonts/Gulzar-OFL.txt) */
 @font-face{font-family:'Gulzar';src:url('../vendor/fonts/gulzar-arabic-400.woff2') format('woff2');font-display:swap;unicode-range:U+0600-06FF,U+0750-077F,U+0870-088E,U+0890-0891,U+0898-08E1,U+08E3-08FF,U+200C-200E,U+2010-2011,U+204F,U+2E41,U+FB50-FDFF,U+FE70-FE74,U+FE76-FEFC}
 html[data-urf="gulzar"] .w .g.ur{line-height:1.7}
+/* ===== v66: report a mistake ===== */
+.rp h3{margin:0 0 6px}
+.rp-ref{margin:0 0 10px;color:var(--muted)}.rp-w{font-family:var(--ar);font-size:22px;color:var(--ink)}
+.rp-l{margin:8px 0 6px;font-weight:600}
+.rp-kinds{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+.rp-kinds button{border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:6px 14px;font:inherit;font-size:calc(14px*var(--uiz,1));cursor:pointer}
+.rp-kinds button[aria-pressed=true]{background:var(--gold);border-color:var(--gold);color:#111;font-weight:600}
+.rp textarea,.rp input[type=email]{width:100%;box-sizing:border-box;border:1px solid var(--line);border-radius:12px;background:var(--surface);color:var(--ink);padding:10px 12px;font:inherit;font-size:calc(15px*var(--uiz,1));margin-bottom:10px}
+.rp textarea{min-height:120px;resize:vertical}
+.rp-hp{position:absolute!important;left:-9999px!important;width:1px!important;height:1px!important;opacity:0}
+.rp-msg{min-height:1.4em;color:var(--muted);font-size:calc(13px*var(--uiz,1))}
+.rp-open{margin:18px 0 4px;text-align:center}
+.rp-open button{border:0;background:none;color:var(--muted);text-decoration:underline;font:inherit;font-size:calc(13px*var(--uiz,1));cursor:pointer;padding:8px}
+.st-links{margin:0 0 10px;font-weight:600}
