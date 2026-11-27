@@ -2,18 +2,18 @@
 /* ---------- word parts, review labels, script choice, surah tools (sections A, M, N) ---------- */
 Object.assign(L.ur, {
   textSize:"متن کا سائز", smaller:"چھوٹا", bigger:"بڑا", textSizeNow:(a,t)=>`عربی ${a} · ترجمہ ${t}%`,
-  partMean:"معنی:", baseMean:"بنیادی معنی:", reviewed:"✓ نظرِ ثانی شدہ", subj:"فاعل (کرنے والا)", obj:"مفعول / ضمیر",
+  partMean:"معنی:", baseMean:"بنیادی معنی:", reviewed:"ماخذ اور نظرِ ثانی کی تصدیق باقی", subj:"فاعل (کرنے والا)", obj:"مفعول / ضمیر",
   sensesH:"قرآن میں اس لفظ کے معنی", sensesNote:"خودکار مسودہ — ترجمہ شدہ معانی کو جمع کیا گیا ہے", here:"یہاں", followed:t=>`اکثر بعد میں «${t}»`,
   irabBtn:"اعراب لیب میں دیکھیں", caseN:"رفع (مرفوع)", caseA:"نصب (منصوب)", caseG:"جر (مجرور)",
-  revWords:"لفظی معنی: Quran.com (اصلاح شدہ) · بنیادی معانی: عالم کی نظرِ ثانی (اکتوبر ۲۰۲۶)", revGram:"گرامر نوٹس: مسودہ — نظرِ ثانی باقی", report:"غلطی کی اطلاع دیں",
+  revWords:"لفظی معنی: Quran.com (اصلاح شدہ؛ حقوق/ماخذ کی جانچ جاری) · بنیادی معانی: ماخذ/نظرِ ثانی کی تصدیق باقی", revGram:"گرامر نوٹس: مسودہ — نظرِ ثانی باقی", report:"غلطی کی اطلاع دیں",
   knowSurah:p=>`آپ اس سورت کے ${ud(p)}٪ الفاظ جانتے ہیں`, uthmani:"عثمانی", indopak:"انڈو پاک", hifz:"حفظ", pageView:"صفحہ"
 });
 Object.assign(L.en, {
   textSize:"Text size", smaller:"Smaller", bigger:"Bigger", textSizeNow:(a,t)=>`Arabic ${a} · translation ${t}%`,
-  partMean:"Meaning:", baseMean:"Base meaning:", reviewed:"✓ reviewed", subj:"subject (doer)", obj:"object / pronoun",
+  partMean:"Meaning:", baseMean:"Base meaning:", reviewed:"Source and review not verified", subj:"subject (doer)", obj:"object / pronoun",
   sensesH:"Meanings of this word in the Quran", sensesNote:"Automatic draft — grouped from the word-by-word meanings", here:"here", followed:t=>`often followed by «${t}»`,
   irabBtn:"See in I'rab Lab", caseN:"Nominative (marfūʿ)", caseA:"Accusative (manṣūb)", caseG:"Genitive (majrūr)",
-  revWords:"Word meanings: Quran.com (corrected) · Base meanings: scholar-reviewed (Oct 2026)", revGram:"Grammar notes: draft — scholar review pending", report:"Report a mistake",
+  revWords:"Word meanings: Quran.com (corrected; rights/provenance review pending) · Base meanings: source/review not verified", revGram:"Grammar notes: draft — scholar review pending", report:"Report a mistake",
   knowSurah:p=>`You know ${p}% of this surah's words`, uthmani:"Uthmani", indopak:"Indo-Pak", hifz:"Hifz", pageView:"Page"
 });
 Object.assign(DATA, {
