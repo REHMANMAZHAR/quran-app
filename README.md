@@ -33,15 +33,15 @@ See [Trust and Source Governance](docs/TRUST-AND-SOURCE-GOVERNANCE.md).
 | `privacy.html` | Current privacy statement; pending reconciliation against deployed data flows |
 | `about.html` | Current source and attribution statement; pending source/rights audit |
 
-## Build pipeline
+## Build pipeline — currently under repair
 
-The repository's full build sequence is:
+**Do not rely on the full build pipeline for a release yet.** The current default-branch scripts have a mismatch that must be resolved first:
 
-```bash
-python scripts/build_all.py
-```
+- `scripts/build_all.py` runs `build.py` and then `build_learn.py`.
+- The current `scripts/build.py` is a JavaScript bundler; it does not define `clean_gloss`.
+- `scripts/build_learn.py` imports `clean_gloss` from `build.py`, so a clean run is expected to fail at that step.
 
-This runs the repository's data-build scripts, the word-by-word audit and the single-file bundle step. Do not run a data rebuild or fetch additional external content as a routine feature change. Before rebuilding or replacing any dataset:
+This has been recorded in [GitHub issue #7](https://github.com/REHMANMAZHAR/quran-app/issues/7). Do not run `build_all.py` as a production data rebuild until the build pipeline is repaired and tested from a clean checkout. Do not fetch additional external content as a routine feature change. Before rebuilding or replacing any dataset:
 
 1. Confirm its exact upstream source and version.
 2. Confirm that the licence or written permission allows the intended use and transformation.
