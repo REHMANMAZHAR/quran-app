@@ -163,7 +163,7 @@ function pzApply(){
     r.setProperty("--arsize", Math.round(Math.min(80, Math.max(16, settings.size * f))) + "px");
     const uz = settings.uiz && settings.uiz !== "auto" ? +settings.uiz : phoneScale(); r.setProperty("--ts", Math.min(2.2, Math.max(.7, (settings.ts || 1) * f)) * uz);
     if (PZ.anchor && PZ.anchor.isConnected) { const dy = PZ.anchor.getBoundingClientRect().top - PZ.ay; if (Math.abs(dy) > 1) scrollBy(0, dy); }
-  } else if (LV.view === "page") { const q = $("#mushaf quran-madina-html"); if (q && typeof mpFont === "function") q.style.fontSize = Math.round(mpFont() * Math.min(2.5, Math.max(.6, (settings.mpz || 1) * f)) * 10) / 10 + "px"; }
+  } else if (LV.view === "page") { if (typeof mpSetZoom === "function") mpSetZoom(Math.min(2.5, Math.max(.6, (settings.mpz || 1) * f))); }
   else r.setProperty("--uiz", Math.min(1.9, Math.max(.8, PZ.u0 * f)));
   const tip = $("#pzTip"); if (tip) tip.textContent = Math.round(f * 100) + "%";
 }
