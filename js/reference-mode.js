@@ -98,6 +98,20 @@
       [["Quran.com — Quran text and references","https://quran.com/"],["Tanzeem-e-Islami — official source library","https://www.tanzeem.org/"]]);
   };
 
+  // Search and games currently depend on uncleared translation/gloss indexes.
+  // Keep the navigation destinations but show the source directory until an
+  // Arabic-only, licence-cleared search index and quiz corpus are available.
+  VIEWS.search.render = () => {
+    $("#searchv").innerHTML=hub("Quran search references",
+      "In-app search will be restored when its index contains only cleared Quran text and reference metadata.",
+      common);
+  };
+  VIEWS.games.render = () => {
+    $("#learn").innerHTML=hub("Study tools",
+      "Word-meaning quizzes and vocabulary games are temporarily withheld until their source data is cleared.",
+      common);
+  };
+
   // Remove the asynchronously-added hadith-of-the-day card while preserving other dashboard tools.
   const oldHome=VIEWS.home.render;
   if(typeof oldHome==="function") VIEWS.home.render=async function(...args){
