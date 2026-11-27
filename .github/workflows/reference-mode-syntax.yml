@@ -1,0 +1,25 @@
+name: Reference mode syntax
+
+on:
+  push:
+    branches:
+      - policy/reference-only-content-gate
+      - fix/mushaf-responsive-reflow
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  syntax:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Check reference mode and app JavaScript syntax
+        run: |
+          node --check js/reference-mode.js
+          node --check js/app.min.js
+          node --check js/v43.js
+          node --check js/v49.js
