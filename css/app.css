@@ -1684,3 +1684,17 @@ html[data-urf="gulzar"] .w .g.ur{line-height:1.7}
 .rp-open{margin:18px 0 4px;text-align:center}
 .rp-open button{border:0;background:none;color:var(--muted);text-decoration:underline;font:inherit;font-size:calc(13px*var(--uiz,1));cursor:pointer;padding:8px}
 .st-links{margin:0 0 10px;font-weight:600}
+
+
+/* ===== Responsive Mushaf page width: use the available reader column on desktop ===== */
+/* The page shell was capped at 760px, but the rendered custom element kept its intrinsic
+   inline-flex width. On wide screens this left large empty gutters around a narrow page.
+   Let the shell and renderer occupy the reader column; retain a sensible mobile gutter. */
+#main:has(#mushaf) { width:100%; max-width:none; }
+#mushaf { width:100%; min-width:0; }
+#mushaf .mp-page { width:100%; max-width:none; margin-inline:auto; }
+#mushaf .mp-page quran-madina-html { width:100%; max-width:100%; }
+@media (max-width:600px) {
+  #main:has(#mushaf) { padding-inline:8px; }
+  #mushaf .mp-page { padding-inline:2px; }
+}
