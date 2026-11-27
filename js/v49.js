@@ -99,7 +99,7 @@ const mpFont = () => {
   const available = Math.max(240, (host && host.clientWidth ? host.clientWidth : innerWidth) - 28);
   return Math.max(12, Math.min(100, Math.floor((available - 10) / 16.4)));
 };
-let MP_RO = null, mpResizeQueued = false;
+let MP_RO = null, mpResizeQueued = false, mpZoomRetry = 0;
 function mpWatchWidth(){
   const host = $("#mushaf");
   if (!host) return;
@@ -130,7 +130,8 @@ function mpSetZoom(multiplier){
   const baseFont = +(q.dataset.qtsBaseFont || (parseFloat(q.style.fontSize) || mpFont()));
   const baseWidth = +(q.dataset.qtsBaseWidth || (parseFloat(q.style.width) || q.getBoundingClientRect().width));
   // Wait for the custom element's first render to establish its intrinsic line width.
-  if (!(baseFont > 0 && baseWidth > 0)) return;
+  if (!(baseFont > 0 && baseWidth > 0)) { if (mpZoomRetry++ < 20) setTimeout(mpZoom, 100); return; }
+  mpZoomRetry = 0;
   if (!q.dataset.qtsBaseFont) q.dataset.qtsBaseFont = String(baseFont);
   if (!q.dataset.qtsBaseWidth) q.dataset.qtsBaseWidth = String(baseWidth);
   const targetFont = Math.round(mpFont() * multiplier * 10) / 10;
