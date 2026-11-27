@@ -6,12 +6,12 @@
 
 Object.assign(L.ur, {
   insightH: "بصیرت — ایک ہی مادہ، گہرا ربط",
-  insightReviewed: "✓ نظرِ ثانی شدہ",
+  insightReviewed: "ماخذ اور نظرِ ثانی کی تصدیق باقی",
   insightHadith: "نبوی وضاحت"
 });
 Object.assign(L.en, {
   insightH: "Insight — one root, a deeper link",
-  insightReviewed: "✓ reviewed",
+  insightReviewed: "Source and review not verified",
   insightHadith: "Prophetic note"
 });
 
