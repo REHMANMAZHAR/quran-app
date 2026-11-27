@@ -1,71 +1,69 @@
-# Quran — word by word (قرآن — لفظ بہ لفظ)
+# QuranToSoul — Quran reference and reading application
 
-Urdu and English interface (chosen on first launch, switchable in Settings).
+QuranToSoul is a free, ad-free Quran reading and reference application. The current application includes reader navigation, Arabic display options, recitation controls, word-level navigation and other study utilities.
 
-Free, ad-free Quran reader. Press and hold any word to see its meaning, how the
-word is built (prefix / stem / suffix), the grammar of each part in Urdu, its
-root, every other word from that root, and every place it appears in the Quran.
-Reopens exactly where you stopped reading. Works offline once opened.
+Live site: https://qurantosoul.com  
+Repository: https://github.com/REHMANMAZHAR/quran-app
 
-## Put it online (GitHub Pages, free)
-1. Create a new public repo on GitHub, e.g. `quran-app`.
-2. Upload everything in this folder (or `git init && git add . && git commit -m "v1" && git push`).
-3. Repo → Settings → Pages → Source: "Deploy from a branch", Branch: `main`, folder `/ (root)` → Save.
-4. In ~2 minutes it is live at `https://<your-username>.github.io/quran-app/`.
-5. Open that link on your phone → browser menu → "Add to Home screen". It now behaves like an app.
+## Product content policy
 
-## Add Urdu word-by-word meanings (do this once, on your PC)
-```
-pip install requests
-python scripts/fetch_urdu_wbw.py     # ~5 min, saves data-raw/wbw-ur.json
-python scripts/build.py              # rebuilds data/
-python scripts/bundle_single.py      # optional: rebuilds dist/quran-app-single.html
-```
-Commit and push. The app switches word meanings to Urdu automatically
-(English stays available in Settings).
+QuranToSoul follows a **reference-first** policy.
 
-## Get the grammar notes reviewed
-`data/grammar-templates-for-review.csv` has 1,067 rows, sorted by how often each
-appears. The top ~150 rows cover the large majority of words in the Quran.
-Give it to an aalim (opens in Excel; Urdu displays correctly). They mark
-`approved` Y/N and write corrections. Apply corrections in
-`scripts/grammar_ur.py`, rerun `build.py`, push.
+- Do not author or generate new Quranic words, word meanings, translations, tafseer, hadith explanations, grammar explanations, religious rulings or other original religious content.
+- The project may organise source references, bibliographic metadata, citations, stable identifiers and links to original sources.
+- Display source material only when its exact provenance, attribution, integrity and applicable reuse rights are documented and approved.
+- Where rights are unclear, use an official source link or embed instead of copying the content.
+- Public availability, API access or an attribution line does not by itself establish permission to redistribute.
+- Do not label content reviewed or verified unless the exact item/version has a retained review record.
+- Existing datasets are under source and rights review. Their presence in this repository is not proof that they are approved for public redistribution.
 
-## Updating data
-After changing anything in `data/`, bump `DV` in `index.html` (e.g. "3" → "4") so phones fetch fresh files.
+See [Trust and Source Governance](docs/TRUST-AND-SOURCE-GOVERNANCE.md).
 
-## Folder map
-| Path | What it is |
+## Repository structure
+
+| Path | Purpose |
 |---|---|
-| `index.html`, `sw.js`, `manifest.webmanifest`, `icon.svg` | The app |
-| `data/` | Built data the app reads (one file per surah + index) |
-| `data-raw/` | Original sources, untouched |
-| `scripts/build.py` | Merges sources into `data/` |
-| `scripts/grammar_ur.py` | Urdu grammar explanations (edit here) |
-| `scripts/grammar_en.py` | English grammar explanations (edit here) |
-| `scripts/fetch_urdu_wbw.py` | Downloads Urdu word-by-word from Quran.com |
-| `scripts/bundle_single.py` | Makes one self-contained HTML file in `dist/` |
+| `index.html` | Main application |
+| `js/` | Application modules |
+| `css/` | Stylesheets |
+| `data/` | Built application datasets; source and rights status varies and is under review |
+| `data-raw/` | Input/source datasets and corrections; source and rights status varies and is under review |
+| `scripts/` | Data build, audit and bundling scripts |
+| `functions/api/report.js` | Cloudflare Pages Function for mistake reports |
+| `privacy.html` | Current privacy statement; pending reconciliation against deployed data flows |
+| `about.html` | Current source and attribution statement; pending source/rights audit |
 
-## Recitation
-Tap ▶ in the top bar (or any ayah number) to play. Words light up as the qari
-recites them. 11 reciters, repeat ×1/×3/×5/∞, three speeds, Bismillah before
-each surah (except Al-Fatiha and At-Tawbah). "لفظ سنیں" in the word sheet plays
-that single word.
+## Build pipeline — currently under repair
 
-## Sources and licences
-- Morphology: Quranic Arabic Corpus v0.4 (University of Leeds), corrected fork
-  github.com/mustafa0x/quran-morphology. **GPL** — keep this credit, and keep the
-  project open source.
-- English word-by-word: Quran.com. Urdu word-by-word (after fetch): Quran.com.
-- English translations: Abdullah Yusuf Ali (default in English), Pickthall.
-- Urdu translations: Fateh Muhammad Jalandhry; Shaykh-ul-Hind Mahmood ul Hassan
-  (both public domain). English: Pickthall (public domain). Via tanzil.net /
-  fawazahmed0/quran-api.
-- Recitation audio: everyayah.com (streamed, credit reciters + everyayah.com).
-  Word timings: quran-align by Collin Fair, CC-BY 4.0 (data-raw/timing/).
-  Word pronunciation audio: Quran.com CDN.
-- Urdu grammar notes: written for this project, **draft until scholar review**.
+**Do not rely on the full build pipeline for a release yet.** The current default-branch scripts have a mismatch that must be resolved first:
 
-## Next phases
-Indo-Pak script option · Dr. Israr Ahmed audio (after MAKQ permission) · Mufradat / Lane's Lexicon dictionary entries ·
-Pashto & Sindhi · grammar course built on this same data · Play Store wrapper.
+- `scripts/build_all.py` runs `build.py` and then `build_learn.py`.
+- The current `scripts/build.py` is a JavaScript bundler; it does not define `clean_gloss`.
+- `scripts/build_learn.py` imports `clean_gloss` from `build.py`, so a clean run is expected to fail at that step.
+
+This has been recorded in [GitHub issue #7](https://github.com/REHMANMAZHAR/quran-app/issues/7). Do not run `build_all.py` as a production data rebuild until the build pipeline is repaired and tested from a clean checkout. Do not fetch additional external content as a routine feature change. Before rebuilding or replacing any dataset:
+
+1. Confirm its exact upstream source and version.
+2. Confirm that the licence or written permission allows the intended use and transformation.
+3. Preserve the source file and record its checksum/version.
+4. Review any generated differences against the upstream source.
+5. Run the audit and retain the report.
+6. Do not invent, paraphrase or manually add religious content or meanings.
+
+The scripts may regenerate existing outputs from existing inputs. That does not itself establish that the input datasets are licensed for public redistribution.
+
+## Source, licence and permission status
+
+There is no single licence that automatically covers every file in this repository. Application code, Quranic datasets, translations, morphology, tafseer, hadith, audio, timings, fonts and other assets may have different rights holders and terms.
+
+Do not add a repository-wide licence declaration until the scope and compatibility of every included component have been checked. Preserve all upstream licence files and notices. Consult the source/rights register in the QuranToSoul Notion project before publishing or redistributing content.
+
+## Security and privacy
+
+The report endpoint and published privacy statement are undergoing review. Do not expose report administration secrets in URLs, commit secrets, or assume that local-only data statements cover external audio, video, fonts, analytics, speech recognition or mistake reports.
+
+## Contribution and release rule
+
+Changes to application code and navigation may proceed when they do not introduce unverified religious content or unlicensed assets. Content/data changes require source and rights approval first. Production releases must pass reproducible build, data-integrity, privacy/security and browser smoke checks.
+
+No production content has been removed or modified by this documentation update.
