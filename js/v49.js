@@ -125,21 +125,21 @@ function mpLib(){
 }
 const mpPages = () => MPP ? Promise.resolve(MPP) : load("mpages", `data/mushaf-pages.json?v=${DV}`).then(x => MPP = x);
 function mpPageOf(s, a){ const L2 = MPP[mpKey()], x = gid(s, a); let lo = 0, hi = L2.length - 1; while (lo < hi) { const m = (lo + hi + 1) >> 1; if (L2[m] <= x) lo = m; else hi = m - 1; } return lo + 1; }
-function mpZoom(){
+function mpSetZoom(multiplier){
   const q = $("#mushaf quran-madina-html"); if (!q) return;
-  // quran-madina-html computes a fixed pixel width from its font size when it first renders.
-  // Changing only font-size (the old behaviour) made the text scale inside an unchanged-width
-  // page, so zoom looked like it moved the margins rather than resizing the Mushaf.
   const baseFont = +(q.dataset.qtsBaseFont || (parseFloat(q.style.fontSize) || mpFont()));
   const baseWidth = +(q.dataset.qtsBaseWidth || (parseFloat(q.style.width) || q.getBoundingClientRect().width));
+  // Wait for the custom element's first render to establish its intrinsic line width.
+  if (!(baseFont > 0 && baseWidth > 0)) return;
   if (!q.dataset.qtsBaseFont) q.dataset.qtsBaseFont = String(baseFont);
   if (!q.dataset.qtsBaseWidth) q.dataset.qtsBaseWidth = String(baseWidth);
-  const targetFont = Math.round(mpFont() * (settings.mpz || 1) * 10) / 10;
+  const targetFont = Math.round(mpFont() * multiplier * 10) / 10;
   const ratio = targetFont / baseFont;
   q.style.fontSize = targetFont + "px";
   q.style.width = Math.round(baseWidth * ratio * 10) / 10 + "px";
   q.style.maxWidth = "none";
 }
+function mpZoom(){ mpSetZoom(settings.mpz || 1); }
 openPageView = async function(){
   if (!EX) EX = await DATA.extras(); await mpPages();
   const last = store.get("last", { s: CUR ? CUR.n : 1, a: 1 }); PG.n = mpPageOf(last.s, last.a); showView("page");
@@ -155,7 +155,7 @@ renderPage = async function(){
     <div class="mp-page" dir="rtl"><quran-madina-html page="${PG.n}"></quran-madina-html></div>
     <div class="nav mp-nav"><button data-mpg="${PG.n + 1}"${PG.n >= N ? " disabled" : ""}>‹ ${T("nextP")}</button><button data-pg="list">${T("toList")}</button><button data-mpg="${PG.n - 1}"${PG.n <= 1 ? " disabled" : ""}>${T("prevP")} ›</button></div>`;
   $("#tAr").textContent = T("pageT", nf(PG.n)); $("#tEn").textContent = T(settings.script === "ip" ? "mpSubI" : "mpSubM");
-  mpWatchWidth(); mpZoom(); store.set("last", { s, a });
+  mpWatchWidth(); mpZoom(); setTimeout(mpZoom, 120); store.set("last", { s, a });
 };
 VIEWS.page.render = renderPage;
 const mpGo = n => { const N = MPP ? MPP[mpKey()].length : 604; if (n < 1 || n > N) return; PG.n = n; renderPage(); scrollTo(0, 0); };
