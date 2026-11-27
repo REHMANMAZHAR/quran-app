@@ -93,7 +93,26 @@ Object.assign(L.ur, { mpListen:"یہاں سے سنیں", mpOpen:"لفظ بہ ل�
 Object.assign(L.en, { mpListen:"Listen from here", mpOpen:"Open word by word", mpTaf:"Listen to tafsir", mpSubM:"Madinah Mushaf · 15 lines", mpSubI:"IndoPak Mushaf · 15 lines", mpLoad:"Opening the mushaf…" });
 let MPP = null, MP_LOAD = null, MP_LAYOUT = null;
 const mpLayout = () => settings.script === "ip" ? "IndoPak" : "1441H", mpKey = () => settings.script === "ip" ? "ip" : "m";
-const mpFont = () => Math.max(12, Math.min(40, Math.floor((Math.min(innerWidth, 760) - 30) / 16.4)));
+// Size the rendered page against the actual reader column, not a fixed 760px desktop cap.
+const mpFont = () => {
+  const host = $("#mushaf");
+  const available = Math.max(240, (host && host.clientWidth ? host.clientWidth : innerWidth) - 28);
+  return Math.max(12, Math.min(100, Math.floor((available - 10) / 16.4)));
+};
+let MP_RO = null, mpResizeQueued = false;
+function mpWatchWidth(){
+  const host = $("#mushaf");
+  if (!host) return;
+  if (MP_RO) MP_RO.disconnect();
+  if ("ResizeObserver" in window) {
+    MP_RO = new ResizeObserver(() => {
+      if (mpResizeQueued) return;
+      mpResizeQueued = true;
+      requestAnimationFrame(() => { mpResizeQueued = false; if (LV.view === "page") mpZoom(); });
+    });
+    MP_RO.observe(host);
+  }
+}
 function mpLib(){
   if (MP_LOAD) return MP_LOAD;
   MP_LAYOUT = mpLayout();
@@ -106,7 +125,21 @@ function mpLib(){
 }
 const mpPages = () => MPP ? Promise.resolve(MPP) : load("mpages", `data/mushaf-pages.json?v=${DV}`).then(x => MPP = x);
 function mpPageOf(s, a){ const L2 = MPP[mpKey()], x = gid(s, a); let lo = 0, hi = L2.length - 1; while (lo < hi) { const m = (lo + hi + 1) >> 1; if (L2[m] <= x) lo = m; else hi = m - 1; } return lo + 1; }
-function mpZoom(){ const q = $("#mushaf quran-madina-html"); if (q) q.style.fontSize = Math.round(mpFont() * (settings.mpz || 1) * 10) / 10 + "px"; }
+function mpZoom(){
+  const q = $("#mushaf quran-madina-html"); if (!q) return;
+  // quran-madina-html computes a fixed pixel width from its font size when it first renders.
+  // Changing only font-size (the old behaviour) made the text scale inside an unchanged-width
+  // page, so zoom looked like it moved the margins rather than resizing the Mushaf.
+  const baseFont = +(q.dataset.qtsBaseFont || (parseFloat(q.style.fontSize) || mpFont()));
+  const baseWidth = +(q.dataset.qtsBaseWidth || (parseFloat(q.style.width) || q.getBoundingClientRect().width));
+  if (!q.dataset.qtsBaseFont) q.dataset.qtsBaseFont = String(baseFont);
+  if (!q.dataset.qtsBaseWidth) q.dataset.qtsBaseWidth = String(baseWidth);
+  const targetFont = Math.round(mpFont() * (settings.mpz || 1) * 10) / 10;
+  const ratio = targetFont / baseFont;
+  q.style.fontSize = targetFont + "px";
+  q.style.width = Math.round(baseWidth * ratio * 10) / 10 + "px";
+  q.style.maxWidth = "none";
+}
 openPageView = async function(){
   if (!EX) EX = await DATA.extras(); await mpPages();
   const last = store.get("last", { s: CUR ? CUR.n : 1, a: 1 }); PG.n = mpPageOf(last.s, last.a); showView("page");
@@ -122,7 +155,7 @@ renderPage = async function(){
     <div class="mp-page" dir="rtl"><quran-madina-html page="${PG.n}"></quran-madina-html></div>
     <div class="nav mp-nav"><button data-mpg="${PG.n + 1}"${PG.n >= N ? " disabled" : ""}>‹ ${T("nextP")}</button><button data-pg="list">${T("toList")}</button><button data-mpg="${PG.n - 1}"${PG.n <= 1 ? " disabled" : ""}>${T("prevP")} ›</button></div>`;
   $("#tAr").textContent = T("pageT", nf(PG.n)); $("#tEn").textContent = T(settings.script === "ip" ? "mpSubI" : "mpSubM");
-  mpZoom(); store.set("last", { s, a });
+  mpWatchWidth(); mpZoom(); store.set("last", { s, a });
 };
 VIEWS.page.render = renderPage;
 const mpGo = n => { const N = MPP ? MPP[mpKey()].length : 604; if (n < 1 || n > N) return; PG.n = n; renderPage(); scrollTo(0, 0); };
