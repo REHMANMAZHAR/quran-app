@@ -1443,16 +1443,16 @@ body:not(.tbl) #main .words::after{content:"";flex:1 0 0}
 html{overflow-anchor:none}
 /* v49: mushaf page — printed-page look */
 #mushaf{padding:8px 6px 20px}
-.mp-head{display:flex;justify-content:space-between;align-items:center;max-width:760px;margin:0 auto 6px;padding:0 10px;color:var(--muted);font-size:calc(13px*var(--uiz,1))}
+.mp-head{display:flex;justify-content:space-between;align-items:center;width:100%;max-width:none;margin:0 auto 6px;padding:0 10px;color:var(--muted);font-size:calc(13px*var(--uiz,1))}
 .mp-head b{color:var(--gold);font-family:system-ui;font-size:calc(14px*var(--uiz,1))}
-.mp-page{max-width:760px;margin:0 auto;padding:10px 4px 12px;border-radius:6px;background:#FFFDF6;color:#1b1b1b;box-shadow:0 0 0 1.5px #C9A65A,0 0 0 5px #FFFDF6,0 0 0 6.5px #C9A65A,0 6px 18px rgba(0,0,0,.12);overflow:hidden}
+.mp-page{width:100%;max-width:none;box-sizing:border-box;margin:0 auto;padding:10px 4px 12px;border-radius:6px;background:#FFFDF6;color:#1b1b1b;box-shadow:0 0 0 1.5px #C9A65A,0 0 0 5px #FFFDF6,0 0 0 6.5px #C9A65A,0 6px 18px rgba(0,0,0,.12);overflow:auto}
 :root[data-theme="dark"] .mp-page{background:#1A1712;color:#EDE6D6;box-shadow:0 0 0 1.5px #8C7440,0 0 0 5px #1A1712,0 0 0 6.5px #8C7440}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]):not([data-theme="sepia"]) .mp-page{background:#1A1712;color:#EDE6D6;box-shadow:0 0 0 1.5px #8C7440,0 0 0 5px #1A1712,0 0 0 6.5px #8C7440}}
 :root[data-theme="sepia"] .mp-page{background:#F6ECD2}
-.mp-page quran-madina-html{display:block;margin:0 auto}
+.mp-page quran-madina-html{display:block;margin:0 auto;max-width:none;flex:none}
 .mp-page quran-madina-html-header{display:none!important}
 .mp-page .mp-sel,.mp-page .mp-sel .quran-madina-html-word{background:color-mix(in srgb,var(--gold) 28%,transparent);border-radius:4px}
-.mp-nav{max-width:760px;margin:16px auto 0}
+.mp-nav{width:100%;max-width:none;margin:16px auto 0}
 /* v50: press-and-hold shows a filling bar under the word (only after a short pause, so taps and scrolls show nothing) */
 #main .w.press{background:none;position:relative}
 #main .w.press::after{content:"";position:absolute;inset-inline-start:8%;bottom:1px;height:3px;width:0;border-radius:2px;background:var(--gold);animation:holdfill var(--hold,5000ms) linear forwards;animation-delay:.25s}
@@ -1684,3 +1684,8 @@ html[data-urf="gulzar"] .w .g.ur{line-height:1.7}
 .rp-open{margin:18px 0 4px;text-align:center}
 .rp-open button{border:0;background:none;color:var(--muted);text-decoration:underline;font:inherit;font-size:calc(13px*var(--uiz,1));cursor:pointer;padding:8px}
 .st-links{margin:0 0 10px;font-weight:600}
+
+/* Mushaf is a full-width view, unlike the other intentionally narrow study panels. */
+section.view#mushaf{width:100%;max-width:none;box-sizing:border-box;padding-inline:clamp(8px,2vw,24px)}
+#mushaf .mp-page{width:100%;max-width:none;box-sizing:border-box}
+#mushaf .mp-head,#mushaf .mp-nav{width:100%;max-width:none}
